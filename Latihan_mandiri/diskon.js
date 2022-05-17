@@ -1,4 +1,4 @@
-var t_b = 100000; //total belanjaan
+var t_b = 120000; //total belanjaan
 
 // Jika totalnya lebih dari 100rb, discount 15%
 // Jika totalnya lebih dari 70rb, discount 10%
@@ -9,16 +9,16 @@ var t_b = 100000; //total belanjaan
 // Total discount : 8000
 // Total yg dibayar : 72000
 
-if(t_b > 100000) {
-    discount = t_b * 15 / 100 
+if (t_b > 100000) {
+  discount = (t_b * 15) / 100;
 } else if (t_b <= 100000 && t_b > 70000) {
-    discount = t_b * 10 / 100
+  discount = (t_b * 10) / 100;
 } else if (t_b <= 70000) {
-    discount = t_b * 5 / 100
+  discount = (t_b * 5) / 100;
 }
 
-var total_bayar = t_b - discount
+var total_bayar = t_b - discount;
 
 console.log(`Total belanja: ${t_b} 
 Total discount: ${discount} 
-Total yg dibayar: ${total_bayar}`)
+Total yg dibayar: ${total_bayar}`);
