@@ -1,4 +1,4 @@
-var t_b = 120000; //total belanjaan
+var hargaKotor = 120000; //total belanjaan
 
 // Jika totalnya lebih dari 100rb, discount 15%
 // Jika totalnya lebih dari 70rb, discount 10%
@@ -9,16 +9,16 @@ var t_b = 120000; //total belanjaan
 // Total discount : 8000
 // Total yg dibayar : 72000
 
-if (t_b > 100000) {
-  discount = (t_b * 15) / 100;
-} else if (t_b <= 100000 && t_b > 70000) {
-  discount = (t_b * 10) / 100;
-} else if (t_b <= 70000) {
-  discount = (t_b * 5) / 100;
+if (hargaKotor > 100000) {
+  discount = (hargaKotor * 15) / 100;
+} else if (hargaKotor <= 100000 && hargaKotor > 70000) {
+  discount = (hargaKotor * 10) / 100;
+} else if (hargaKotor <= 70000) {
+  discount = (hargaKotor * 5) / 100;
 }
 
-var total_bayar = t_b - discount;
+var hargaBersih = hargaKotor - discount;
 
-console.log(`Total belanja: ${t_b} 
+console.log(`Total belanja: ${hargaKotor} 
 Total discount: ${discount} 
-Total yg dibayar: ${total_bayar}`);
+Total yg dibayar: ${hargaBersih}`);
