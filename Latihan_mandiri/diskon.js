@@ -1,13 +1,4 @@
-var hargaKotor = 120000; //total belanjaan
-
-// Jika totalnya lebih dari 100rb, discount 15%
-// Jika totalnya lebih dari 70rb, discount 10%
-// Dibawah 70rb discount 5%
-
-// result
-// Total belanja : 100000
-// Total discount : 8000
-// Total yg dibayar : 72000
+var hargaKotor = 120000;
 
 if (hargaKotor > 100000) {
   discount = (hargaKotor * 15) / 100;
