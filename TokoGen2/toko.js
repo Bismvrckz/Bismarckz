@@ -28,12 +28,13 @@ let products = [
 */
 
 const fnEdit = (productId) => {
-  // productId : 1652777173833
   fnRenderList(products, productId);
+};
+const fnCancel = () => {
+  fnRenderList(products);
 };
 
 const fnRenderList = (arr, productId) => {
-  // productId : 1652777173833
   const listProduct = arr.map((product) => {
     if (product.id == productId) {
       return `
@@ -62,48 +63,35 @@ const fnRenderList = (arr, productId) => {
   document.getElementById("tableBody").innerHTML = listProduct.join("");
 };
 
-// Hanya akan dipanggil jika di tekan tombol input
 const fnInputData = () => {
-  // Ambil informasi mengenai product yang ingin ditambahkan
   const name = document.getElementById("name").value;
   const price = document.getElementById("price").value;
   const stock = document.getElementById("stock").value;
-  // Buat object dengan informasi yang di dapat
+
   const time = new Date();
   const id = time.getTime();
-  // const product = new Product(id, name, price, stock);
+
   const product = { id, name, price, stock };
-  // Masukkan object ke array products
+
   products.push(product);
-  // reset form --> mengosongkan semua textbox
+
   document.getElementById("form").reset();
-  // Mengupdate list data di table data
+
   fnRenderList(products);
 };
 
 const fnFilterByName = () => {
-  // Ambil keyword yang diketik oleh user
-  // keyword : HOODIE
   const keyword = document.getElementById("filterName").value;
-  // Cari product yang mengandung keyword dari user
 
   const resultFilter = products.filter((product) => {
-    // { id: 1652777173833, name: "Hoodie Jin", price: 120000, stock: 30 }
-    // name  : hoodie jin
     const name = product.name.toLowerCase();
-    // lowerKeyword : hoodie
     const lowerKeyword = keyword.toLowerCase();
-    // celana jin mengandung c false
     return name.includes(lowerKeyword);
   });
-  // Tampilkan di table
   fnRenderList(resultFilter);
 };
 
 const fnDeleteById = (productId) => {
-  // 2715
-  // Dapatkan id dari product yang hendak dihapus
-  // hapus product berdasarkan id
   products = products.filter((product) => product.id != productId);
   fnRenderList(products);
 };
