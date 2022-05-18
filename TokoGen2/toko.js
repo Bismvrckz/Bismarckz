@@ -6,7 +6,6 @@ class Barang {
     this.stock = stock;
   }
 }
-
 var products = [
   { id: 1652777173833, name: "Celana Jin", price: 120000, stock: 30 },
   { id: 1652777222715, name: "Hoodie Jin", price: 150000, stock: 20 },
