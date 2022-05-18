@@ -13,20 +13,6 @@ let products = [
   { id: 1652777231256, name: "Tas Jin", price: 170000, stock: 10 },
 ];
 
-/*
-  <tr> 
-     <td>1652777173833</td>
-     <td>Celana Jin</td>
-    <td><input onclick=fnDeleteById(1652777173833) ><td>
-    <td><input onclick=fnEdit(1652777173833) ><td>
-  <tr>
-  <tr>
-    <td>1652777222715<td>
-    <td>Hoodie Jin</td>
-    <td><input onclick=fnDeleteById(1652777222715) ><td>
-  <tr>
-*/
-
 const fnSave = (id) => {
   products.forEach((product, index) => {
     if (product.id == id) {
