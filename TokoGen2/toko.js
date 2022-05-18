@@ -26,6 +26,7 @@ const fnRenderList = () => {
 
   document.getElementById("tableBody").innerHTML = listProduct.join("");
 };
+
 fnRenderList();
 
 const tambahBarang = () => {
