@@ -27,6 +27,20 @@ let products = [
   <tr>
 */
 
+const fnSave = (id) => {
+  products.forEach((product, index) => {
+    if (product.id == id) {
+      products[index].name = document.getElementById("nameEdit").value;
+      products[index].price = parseInt(
+        document.getElementById("priceEdit").value
+      );
+      products[index].stock = parseInt(
+        document.getElementById("stockEdit").value
+      );
+      fnRenderList(products);
+    }
+  });
+};
 const fnEdit = (productId) => {
   fnRenderList(products, productId);
 };
@@ -40,10 +54,10 @@ const fnRenderList = (arr, productId) => {
       return `
       <tr>
          <td>${product.id}</td>
-         <td><input type="text" value="${product.name}"/></td>
-         <td><input type="text" value="${product.price}"/></td>
-         <td><input type="text" value="${product.stock}"/></td>
-         <td><input type="button" value="Save" onclick="fnSave()"></td>
+         <td><input type="text" id="nameEdit" value="${product.name}"/></td>
+         <td><input type="text" id="priceEdit" value="${product.price}"/></td>
+         <td><input type="text" id="stockEdit" value="${product.stock}"/></td>
+         <td><input type="button" value="Save" onclick="fnSave(${product.id})"></td>
          <td><input type="button" value="Cancel" onclick="fnCancel()"></td>
       </tr>
       `;
