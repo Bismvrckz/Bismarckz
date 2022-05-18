@@ -14,18 +14,14 @@ let products = [
 ];
 
 const fnSave = (id) => {
-  products.forEach((product, index) => {
-    if (product.id == id) {
-      products[index].name = document.getElementById("nameEdit").value;
-      products[index].price = parseInt(
-        document.getElementById("priceEdit").value
-      );
-      products[index].stock = parseInt(
-        document.getElementById("stockEdit").value
-      );
-      fnRenderList(products);
-    }
+  let foundIndex = products.findIndex((product) => {
+    return product.id == id;
   });
+  let name = document.getElementById("nameEdit").value;
+  let price = parseInt(document.getElementById("priceEdit").value);
+  let stock = parseInt(document.getElementById("stockEdit").value);
+  products[foundIndex] = { id, name, price, stock };
+  fnRenderList(products);
 };
 const fnEdit = (productId) => {
   fnRenderList(products, productId);
