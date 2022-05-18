@@ -35,6 +35,11 @@ const tambahBarang = () => {
   let namaBarangBaru = document.getElementById("name").value;
   let hargaBarangBaru = parseInt(document.getElementById("price").value);
   let stokBarangBaru = parseInt(document.getElementById("stock").value);
+  products.forEach((product) => {
+    if (product.name == namaBarangBaru) {
+      alert(`Barang sudah ada`);
+    }
+  });
   products.push(
     new Barang(idBaru, namaBarangBaru, hargaBarangBaru, stokBarangBaru)
   );
