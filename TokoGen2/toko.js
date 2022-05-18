@@ -32,13 +32,14 @@ fnRenderList();
 const tambahBarang = () => {
   const time = new Date();
   let idBaru = time.getTime();
-  const namaBarangBaru = document.getElementById("name").value;
-  const hargaBarangBaru = parseInt(document.getElementById("price").value);
-  const stokBarangBaru = parseInt(document.getElementById("stock").value);
+  let namaBarangBaru = document.getElementById("name").value;
+  let hargaBarangBaru = parseInt(document.getElementById("price").value);
+  let stokBarangBaru = parseInt(document.getElementById("stock").value);
   products.push(
     new Barang(idBaru, namaBarangBaru, hargaBarangBaru, stokBarangBaru)
   );
   console.log(products);
   console.log(Barang);
   fnRenderList();
+  document.getElementById("form").reset();
 };
