@@ -198,8 +198,12 @@ const fnCalculateCart = () => {
       </tr>
       `;
   });
+  console.log(listProduct);
   let ppn = (hargaBersih * 11) / 100;
 
+  if (!listProduct) {
+    return;
+  }
   document.getElementById("tableSummary").innerHTML = listProduct.join("");
 
   document.getElementById(
