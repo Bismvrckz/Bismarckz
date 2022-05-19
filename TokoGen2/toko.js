@@ -63,7 +63,7 @@ const fnRenderList = (arr, productId) => {
          <td>${product.name}</td>
          <td>Rp.${product.price.toLocaleString("id")}</td>
          <td>${product.stock}</td>
-         <td><input type="number" id="addCartNominal${
+         <td><input type="number" style="background-color: grey" id="addCartNominal${
            product.id
          }"><input type="button" value="Add" onclick="fnAddToCart(${
       product.id
