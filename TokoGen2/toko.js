@@ -11,6 +11,7 @@ let products = [
   { id: 1652777173833, name: "Celana Jin", price: 120000, stock: 30 },
   { id: 1652777222715, name: "Hoodie Jin", price: 150000, stock: 20 },
   { id: 1652777231256, name: "Tas Jin", price: 170000, stock: 10 },
+  { id: 1652777231232, name: "Takoyaki", price: 9000000, stock: 999 },
 ];
 
 let cart = [];
@@ -30,15 +31,65 @@ const fnRenderCart = () => {
   document.getElementById("tableCart").innerHTML = listProduct.join("");
 };
 
+const fnRenderList = (arr, productId) => {
+  const listProduct = arr.map((product) => {
+    if (product.id == productId) {
+      return `
+      <tr>
+         <td>${product.id}</td>
+         <td><input type="text" id="editName" value="${product.name}"/></td>
+         <td><input type="text" id="editPrice" value="${product.price}"/></td>
+         <td><input type="text" id="editStock" value="${product.stock}"/></td>
+         <td><input type="button" value="Save" onclick="fnSave(${product.id})"></td>
+         <td><input type="button" value="Cancel" onclick="fnCancel()"></td>
+      </tr>
+      `;
+    }
+    return `
+      <tr>
+         <td>${product.id}</td>
+         <td>${product.name}</td>
+         <td>${product.price}</td>
+         <td>${product.stock}</td>
+         <td><input type="number" id="addCartNominal${product.id}"><input type="button" value="Add" onclick="fnAddToCart(${product.id})"></td>
+         <td><input type="button" value="Delete" onclick="fnDeleteById(${product.id})"></td>
+         <td><input type="button" value="Edit" onclick="fnEdit(${product.id})"></td>
+      </tr>
+      `;
+  });
+
+  document.getElementById("tableBody").innerHTML = listProduct.join("");
+};
+
 const fnAddToCart = (productId) => {
   const product = products.find((product) => product.id == productId);
+  const cartProductSimilar = cart.find(
+    (cartProduct) => cartProduct.id == productId
+  );
 
-  const { id, name, price } = product;
-  const cartObj = { id, name, price, quantity: 1 };
+  const quantity = parseInt(
+    document.getElementById(`addCartNominal${productId}`).value
+  );
 
-  cart.push(cartObj);
-
-  fnRenderCart();
+  if (quantity > product.stock) {
+    alert(`Kebanyakan gan`);
+  } else if (product.stock == 0) {
+    alert(`Produk abis`);
+  } else if (!cartProductSimilar) {
+    const { id, name, price } = product;
+    const cartObj = { id, name, price, quantity };
+    product.stock -= quantity;
+    cart.push(cartObj);
+    fnRenderList(products);
+    fnRenderCart();
+    console.log(`jalan`);
+  } else if (cartProductSimilar.id == productId) {
+    cartProductSimilar.quantity += quantity;
+    product.stock -= quantity;
+    fnRenderList(products);
+    fnRenderCart();
+  }
+  document.getElementById(`form`).reset();
 };
 
 const fnSave = (productId) => {
@@ -65,40 +116,10 @@ const fnFilterByPrice = () => {
     }
   });
   fnRenderList(resultFilterHarga);
-  console.log("jalan");
 };
 
 const fnEdit = (productId) => {
   fnRenderList(products, productId);
-};
-const fnRenderList = (arr, productId) => {
-  const listProduct = arr.map((product) => {
-    if (product.id == productId) {
-      return `
-      <tr>
-         <td>${product.id}</td>
-         <td><input type="text" id="editName" value="${product.name}"/></td>
-         <td><input type="text" id="editPrice" value="${product.price}"/></td>
-         <td><input type="text" id="editStock" value="${product.stock}"/></td>
-         <td><input type="button" value="Save" onclick="fnSave(${product.id})"></td>
-         <td><input type="button" value="Cancel" onclick="fnCancel()"></td>
-      </tr>
-      `;
-    }
-    return `
-      <tr>
-         <td>${product.id}</td>
-         <td>${product.name}</td>
-         <td>${product.price}</td>
-         <td>${product.stock}</td>
-         <td><input type="button" value="Add" onclick="fnAddToCart(${product.id})"></td>
-         <td><input type="button" value="Delete" onclick="fnDeleteById(${product.id})"></td>
-         <td><input type="button" value="Edit" onclick="fnEdit(${product.id})"></td>
-      </tr>
-      `;
-  });
-
-  document.getElementById("tableBody").innerHTML = listProduct.join("");
 };
 
 const fnInputData = () => {
@@ -136,7 +157,7 @@ const fnCancel = () => {
 const fnCalculateCart = () => {
   let hargaBersih = 0;
   const listProduct = cart.map((product) => {
-    hargaBersih += product.price;
+    hargaBersih += product.price * product.quantity;
     return `
       <tr>
          <td>${product.id}</td>
@@ -147,12 +168,20 @@ const fnCalculateCart = () => {
       `;
   });
   let ppn = (hargaBersih * 10) / 100;
+
   document.getElementById("tableSummary").innerHTML = listProduct.join("");
-  document.getElementById("subTotal").innerHTML = `Sub Total : ${hargaBersih}`;
-  document.getElementById("ppn").innerHTML = `PPN : ${ppn}`;
-  document.getElementById("hargaBersih").innerHTML = `Total : ${
+
+  document.getElementById(
+    "subTotal"
+  ).innerHTML = `Sub Total : Rp.${hargaBersih.toLocaleString("id")}`;
+
+  document.getElementById("ppn").innerHTML = `PPN : Rp.${ppn.toLocaleString(
+    "id"
+  )}`;
+
+  document.getElementById("hargaBersih").innerHTML = `Total : Rp.${(
     hargaBersih + ppn
-  }`;
+  ).toLocaleString("id")}`;
 };
 
 fnRenderList(products);
