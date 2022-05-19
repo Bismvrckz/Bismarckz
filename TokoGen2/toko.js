@@ -97,18 +97,16 @@ const fnAddToCart = (productId) => {
     alert(`Produk abis`);
   } else if (!quantity) {
     return;
+  } else if (quantity < 0) {
+    return;
   } else if (!cartProductSimilar) {
-    if (quantity > 0) {
-      const { id, name, price } = product;
-      const cartObj = { id, name, price, quantity };
-      product.stock -= quantity;
-      cart.push(cartObj);
-    }
+    const { id, name, price } = product;
+    const cartObj = { id, name, price, quantity };
+    product.stock -= quantity;
+    cart.push(cartObj);
   } else if (cartProductSimilar.id == productId) {
-    if (quantity > 0) {
-      cartProductSimilar.quantity += quantity;
-      product.stock -= quantity;
-    }
+    cartProductSimilar.quantity += quantity;
+    product.stock -= quantity;
   }
   fnRenderList(products);
   fnRenderCart();
