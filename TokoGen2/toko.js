@@ -133,6 +133,8 @@ const fnFilterByPrice = () => {
 
   if (!min && !max) {
     fnRenderList(products);
+    console.log("jalan");
+    return;
   }
 
   const resultFilterHarga = products.filter((product) => {
