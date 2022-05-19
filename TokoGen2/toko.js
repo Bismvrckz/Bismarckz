@@ -119,8 +119,8 @@ const fnFilterByPrice = () => {
       return min <= product.price;
     } else if (!min) {
       return product.price <= max;
-    } else if (min <= product.price && product.price <= max) {
-      return true;
+    } else {
+      return min <= product.price && product.price <= max;
     }
   });
   fnRenderList(resultFilterHarga);
