@@ -98,13 +98,17 @@ const fnAddToCart = (productId) => {
   } else if (!quantity) {
     return;
   } else if (!cartProductSimilar) {
-    const { id, name, price } = product;
-    const cartObj = { id, name, price, quantity };
-    product.stock -= quantity;
-    cart.push(cartObj);
+    if (quantity > 0) {
+      const { id, name, price } = product;
+      const cartObj = { id, name, price, quantity };
+      product.stock -= quantity;
+      cart.push(cartObj);
+    }
   } else if (cartProductSimilar.id == productId) {
-    cartProductSimilar.quantity += quantity;
-    product.stock -= quantity;
+    if (quantity > 0) {
+      cartProductSimilar.quantity += quantity;
+      product.stock -= quantity;
+    }
   }
   fnRenderList(products);
   fnRenderCart();
