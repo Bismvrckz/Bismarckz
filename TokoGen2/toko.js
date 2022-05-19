@@ -31,9 +31,11 @@ const fnRenderCart = () => {
       <tr>
          <td>${product.id}</td>
          <td>${product.name}</td>
-         <td>${product.price}</td>
+         <td>Rp.${product.price.toLocaleString("id")}</td>
          <td>${product.quantity}</td>
-         <td><input type="button" value="Delete" onclick="fnCartDelete(${product.id})"></td>
+         <td><input type="button" value="Delete" onclick="fnCartDelete(${
+           product.id
+         })"></td>
       </tr>
       `;
   });
@@ -59,11 +61,19 @@ const fnRenderList = (arr, productId) => {
       <tr>
          <td>${product.id}</td>
          <td>${product.name}</td>
-         <td>${product.price}</td>
+         <td>Rp.${product.price.toLocaleString("id")}</td>
          <td>${product.stock}</td>
-         <td><input type="number" id="addCartNominal${product.id}"><input type="button" value="Add" onclick="fnAddToCart(${product.id})"></td>
-         <td><input type="button" value="Delete" onclick="fnDeleteById(${product.id})"></td>
-         <td><input type="button" value="Edit" onclick="fnEdit(${product.id})"></td>
+         <td><input type="number" id="addCartNominal${
+           product.id
+         }"><input type="button" value="Add" onclick="fnAddToCart(${
+      product.id
+    })"></td>
+         <td><input type="button" value="Delete" onclick="fnDeleteById(${
+           product.id
+         })"></td>
+         <td><input type="button" value="Edit" onclick="fnEdit(${
+           product.id
+         })"></td>
       </tr>
       `;
   });
@@ -92,15 +102,12 @@ const fnAddToCart = (productId) => {
     const cartObj = { id, name, price, quantity };
     product.stock -= quantity;
     cart.push(cartObj);
-    fnRenderList(products);
-    fnRenderCart();
-    console.log(`jalan`);
   } else if (cartProductSimilar.id == productId) {
     cartProductSimilar.quantity += quantity;
     product.stock -= quantity;
-    fnRenderList(products);
-    fnRenderCart();
   }
+  fnRenderList(products);
+  fnRenderCart();
   document.getElementById(`form`).reset();
 };
 
