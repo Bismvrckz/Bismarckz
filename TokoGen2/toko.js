@@ -16,6 +16,15 @@ let products = [
 
 let cart = [];
 
+const fnCartDelete = (productId) => {
+  let stockBack = products.find((product) => product.id == productId);
+  let stockCart = cart.find((cartProduct) => cartProduct.id == productId);
+  stockBack.stock += stockCart.quantity;
+  cart = cart.filter((product) => product.id != productId);
+  fnRenderCart();
+  fnRenderList(products);
+};
+
 const fnRenderCart = () => {
   const listProduct = cart.map((product) => {
     return `
@@ -24,6 +33,7 @@ const fnRenderCart = () => {
          <td>${product.name}</td>
          <td>${product.price}</td>
          <td>${product.quantity}</td>
+         <td><input type="button" value="Delete" onclick="fnCartDelete(${product.id})"></td>
       </tr>
       `;
   });
@@ -75,6 +85,8 @@ const fnAddToCart = (productId) => {
     alert(`Kebanyakan gan`);
   } else if (product.stock == 0) {
     alert(`Produk abis`);
+  } else if (!quantity) {
+    return;
   } else if (!cartProductSimilar) {
     const { id, name, price } = product;
     const cartObj = { id, name, price, quantity };
