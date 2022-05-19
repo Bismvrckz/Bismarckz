@@ -98,7 +98,7 @@ const fnAddToCart = (productId) => {
   } else if (!quantity) {
     return;
   } else if (quantity < 0) {
-    return;
+    //Disini gk ngapa" in
   } else if (!cartProductSimilar) {
     const { id, name, price } = product;
     const cartObj = { id, name, price, quantity };
