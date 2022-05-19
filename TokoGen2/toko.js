@@ -41,7 +41,7 @@ const fnRenderList = (arr, productId) => {
          <td><input type="text" id="editPrice" value="${product.price}"/></td>
          <td><input type="text" id="editStock" value="${product.stock}"/></td>
          <td><input type="button" value="Save" onclick="fnSave(${product.id})"></td>
-         <td><input type="button" value="Cancel" onclick="fnCancel()"></td>
+         <td colspan="2"><input type="button" value="Cancel" onclick="fnCancel()"></td>
       </tr>
       `;
     }
@@ -110,8 +110,16 @@ const fnFilterByPrice = () => {
   const min = parseInt(document.getElementById("filterPriceMinimum").value);
   const max = parseInt(document.getElementById("filterPriceMaximum").value);
 
+  if (!min && !max) {
+    fnRenderList(products);
+  }
+
   const resultFilterHarga = products.filter((product) => {
-    if (min <= product.price && product.price <= max) {
+    if (!max) {
+      return min <= product.price;
+    } else if (!min) {
+      return product.price <= max;
+    } else if (min <= product.price && product.price <= max) {
       return true;
     }
   });
@@ -167,7 +175,7 @@ const fnCalculateCart = () => {
       </tr>
       `;
   });
-  let ppn = (hargaBersih * 10) / 100;
+  let ppn = (hargaBersih * 11) / 100;
 
   document.getElementById("tableSummary").innerHTML = listProduct.join("");
 

@@ -35,16 +35,16 @@
         </p>
         <p>
           <label for="filterName">Price</label>
-          <input type="text" id="filterPriceMinimum" />
-          <input type="text" id="filterPriceMaximum" />
-          <p>
-            <input
-              style="width: 100px"
-              type="button"
-              value="Filter"
-              onclick="fnFilterByPrice()"
-            />
-          </p>
+          <input
+            type="text"
+            id="filterPriceMinimum"
+            oninput="fnFilterByPrice()"
+          />
+          <input
+            type="text"
+            id="filterPriceMaximum"
+            oninput="fnFilterByPrice()"
+          />
         </p>
       </fieldset>
       <!-- INPUT DATA -->
@@ -106,7 +106,7 @@
       </fieldset>
 
       <!-- SUMMARY -->
-      <fieldset> 
+      <fieldset>
         <legend>Summary</legend>
         <h2>Daftar Belanja</h2>
         <table>
@@ -121,7 +121,6 @@
           </tbody>
         </table>
 
-      
         <h3 id="subTotal"></h3>
         <h3 id="ppn"></h3>
         <h3 id="hargaBersih"></h3>
