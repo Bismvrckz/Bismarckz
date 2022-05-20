@@ -6,10 +6,6 @@ var buah = [
   ["Pisang", 5000, 10],
 ];
 
-/*************
- * MAIN MENU *
- *************/
-
 while (opsi != 5) {
   var cart = [];
 
