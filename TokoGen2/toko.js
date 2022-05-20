@@ -35,7 +35,7 @@ const fnRenderCart = () => {
          <td>${product.quantity}</td>
          <td><input type="button" value="Delete" onclick="fnCartDelete(${
            product.id
-         })"></td>
+         }),fnCalculateCart()"></td>
       </tr>
       `;
   });
@@ -198,12 +198,8 @@ const fnCalculateCart = () => {
       </tr>
       `;
   });
-  console.log(listProduct);
   let ppn = (hargaBersih * 11) / 100;
 
-  if (!listProduct) {
-    return;
-  }
   document.getElementById("tableSummary").innerHTML = listProduct.join("");
 
   document.getElementById(
@@ -221,3 +217,4 @@ const fnCalculateCart = () => {
 
 fnRenderList(products);
 fnRenderCart();
+fnCalculateCart();
