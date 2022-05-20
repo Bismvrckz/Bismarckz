@@ -67,7 +67,7 @@ const fnRenderList = (arr, productId) => {
            product.id
          }"><input type="button" value="Add" onclick="fnAddToCart(${
       product.id
-    })"></td>
+    }),fnCalculateCart()"></td>
          <td><input type="button" value="Delete" onclick="fnDeleteById(${
            product.id
          })"></td>
