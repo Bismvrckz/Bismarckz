@@ -222,3 +222,17 @@ const fnCalculateCart = () => {
 fnRenderList(products);
 fnRenderCart();
 fnCalculateCart();
+
+console.log(document.getElementsByClassName("marketBG"));
+
+window.addEventListener("scroll", () => {
+  if (this.scrollY > 500) {
+    document.getElementsByClassName("marketBG")[0].style.opacity = "0.5";
+    document.getElementsByClassName("marketBG")[0].style.backgroundColor =
+      "black";
+  } else {
+    document.getElementsByClassName("marketBG")[0].style.opacity = "1";
+    document.getElementsByClassName("marketBG")[0].style.backgroundColor =
+      "white";
+  }
+});
