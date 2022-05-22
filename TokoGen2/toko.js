@@ -8,10 +8,14 @@ class Product {
 }
 
 let products = [
-  { id: 1652777173833, name: "Celana Jin", price: 120000, stock: 30 },
-  { id: 1652777222715, name: "Hoodie Jin", price: 150000, stock: 20 },
-  { id: 1652777231256, name: "Tas Jin", price: 170000, stock: 10 },
-  { id: 1652777231232, name: "Takoyaki", price: 9000000, stock: 999 },
+  { id: 1652777173833, name: "Celana Jin", price: 120000, stock: 390 },
+  { id: 1652777222715, name: "Hoodie Jin", price: 150000, stock: 200 },
+  { id: 1652777231256, name: "Tas Jin", price: 170000, stock: 55 },
+  { id: 1652777678565, name: "Takoyaki", price: 9000000, stock: 999 },
+  { id: 1652777212345, name: "Monitor", price: 5000000, stock: 29 },
+  { id: 1652777457674, name: "Procie", price: 900000, stock: 126 },
+  { id: 1652777234534, name: "RAM 16GB", price: 1050000, stock: 92 },
+  { id: 1652777223445, name: "Ban Truk", price: 7000000, stock: 89 },
 ];
 
 let cart = [];
