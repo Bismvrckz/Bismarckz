@@ -1,0 +1,85 @@
+.chad {
+  position: fixed;
+  top: 5%;
+  left: -15%;
+  z-index: -1;
+  width: 600px;
+  height: auto;
+  transform: rotate(90deg) scale(0.5);
+}
+.marketBG {
+  position: fixed;
+  width: 1864px;
+  height: 2000px;
+  z-index: -2;
+  top: 0%;
+  left: 0%;
+  animation: fade 1.5s;
+  /* animation-delay: 0.1s; */
+}
+.main-title {
+  text-align: left;
+  font-family: lobster;
+  color: rgb(0, 174, 180);
+  padding-left: 100px;
+  padding-top: 50px;
+  margin: 90px;
+  font-size: 200px;
+  /* left: 10%;
+    top: 10%; */
+}
+.marketImg {
+  position: absolute;
+  top: 5%;
+  left: 60%;
+  z-index: -1;
+  width: 600px;
+  height: auto;
+}
+
+table,
+th,
+td {
+  border: 1.2px solid rgb(250, 250, 250);
+  border-collapse: collapse;
+  padding: 10px;
+  text-align: center;
+  color: antiquewhite;
+  background-color: rgb(43, 43, 43);
+  border-color: rgb(97, 97, 97);
+}
+
+fieldset {
+  border-color: gold;
+  background-color: rgb(43, 43, 43);
+}
+form {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+input[type="number"],
+input[type="text"] {
+  background-color: rgb(211, 211, 211);
+}
+
+input[type="button"] {
+  background-color: rgb(167, 167, 167);
+}
+
+h2,
+h3,
+p,
+legend {
+  color: antiquewhite;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
