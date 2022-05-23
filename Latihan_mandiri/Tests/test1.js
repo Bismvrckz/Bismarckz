@@ -1,11 +1,13 @@
 function century(year) {
-  let split = `${year}`.split('')
-  let join = slit.forEach((num,index)=>{
-    if(index == 3){
-      return ,num
+  let split = `${year}`.split("");
+  let comma = split.map((num, index) => {
+    split.length;
+    if (index == 2) {
+      return `.${num}`;
     }
-  })
-  return;
+    return `${num}`;
+  });
+  return Math.ceil(comma.join(""));
 }
 
-console.log(century(1901))
+console.log(century(2010));
