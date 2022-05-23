@@ -6,13 +6,6 @@ var data = [
   ["Dustin Timberlake", 29, "Banjarmasin"],
 ];
 
-/*
-   [
-      ["John", 43, "Jakarta"],
-      ["Baby", 21, "Jakarta"],
-      ["Tony", 34, "Surabaya"]
-   ]
-*/
 var ageAddress = (persons) => {
   var pengurutan = (org1, org2) => {
     if (org1[1] < org2[1]) {
