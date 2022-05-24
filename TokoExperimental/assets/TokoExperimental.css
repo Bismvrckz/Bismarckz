@@ -15,6 +15,7 @@
   top: 0%;
   left: 0%;
   animation: fade 1.5s;
+  transition: 0.1s ease-out;
   /* animation-delay: 0.1s; */
 }
 .main-title {
