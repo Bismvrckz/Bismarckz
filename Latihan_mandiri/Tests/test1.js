@@ -1,13 +1,5 @@
-function century(year) {
-  let split = `${year}`.split("");
-  let comma = split.map((num, index) => {
-    split.length;
-    if (index == 2) {
-      return `.${num}`;
-    }
-    return `${num}`;
-  });
-  return Math.ceil(comma.join(""));
-}
+const zeroFuel = (distanceToPump, mpg, fuelLeft) => {
+  return Math.floor((mpg * fuelLeft) / distanceToPump);
+};
 
-console.log(century(2010));
+console.log(zeroFuel(100, 25, 2));
