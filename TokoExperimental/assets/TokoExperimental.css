@@ -7,34 +7,49 @@
   height: auto;
   transform: rotate(90deg) scale(0.5);
 }
+#brianNftText {
+  text-align: right;
+  position: absolute;
+  top: 58%;
+  left: 68%;
+  font-size: 30px;
+}
+#brianNftImg {
+  position: absolute;
+  top: 62%;
+  left: 80%;
+  width: 100px;
+  height: auto;
+  border-radius: 50%;
+}
 .marketBG {
   position: fixed;
-  width: 1864px;
-  height: 2000px;
+  width: 1500px;
+  height: auto;
   z-index: -2;
   top: 0%;
   left: 0%;
-  animation: fade 1.5s;
-  transition: 0.1s ease-out;
+  animation: fade 1s;
+  transition: 1s ease-out;
   /* animation-delay: 0.1s; */
 }
 .main-title {
   text-align: left;
   font-family: lobster;
   color: rgb(0, 174, 180);
-  padding-left: 100px;
+  padding-left: 40px;
   padding-top: 50px;
   margin: 90px;
-  font-size: 200px;
+  font-size: 150px;
   /* left: 10%;
     top: 10%; */
 }
-.marketImg {
+.marketStonks {
   position: absolute;
-  top: 5%;
+  top: 10%;
   left: 60%;
   z-index: -1;
-  width: 600px;
+  width: 500px;
   height: auto;
 }
 

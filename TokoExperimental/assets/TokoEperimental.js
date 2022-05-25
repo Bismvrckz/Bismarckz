@@ -226,7 +226,7 @@ fnCalculateCart();
 console.log(document.getElementsByClassName("marketBG"));
 
 window.addEventListener("scroll", () => {
-  if (this.scrollY > 500) {
+  if (this.scrollY > 50) {
     document.getElementsByClassName("marketBG")[0].style.opacity = "0.1";
     document.getElementsByClassName("marketBG")[0].style.backgroundColor =
       "black";
