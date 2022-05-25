@@ -33,7 +33,7 @@ const filterByContent = (keyword, data) => {
     });
 
     return {
-      nationality: data.nationality,
+      nationality,
       owners: own,
       channels: chan,
       contents: cont,
