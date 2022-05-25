@@ -11,9 +11,9 @@ const rawDatas = {
 };
 
 const filterByContent = (keyword, data) => {
-  const rawContents = data.contents;
+  const { nationality, owners, channels, contents } = data;
   let arr = [];
-  rawContents.forEach((content, ind) => {
+  contents.forEach((content, ind) => {
     if (content.toLowerCase().includes(keyword.toLowerCase())) {
       arr.push(ind);
     }
@@ -21,27 +21,26 @@ const filterByContent = (keyword, data) => {
 
   if (arr.length) {
     let own = arr.map((x) => {
-      return data.owners[x];
+      return owners[x];
     });
 
     let chan = arr.map((x) => {
-      return data.channels[x];
+      return channels[x];
     });
 
     let cont = arr.map((x) => {
-      return data.contents[x];
+      return contents[x];
     });
 
-    let result = {
+    return {
       nationality: data.nationality,
       owners: own,
       channels: chan,
       contents: cont,
     };
-    return result;
   }
 };
-console.log(filterByContent("comedy", rawDatas));
+console.log(filterByContent("sketch", rawDatas));
 
 // example2 = {
 //   nationality: "Canada",
