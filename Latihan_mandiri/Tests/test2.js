@@ -1,31 +1,19 @@
-var data = [
-  ["John", 43, "Jakarta"],
-  ["Derieri", 34, "Jakarta"],
-  ["Dena", 35, "Jakarta"],
-  ["Tony", 34, "Surabaya"],
-  ["Dustin Timberlake", 29, "Banjarmasin"],
-];
+function humanReadable(seconds) {
+  let hour = Math.floor(seconds / 3600);
+  let minute = Math.floor((seconds % 3600) / 60);
+  let second = Math.floor((seconds % 3600) % 60);
 
-var ageAddress = (persons) => {
-  var pengurutan = (org1, org2) => {
-    if (org1[1] < org2[1]) {
-      return -1;
-    } else if (org1[1] > org2[1]) {
-      return 1;
-    } else if (org1[1] == org2[1]) {
-      if (org1[2] < org2[2]) {
-        return -1;
-      } else if (org1[2] > org2[2]) {
-        return 1;
-      } else if (org1[2] == org2[2]) {
-        return 0;
-      }
-    }
-  };
-  persons.sort(pengurutan);
+  if (`${second}`.length == 1) {
+    second = `0${second}`;
+  }
+  if (`${minute}`.length == 1) {
+    minute = `0${minute}`;
+  }
+  if (`${hour}`.length == 1) {
+    hour = `0${hour}`;
+  }
 
-  return persons;
-};
+  return `${hour}:${minute}:${second}`;
+}
 
-var filteredPersons = ageAddress(data);
-console.log(filteredPersons);
+console.log(humanReadable(123123));
