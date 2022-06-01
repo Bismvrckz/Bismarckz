@@ -28,11 +28,7 @@ body {
   margin: 1vh 30vh;
   width: 70vh;
 }
-/* .sub-container:first-child > div:first-child {
-  margin-top: 1vh;
-  flex-grow: 1;
-  margin-bottom: 1vh;
-} */
+
 .sub-container:first-child > div:last-child {
   flex-grow: 10;
 }
