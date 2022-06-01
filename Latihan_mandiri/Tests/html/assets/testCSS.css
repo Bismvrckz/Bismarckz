@@ -74,19 +74,6 @@ body {
   box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.5), 0 0px 0px 0 rgba(0, 0, 0, 0.5);
 }
 
-/* .header > div::after {
-  content: "";
-  position: absolute;
-  background-color: antiquewhite;
-  height: 0.1vh;
-  width: 0;
-  left: 0;
-  top: 5%;
-  bottom: -10vh;
-  transition: 0.3s;
-  box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.5), 0 7px 10px 0 rgba(0, 0, 0, 0.5);
-} */
-
 a {
   /* background-color: aqua; */
   text-decoration: none;
