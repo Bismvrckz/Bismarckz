@@ -1,8 +1,10 @@
 function domainName(url) {
   let urlSplit = url.split("");
   let target = `.com`;
-  let tagetEnd = [`/`, `.`];
+  let tagetEnd = [`.`, `/`];
   let endIdx;
+  let startIdx;
+  let startFound;
   urlSplit.forEach((char, idx) => {
     let i;
     let charIdx;
@@ -15,16 +17,21 @@ function domainName(url) {
         endIdx = idx;
       }
     }
-    if (endIdx) {
+    if (endIdx && startFound) {
       tagetEnd.forEach((end) => {
-        for (charIdx = endIdx; charIdx > 0; charIdx--) {
+        for (charIdx = endIdx - 1; charIdx > 0; charIdx--) {
           if (urlSplit[charIdx] == end) {
-            console.log(urlSplit[charIdx]);
+            startIdx = charIdx;
+            startFound = true;
+            break;
           }
         }
       });
     }
   });
+  console.log(startIdx);
+  console.log(endIdx);
+  return url.slice(startIdx, endIdx);
 }
 console.log(domainName("http://www.zombie-bites.com"));
 // https://www.codewars.com/kata/514a024011ea4fb54200004b/train/javascript
