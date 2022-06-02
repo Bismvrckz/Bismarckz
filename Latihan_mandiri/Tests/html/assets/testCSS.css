@@ -1,5 +1,7 @@
 * {
   font-family: "Montserrat";
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -177,4 +179,8 @@ img[src="bg.jpg"] {
 }
 .page2content {
   flex-grow: 9;
+  display: flex;
+}
+.page2content > div {
+  border-style: solid;
 }
