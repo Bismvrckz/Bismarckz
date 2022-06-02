@@ -2,10 +2,11 @@
   font-family: "Montserrat";
   margin: 0;
   padding: 0;
+  /* font-weight: 700; */
 }
 
 body {
-  background-color: rgb(65, 65, 65);
+  /* background-color: rgb(65, 65, 65); */
   padding: 0;
   margin: 0;
 }
@@ -41,7 +42,7 @@ body {
 
 .header {
   display: flex;
-  justify-content: stretch;
+  justify-content: center;
   background-color: rgba(170, 170, 170, 0.5);
   border-radius: 1vh;
   width: 100vh;
@@ -58,7 +59,7 @@ body {
   justify-content: center;
   transition-duration: 0.4s;
   padding: 0;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .header > div:hover {
@@ -68,6 +69,8 @@ body {
 
 .header > div:first-child {
   flex-grow: 3;
+  font-weight: 700;
+  font-style: italic;
   justify-content: flex-start;
   font-size: 5vh;
   color: rgb(255, 153, 0);
@@ -87,18 +90,21 @@ a {
   flex-direction: column;
   justify-content: center;
   flex-grow: 0;
-  width: 70vh;
+  width: 100vh;
 }
 .page1-content > div {
   display: flex;
   margin-bottom: 1.5vh;
   margin-top: 1.5vh;
+  font-weight: 200;
   color: antiquewhite;
 }
 .page1-content > div:first-child {
   font-size: 7vh;
+  font-weight: 700;
 }
 .page1-content > div:nth-child(3) {
+  height: 8vh;
   flex-direction: row;
   justify-content: space-between;
 }
@@ -111,10 +117,11 @@ a {
   display: flex;
   background-color: black;
   padding: 1.5vh;
-  text-align: center;
+  align-items: center;
   justify-content: center;
   transition-duration: 0.5s;
   border-radius: 1vh;
+  margin-right: 0vh;
 }
 .input-domain > a:hover {
   color: black;
@@ -138,6 +145,7 @@ input[type="button"]:hover {
   box-shadow: 0 7px 10px 0 rgba(0, 0, 0, 0.5), 0 7px 10px 0 rgba(0, 0, 0, 0.5);
 }
 input[type="text"] {
+  font-weight: 700;
   border-radius: 1vh;
   border: 0.1vh;
   border-style: solid;
@@ -176,6 +184,8 @@ img[src="bg.jpg"] {
 }
 .page2header {
   flex-grow: 1;
+  font-weight: 700;
+  /* font-style: italic; */
 }
 .page2content {
   flex-grow: 9;
