@@ -6,9 +6,9 @@
 }
 
 body {
-  /* background-color: rgb(65, 65, 65); */
-  padding: 0;
+  background-color: darkslategray;
   margin: 0;
+  padding: 0;
 }
 
 .main-container {
@@ -122,6 +122,7 @@ a {
   transition-duration: 0.5s;
   border-radius: 1vh;
   margin-right: 0vh;
+  font-weight: 600;
 }
 .input-domain > a:hover {
   color: black;
@@ -155,6 +156,7 @@ input[type="text"] {
   color: antiquewhite;
   font-size: medium;
 }
+
 img {
   border-radius: 1vh;
 }
@@ -177,7 +179,7 @@ img[src="bg.jpg"] {
   justify-content: center;
   align-items: center;
   display: flex;
-  background-color: aqua;
+  background-color: darkslategray;
   border-color: black;
   border-style: solid;
   border-width: 1px;
@@ -188,9 +190,25 @@ img[src="bg.jpg"] {
   /* font-style: italic; */
 }
 .page2content {
+  background-image: url(./img/drop.png);
+  background-repeat: no-repeat;
   flex-grow: 9;
   display: flex;
 }
 .page2content > div {
   border-style: solid;
+}
+.gambar {
+  background-image: url(./topo.png);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  opacity: 20%;
+  height: 100vh;
+  width: 100%;
+}
+
+.main-container > div:nth-child(3) {
+  justify-content: space-between;
+  background-color: black;
 }
