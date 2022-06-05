@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script
-      src="https://kit.fontawesome.com/880ed11170.js"
-      crossorigin="anonymous"
-    ></script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/880ed11170.js"
-      crossorigin="anonymous"
-    ></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/x-icon" href="./Assets/img/chad-halal.png" />
+    <script
+      src="https://kit.fontawesome.com/880ed11170.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./Assets/index.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -29,42 +27,54 @@
         },
       };
     </script>
-    <link rel="icon" type="image/x-icon" href="./Assets/chad-halal.png" />
+
     <title>Tailwind</title>
   </head>
   <body>
     <div
-      class="flex h-[85vh] w-[100%] bg-cover bg-[url('./Assets/illustration.svg')] bg-no-repeat"
+      class="flex h-[85vh] w-[100%] bg-cover bg-[url('./Assets/img/illustration.svg')] bg-no-repeat"
     >
       <div class="flex flex-col desktop:pl-[40vh] pl-[25vh]">
         <div
-          class="flex justify-center mt-[3vh] h-[1.5vh]"
+          class="flex justify-center mt-[3vh] h-[1rem]"
           style="font-family: montserrat; font-weight: 500"
         >
-          <a href="" class="font-[700] w-[20%]">Your Logo</a>
+          <a href="" class="font-[700] w-[20%] flex items-center">Your Logo</a>
           <div class="flex w-[80%]">
             <a
-              class="w-[25%] flex justify-center mx-[0.5vh]"
+              class="w-[25%] flex justify-center items-center mx-[0.5vh]"
               href="https://www.youtube.com/watch?v=vysRzAXBByQ"
               target="_blank"
               >Home
             </a>
             <a
-              class="w-[25%] flex justify-center mx-[0.5vh]"
+              onmouseout="unRotateArrow(this)"
+              onmouseover="rotateArrow(this)"
+              class="w-[25%] flex justify-center items-center mx-[0.5vh]"
               href="https://www.youtube.com/watch?v=vysRzAXBByQ"
               target="_blank"
               >Advertise
-              <i class="fa-solid fa-caret-right mt-[0.4vh] text-cyan-500"></i
+              <p>&nbsp;</p>
+              <i
+                id="arrow1"
+                class="fa-solid fa-caret-right origin-center mt-[0vh] text-cyan-500 ease-out duration-300"
+              ></i
             ></a>
             <a
-              class="w-[25%] flex justify-center mx-[0.5vh]"
+              onmouseout="unRotateArrow(this)"
+              onmouseover="rotateArrow(this)"
+              class="w-[25%] flex justify-center items-center mx-[0.5vh]"
               href="https://www.youtube.com/watch?v=vysRzAXBByQ"
               target="_blank"
               >Supports
-              <i class="fa-solid fa-caret-right mt-[0.4vh] text-cyan-500"></i
+              <p>&nbsp;</p>
+              <i
+                id="arrow2"
+                class="fa-solid fa-caret-right origin-center mt-[0vh] text-cyan-500 ease-out duration-300"
+              ></i
             ></a>
             <a
-              class="w-[25%] flex justify-center mx-[0.5vh]"
+              class="w-[25%] flex justify-center items-center mx-[0.5vh]"
               href="https://www.youtube.com/watch?v=vysRzAXBByQ"
               target="_blank"
               >About</a
@@ -87,9 +97,8 @@
         <div class="flex justify-between h-[6vh]">
           <input
             type="text"
-            style="font-family: montserrat; font-weight: 600"
             placeholder="Type your domain name"
-            class="w-[66%] rounded-lg bg-white border pl-[2vh]"
+            class="w-[66%] rounded-lg bg-white pl-[2vh] font-[montserrat] font-[600]"
           />
           <a
             href=""
@@ -105,17 +114,17 @@
           Our Clients
           <img
             class="w-[10vh] h-[2.8vh] mx-[2.8vh]"
-            src="./Assets/paypal.png"
+            src="./Assets/img/paypal.png"
             alt="Paypal"
           />
           <img
             class="w-[10.0vh] h-[2.8vh] mx-[2.8vh]"
-            src="./Assets/google.png"
+            src="./Assets/img/google.png"
             alt="Google"
           />
           <img
             class="w-[12.3vh] h-[2.4vh] mx-[2.8vh]"
-            src="./Assets/Dropbox_logo_2017.png"
+            src="./Assets/img/Dropbox_logo_2017.png"
             alt="Dropbox"
           />
         </div>
@@ -309,7 +318,7 @@
 
     <div class="grid grid-cols-2 h-[100vh]">
       <div class="flex items-center">
-        <img src="./Assets/gambarkiri.png" alt="Gambar" />
+        <img src="./Assets/img/gambarkiri.png" alt="Gambar" />
       </div>
       <div class="flex items-start justify-start flex-col">
         <div
@@ -597,10 +606,10 @@
       </div>
       <div class="relative">
         <div
-          class="flex bg-[url('./assets/frank.png')] w-[60vh] h-[70vh] bg-cover bg-no-repeat mt-[18vh] ml-[13vh] rounded-bl-[11vh] rounded-tr-[11vh]"
+          class="flex bg-[url('./Assets/img/frank.png')] w-[60vh] h-[70vh] bg-cover bg-no-repeat mt-[18vh] ml-[13vh] rounded-bl-[11vh] rounded-tr-[11vh]"
         ></div>
         <img
-          src="./Assets/pattern2.png"
+          src="./Assets/img/pattern2.png"
           class="absolute -z-[1] right-[9vh] bottom-[19vh]"
           alt=""
         />
