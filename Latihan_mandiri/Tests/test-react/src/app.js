@@ -1,12 +1,14 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
 import InputBox from "./components/InputBox";
+import TodoItem from "./components/TodoItem";
 
 function App() {
   const [todos, setTodos] = useState([
     { id: 1, action: "Bangun Tidur", isComplete: true },
     { id: 2, action: "Mandi", isComplete: false },
     { id: 3, action: "Nyarap", isComplete: false },
+    { id: 3, action: "Nyusu", isComplete: false },
   ]);
 
   const onCompleteTodo = (todoId) => {
@@ -34,12 +36,19 @@ function App() {
   };
 
   const onDeleteTodo = (todoId) => {
-    const mappedTodos = todos.map((todo, idx) => {
-      if (todo.id === todoId) {
-        todos.splice(idx, 1);
-      }
+    const mappedTodos = todos.filter((todo, idx) => {
+      return todo.id != todoId;
     });
     setTodos(mappedTodos);
+  };
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  const addTodos = (keyword) => {
+    const todo = { id: Math.random(), action: keyword, isComplete: false };
+    setTodos([...todos, todo]);
   };
 
   const renderList = () => {
@@ -47,42 +56,15 @@ function App() {
       let actionClass = "lead";
       if (todo.isComplete) actionClass += " text-decoration-line-through";
       return (
-        <div className="d-flex pt-3 border-bottom justify-content-between">
-          <p className={actionClass}>{todo.action}</p>
-          <div>
-            <button
-              onClick={() => {
-                onCompleteTodo(todo.id);
-              }}
-              className="btn btn-outline-success"
-            >
-              Complete
-            </button>
-            <button
-              className="btn btn-outline-warning mx-2"
-              onClick={() => {
-                onCancelTodo(todo.id);
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              className="btn btn-outline-danger"
-              onClick={() => {
-                onDeleteTodo(todo.id);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </div>
+        <TodoItem
+          todo={todo}
+          actionClass={actionClass}
+          onDeleteTodo={onDeleteTodo}
+          onCancelTodo={onCancelTodo}
+          onCompleteTodo={onCompleteTodo}
+        />
       );
     });
-  };
-
-  const addTodos = (keyword) => {
-    const todo = { id: Math.random(), action: keyword, isComplete: false };
-    setTodos([...todos, todo]);
   };
 
   let selese = 0;

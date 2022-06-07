@@ -5,7 +5,16 @@ function InputBox(props) {
   const [keyword, setKeyword] = useState();
 
   const onAddHandler = () => {
-    let curr = props.list;
+    let balik;
+    props.list.forEach((todo) => {
+      if (todo.action.toUpperCase() == keyword.toUpperCase()) {
+        alert(`Sudah ada`);
+        balik = true;
+      }
+    });
+    if (balik) {
+      return;
+    }
     if (!keyword) {
       alert("Belum diisi");
       return;
