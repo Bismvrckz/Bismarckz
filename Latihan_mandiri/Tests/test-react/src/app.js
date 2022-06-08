@@ -42,10 +42,6 @@ function App() {
     setTodos(mappedTodos);
   };
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
   const addTodos = (keyword) => {
     const todo = { id: Math.random(), action: keyword, isComplete: false };
     setTodos([...todos, todo]);

@@ -26,6 +26,11 @@ function InputBox(props) {
     setKeyword(event.target.value);
   };
 
+  const clearVal = (event) => {
+    console.log(event);
+    event.target.value = "";
+  };
+
   return (
     <div className="mb-2">
       <p>
@@ -38,7 +43,10 @@ function InputBox(props) {
         onChange={onInputChange}
       />
       <button
-        onClick={onAddHandler}
+        onClick={() => {
+          onAddHandler();
+          clearVal();
+        }}
         className="btn btn-outline-primary w-100 mt-2"
       >
         Add
