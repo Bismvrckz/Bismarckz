@@ -1,6 +1,0 @@
-{
-  "todos": [
-    { "id": 12, "action": "Take a bath", "isComplete": true },
-    { "id": 14, "action": "Breakfast", "isComplete": false }
-  ]
-}
