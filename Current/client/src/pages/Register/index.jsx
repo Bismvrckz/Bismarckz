@@ -2,9 +2,17 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
 
 function Register() {
   const date = new Date();
+
+  const [status, setStatus] = useState({
+    usernameIsUsed: 0,
+    emailIsUsed: 0,
+    registerIsSuccessful: 0,
+  });
 
   const [formState, setFormState] = useState({
     id: "",
@@ -13,6 +21,32 @@ function Register() {
     email: "",
     password: "",
   });
+
+  function bottomStatusBar() {
+    if (status.usernameIsUsed == 1) {
+      console.log("statusbar jalan");
+      return (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          Username sudah terpakai — <strong>ganti!</strong>
+        </Alert>
+      );
+    } else if (status.emailIsUsed == 1) {
+      return (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          Email sudah terpakai — <strong>ganti!</strong>
+        </Alert>
+      );
+    } else if (status.registerIsSuccessful == 1) {
+      return (
+        <Alert severity="success">
+          <AlertTitle>Success</AlertTitle>
+          Register berhasil— <strong>nice!</strong>
+        </Alert>
+      );
+    }
+  }
 
   const handleChange = (event) => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
@@ -28,19 +62,21 @@ function Register() {
         }
       );
       if (resGetUserByUsername.data.length) {
-        return alert("Username sudah digunakan");
+        setStatus({ ...status, usernameIsUsed: 1 });
+        return;
       }
 
       const resGetUserByEmail = await axios.get("http://localhost:3000/users", {
         params: { email: formState.email },
       });
       if (resGetUserByEmail.data.length) {
-        return alert("Email sudah digunakan");
+        setStatus({ ...status, emailIsUsed: 1 });
+        return;
       }
 
       setFormState({ ...formState, id: date.getTime() });
       await axios.post("http://localhost:3000/users", formState);
-      alert("Berhasil Register");
+      setStatus({ ...status, registerIsSuccessful: 1 });
     } catch (error) {
       console.log(error.message);
     }
@@ -104,6 +140,7 @@ function Register() {
                 <Link to="/login">Or login</Link>
               </div>
             </div>
+            {bottomStatusBar()}
           </div>
         </div>
       </div>

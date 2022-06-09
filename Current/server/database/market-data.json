@@ -1,60 +1,18 @@
 {
   "users": [
     {
-      "id": 1654778149271,
-      "fullName": "ahmad",
+      "id": 1,
+      "fullName": "",
       "username": "redmaxxgamer",
       "email": "ahmadfayruzsyamil33@gmail.com",
-      "password": "sepatusendal"
+      "password": ""
     },
     {
-      "id": 1654782670806,
-      "fullName": "Udin",
-      "username": "UddBross",
-      "email": "Udds1135@cool.com",
-      "password": "qwerty"
-    },
-    {
-      "id": 1654783960275,
-      "fullName": "Udin",
-      "username": "UddBross12",
-      "email": "Udds1835@cool.com",
-      "password": "qwerty"
-    },
-    {
-      "id": 1654784088270,
-      "fullName": "Udin",
-      "username": "UddBross123",
-      "email": "Udds18335@cool.com",
-      "password": "qwerty"
-    },
-    {
-      "id": 1654784088271,
-      "fullName": "sdaw",
-      "username": "dwawda",
-      "email": "waed",
-      "password": "wdadawd"
-    },
-    {
-      "id": 1654784200111,
-      "fullName": "sdaw",
-      "username": "dwawdadaw",
-      "email": "waeddwad",
-      "password": "wdadawd"
-    },
-    {
-      "id": 1654784200112,
-      "fullName": "daw",
-      "username": "daw",
-      "email": "dawd",
-      "password": "wdad"
-    },
-    {
-      "id": 1654784200113,
-      "fullName": "dawd",
-      "username": "weqweq",
-      "email": "weqweq",
-      "password": "weqe"
+      "id": 2,
+      "fullName": "",
+      "username": "sadwaws",
+      "email": "",
+      "password": ""
     }
   ],
   "products": []
