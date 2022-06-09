@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
 
 function Register() {
+  const date = new Date();
+
   const [formState, setFormState] = useState({
+    id: "",
     fullName: "",
     username: "",
     email: "",
@@ -18,29 +22,27 @@ function Register() {
     try {
       // cek apakah username sudah digunakan
       const resGetUserByUsername = await axios.get(
-        "http://localhost:2104/users",
+        "http://localhost:3000/users",
         {
           params: { username: formState.username },
         }
       );
-
       if (resGetUserByUsername.data.length) {
         return alert("Username sudah digunakan");
       }
 
-      // cek apakah email sudah digunakan
-      const resGetUserByEmail = await axios.get("http://localhost:2104/users", {
+      const resGetUserByEmail = await axios.get("http://localhost:3000/users", {
         params: { email: formState.email },
       });
-
       if (resGetUserByEmail.data.length) {
         return alert("Email sudah digunakan");
       }
 
-      await axios.post("http://localhost:2104/users", formState);
+      setFormState({ ...formState, id: date.getTime() });
+      await axios.post("http://localhost:3000/users", formState);
       alert("Berhasil Register");
     } catch (error) {
-      console.log({ error });
+      console.log(error.message);
     }
   };
 

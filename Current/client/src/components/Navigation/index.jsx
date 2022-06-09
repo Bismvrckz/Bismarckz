@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 function Navigation() {
   return (
-    <Navbar color="dark" dark expand="md">
+    <Navbar color="primary" dark expand="md">
       <NavbarBrand tag={Link} to="/">
         EMERCE 2104
       </NavbarBrand>
