@@ -1,8 +1,41 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 function Login() {
+  const [loginStatus, setLoginStatus] = useState({
+    isEmailNotFound: 0,
+    isPasswordWrong: 0,
+    isLoginSuccess: 0,
+  });
+
+  function loginStatusBar() {
+    if (loginStatus.isEmailNotFound) {
+      return (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          Email tidak ditemukan — <strong>sus!</strong>
+        </Alert>
+      );
+    } else if (loginStatus.isPasswordWrong) {
+      return (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          Password anda salah — <strong>sus!</strong>
+        </Alert>
+      );
+    } else if (loginStatus.isLoginSuccess) {
+      return (
+        <Alert severity="success">
+          <AlertTitle>Success</AlertTitle>
+          Login anda berhasil — <strong>nice!</strong>
+        </Alert>
+      );
+    }
+  }
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -18,7 +51,8 @@ function Login() {
         params: { email: state.email },
       });
       if (!getEmail.data.length) {
-        return alert(`Username ${state.email} tidak ditemukan`);
+        setLoginStatus({ ...loginStatus, isEmailNotFound: 1 });
+        return;
       }
 
       const getPassword = await axios.get(
@@ -28,10 +62,11 @@ function Login() {
         }
       );
       if (!(getPassword.data.password == state.password)) {
-        return alert(`Password salah`);
+        setLoginStatus({ ...loginStatus, isPasswordWrong: 1 });
+        return;
       }
 
-      alert(`Login Bisa`);
+      setLoginStatus({ ...loginStatus, isLoginSuccess: 1 });
     } catch (error) {
       console.log({ message: error.message });
     }
@@ -77,6 +112,7 @@ function Login() {
                 <Link to="/register">Or register</Link>
               </div>
             </div>
+            {loginStatusBar()}
           </div>
         </div>
       </div>
