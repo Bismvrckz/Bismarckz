@@ -1,0 +1,19 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "fullName": "",
+      "username": "redmaxxgamer",
+      "email": "ahmadfayruzsyamil33@gmail.com",
+      "password": "qwerty"
+    },
+    {
+      "id": 2,
+      "fullName": "",
+      "username": "",
+      "email": "",
+      "password": ""
+    }
+  ],
+  "products": []
+}
