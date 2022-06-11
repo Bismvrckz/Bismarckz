@@ -10,7 +10,10 @@ function Home() {
   const [current, setCurrent] = useState({
     keyword: "",
     category: "",
+    dummy: "",
   });
+
+  // let [render, setRender]
 
   useEffect(() => {
     fetchProducts();
@@ -41,7 +44,6 @@ function Home() {
     let targetKeyword = keyword.toLowerCase();
     const filteredProducts = defaultProducts.filter((product) => {
       let currentProduct = product.productName.toLowerCase();
-
       if (!keyword && !category) {
         return true;
       } else if (!keyword) {
@@ -56,8 +58,51 @@ function Home() {
     });
     setProducts(filteredProducts);
   };
-  const selectSortHandler = () => {
-    // sorting products
+  const selectSortHandler = ({ target }) => {
+    let sortedProducts = [...products];
+    if (target.value == "az") {
+      sortedProducts.sort((prevProduct, currProduct) => {
+        if (prevProduct.productName > currProduct.productName) {
+          return 1;
+        } else if (prevProduct.productName < currProduct.productName) {
+          return -1;
+        } else if (prevProduct.productName == currProduct.productName) {
+          return 0;
+        }
+      });
+    } else if (target.value == "za") {
+      sortedProducts.sort((prevProduct, currProduct) => {
+        if (prevProduct.productName > currProduct.productName) {
+          return -1;
+        } else if (prevProduct.productName < currProduct.productName) {
+          return 1;
+        } else if (prevProduct.productName == currProduct.productName) {
+          return 0;
+        }
+      });
+    } else if (target.value == "highPrice") {
+      sortedProducts.sort((prevProduct, currProduct) => {
+        if (prevProduct.price > currProduct.price) {
+          return -1;
+        } else if (prevProduct.price < currProduct.price) {
+          return 1;
+        } else if (prevProduct.price == currProduct.price) {
+          return 0;
+        }
+      });
+    } else if (target.value == "lowPrice") {
+      sortedProducts.sort((prevProduct, currProduct) => {
+        if (prevProduct.price > currProduct.price) {
+          return 1;
+        } else if (prevProduct.price < currProduct.price) {
+          return -1;
+        } else if (prevProduct.price == currProduct.price) {
+          return 0;
+        }
+      });
+    }
+
+    setProducts(sortedProducts);
   };
 
   return (
@@ -109,7 +154,7 @@ function Home() {
                 className="form-control"
                 onChange={selectSortHandler}
               >
-                <option value="">Default</option>
+                <option value="">Sort by</option>
                 <option value="lowPrice">Lowest Price</option>
                 <option value="highPrice">Highest Price</option>
                 <option value="az">A-Z</option>
