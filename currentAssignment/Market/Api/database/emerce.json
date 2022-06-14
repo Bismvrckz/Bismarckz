@@ -13,12 +13,26 @@
       "email": "bean666@mail.com",
       "password": "qwerty",
       "id": 2
+    },
+    {
+      "fullName": "sdaw",
+      "username": "redmaxxgamer",
+      "email": "ahmadfayruzsyamil33@gmail.com",
+      "password": "qwerty",
+      "id": 3
+    },
+    {
+      "fullName": "dadang dang",
+      "username": "dadangs",
+      "email": "dangs9836@cool.com",
+      "password": "qwerty",
+      "id": 4
     }
   ],
   "products": [
     {
       "id": 1,
-      "productName": "Kaos Hitam Polosan",
+      "productName": "Kaos Hitam Poloson",
       "price": 50000,
       "productImage": "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/d1d6422cf983e912fcf35844ef791148b4034571_xxl-1.jpg",
       "description": "Round-necked T-shirt in soft cotton jersey.",
@@ -167,6 +181,44 @@
       "description": "5-pocket jeans in washed stretch denim with a regular waist, zip fly and button, and skinny legs.",
       "category": "celana",
       "id": 19
+    }
+  ],
+  "cart": [
+    {
+      "productId": 2,
+      "quantity": 2,
+      "productName": "Kaos Putih Polos",
+      "price": 23000,
+      "userId": 2,
+      "productImage": "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/d1d6422cf983e912fcf35844ef791148b4034571_xxl-1.jpg",
+      "id": 1
+    },
+    {
+      "productId": 2,
+      "quantity": 4,
+      "productName": "Kaos Putih Polos",
+      "price": 23000,
+      "userId": 2,
+      "productImage": "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/d1d6422cf983e912fcf35844ef791148b4034571_xxl-1.jpg",
+      "id": 2
+    },
+    {
+      "productId": 19,
+      "quantity": 3,
+      "productName": "Dark Denim Jeans",
+      "price": 460000,
+      "userId": 2,
+      "productImage": "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/bfb48ea70d7fcf18d822108cbe92b1edeb179bc5_xxl-1.jpg",
+      "id": 3
+    },
+    {
+      "productId": 13,
+      "quantity": 4,
+      "productName": "Celana Jogger Light Gray",
+      "price": 350000,
+      "userId": 2,
+      "productImage": "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/08fd5e5ed97d34707884ed545ae4647f2f814808_xxl-1.jpg",
+      "id": 4
     }
   ]
 }

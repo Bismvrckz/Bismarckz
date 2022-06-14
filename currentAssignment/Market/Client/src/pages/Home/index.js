@@ -4,16 +4,11 @@ import axiosInstance from "../../services/axios";
 
 function Home() {
   const [products, setProducts] = useState([]);
-
-  const [defaultProducts, setDefaultProducts] = useState([]);
-
-  const [current, setCurrent] = useState({
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [formState, setFormstate] = useState({
     keyword: "",
     category: "",
-    dummy: "",
   });
-
-  // let [render, setRender]
 
   useEffect(() => {
     fetchProducts();
@@ -23,86 +18,84 @@ function Home() {
     try {
       const resGetProducts = await axiosInstance.get("/products");
       setProducts(resGetProducts.data);
-      setDefaultProducts(resGetProducts.data);
+      setFilteredProducts(resGetProducts.data);
     } catch (error) {
-      alert("Terjadi kesalahan");
+      alert("Terjadi kesalahan. Api udah dinyalain ?");
       console.log({ error });
     }
   };
 
   const renderProducts = () => {
-    return products.map((product) => (
+    return filteredProducts.map((product) => (
       <ProductCard key={product.id} product={product} />
     ));
   };
 
   const handleChange = (event) => {
-    setCurrent({ ...current, [event.target.name]: event.target.value });
+    setFormstate({ ...formState, [event.target.name]: event.target.value });
   };
-  const btnSearchHandler = () => {
-    const { keyword, category } = current;
-    let targetKeyword = keyword.toLowerCase();
-    const filteredProducts = defaultProducts.filter((product) => {
-      let currentProduct = product.productName.toLowerCase();
-      if (!keyword && !category) {
-        return true;
-      } else if (!keyword) {
-        return product.category == category;
-      } else if (!category) {
-        return currentProduct.includes(targetKeyword);
-      } else {
-        return (
-          currentProduct.includes(targetKeyword) && product.category == category
-        );
-      }
-    });
-    setProducts(filteredProducts);
-  };
-  const selectSortHandler = ({ target }) => {
-    let sortedProducts = [...products];
-    if (target.value == "az") {
-      sortedProducts.sort((prevProduct, currProduct) => {
-        if (prevProduct.productName > currProduct.productName) {
-          return 1;
-        } else if (prevProduct.productName < currProduct.productName) {
-          return -1;
-        } else if (prevProduct.productName == currProduct.productName) {
-          return 0;
-        }
-      });
-    } else if (target.value == "za") {
-      sortedProducts.sort((prevProduct, currProduct) => {
-        if (prevProduct.productName > currProduct.productName) {
-          return -1;
-        } else if (prevProduct.productName < currProduct.productName) {
-          return 1;
-        } else if (prevProduct.productName == currProduct.productName) {
-          return 0;
-        }
-      });
-    } else if (target.value == "highPrice") {
-      sortedProducts.sort((prevProduct, currProduct) => {
-        if (prevProduct.price > currProduct.price) {
-          return -1;
-        } else if (prevProduct.price < currProduct.price) {
-          return 1;
-        } else if (prevProduct.price == currProduct.price) {
-          return 0;
-        }
-      });
-    } else if (target.value == "lowPrice") {
-      sortedProducts.sort((prevProduct, currProduct) => {
-        if (prevProduct.price > currProduct.price) {
-          return 1;
-        } else if (prevProduct.price < currProduct.price) {
-          return -1;
-        } else if (prevProduct.price == currProduct.price) {
-          return 0;
-        }
-      });
-    }
 
-    setProducts(sortedProducts);
+  const onFilterHandler = () => {
+    // untuk search products berdasarkan nama dan category
+    const filteredProducts = products.filter((product) => {
+      const productName = product.productName.toLowerCase();
+      const keywordName = formState.keyword.toLowerCase();
+      return (
+        productName.includes(keywordName) &&
+        product.category.includes(formState.category)
+      );
+    });
+
+    setFilteredProducts(filteredProducts);
+  };
+
+  const btnSearchHandler = () => {
+    onFilterHandler();
+  };
+
+  const selectSortHandler = (event) => {
+    // sorting products
+
+    const sortBy = event.target.value;
+    const tmpProducts = [...filteredProducts];
+
+    // filteredProducts : A C B F E
+    switch (sortBy) {
+      case "az":
+        tmpProducts.sort((a, b) => {
+          if (a.productName < b.productName) {
+            return -1;
+          } else if (a.productName > b.productName) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        setFilteredProducts(tmpProducts);
+        break;
+      case "za":
+        tmpProducts.sort((a, b) => {
+          if (a.productName < b.productName) {
+            return 1;
+          } else if (a.productName > b.productName) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        setFilteredProducts(tmpProducts);
+        break;
+      case "lowPrice":
+        tmpProducts.sort((a, b) => a.price - b.price);
+        setFilteredProducts(tmpProducts);
+        break;
+      case "highPrice":
+        tmpProducts.sort((a, b) => b.price - a.price);
+        setFilteredProducts(tmpProducts);
+        break;
+      default:
+        onFilterHandler();
+    }
   };
 
   return (
@@ -154,7 +147,7 @@ function Home() {
                 className="form-control"
                 onChange={selectSortHandler}
               >
-                <option value="">Sort by</option>
+                <option value="">Default</option>
                 <option value="lowPrice">Lowest Price</option>
                 <option value="highPrice">Highest Price</option>
                 <option value="az">A-Z</option>
