@@ -123,7 +123,6 @@ function Cart() {
         transactionItems: data,
         invoiceNumber: `INV/${idMaker.getFullYear()}${idMaker.getMonth()}${idMaker.getDate()}`,
       };
-
       console.log(currentTransaction);
 
       await axiosInstance.post("/transactions", currentTransaction);
