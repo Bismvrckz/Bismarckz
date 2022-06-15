@@ -33,10 +33,21 @@ function DetailProduct() {
 
   const { id, productImage, productName, price, description } = product;
 
-  const userId = useSelector((state) => state.auth).id;
+  const userId = useSelector((state) => state.auth.id);
 
   async function addToCart() {
     try {
+      const { data } = await axiosInstance.get("/cart", {
+        params: { productId: id },
+      });
+
+      const filterUserCart = data.filter((product) => product.userId == userId);
+
+      if (filterUserCart.length) {
+        alert("sama");
+        console.log(filterUserCart);
+      }
+
       await axiosInstance.post("/cart", {
         productId: id,
         quantity,
@@ -45,7 +56,6 @@ function DetailProduct() {
         userId,
         productImage,
       });
-      alert(`Bisa`);
     } catch (error) {
       console.log({ error });
     }
