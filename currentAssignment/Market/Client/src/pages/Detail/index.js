@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../services/axios";
-import { useSelector } from "react-redux";
 
 function DetailProduct() {
   // params.productId --> gunakan untuk ambil data
   const params = useParams();
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(0);
+  const userId = useSelector((state) => state.auth.id);
+
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   const fetchProduct = async () => {
     try {
@@ -27,40 +32,42 @@ function DetailProduct() {
     setQuantity(quantity - 1);
   };
 
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  const addToCart = async () => {
+    const { id, productImage, productName, price, description, category } =
+      product;
 
-  const { id, productImage, productName, price, description } = product;
+    const cart = {
+      productName,
+      price,
+      productImage,
+      description,
+      category,
+      quantity,
+      userId,
+      productId: id,
+    };
 
-  const userId = useSelector((state) => state.auth.id);
+    const res = await axiosInstance.get("/cart", {
+      params: { productId: id, userId },
+    });
 
-  async function addToCart() {
-    try {
-      const { data } = await axiosInstance.get("/cart", {
-        params: { productId: id },
+    const foundCart = res.data[0];
+
+    if (foundCart) {
+      // id dari foundCart dibuatkan alias yaitu foundCartId
+      const { id: foundCartId, quantity: foundCartQuantity } = foundCart;
+      const newQuantity = foundCartQuantity + quantity;
+      await axiosInstance.patch(`/cart/${foundCartId}`, {
+        quantity: newQuantity,
       });
-
-      const filterUserCart = data.filter((product) => product.userId == userId);
-
-      if (filterUserCart.length) {
-        alert("sama");
-        console.log(filterUserCart);
-      }
-
-      await axiosInstance.post("/cart", {
-        productId: id,
-        quantity,
-        productName,
-        price,
-        userId,
-        productImage,
-      });
-    } catch (error) {
-      console.log({ error });
+      alert("Quantity berhasil di update");
+    } else {
+      await axiosInstance.post("/cart", cart);
+      alert("Berhasil di tambahkan ke cart");
     }
-  }
+  };
 
+  const { productImage, productName, price, description } = product;
   return (
     <div className="container">
       <div className="row mt-3">
@@ -84,11 +91,7 @@ function DetailProduct() {
               +
             </button>
           </div>
-          <button
-            disabled={quantity == 0}
-            className="btn btn-success mt-3"
-            onClick={addToCart}
-          >
+          <button className="btn btn-success mt-3" onClick={addToCart}>
             Add to cart
           </button>
         </div>

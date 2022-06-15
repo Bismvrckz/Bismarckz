@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 
 // NOTES
 import InputBox from "./components/InputBox";
+import UseEffectComponent from "./notes/useEffect";
+import UseStateComponent from "./notes/useState";
 
 // PROJECT
 import Navigation from "./components/Navigation";
@@ -15,8 +17,6 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import DetailProduct from "./pages/Detail";
 import Cart from "./pages/Cart";
-
-import UseEffectComponent from "./notes/useEffect";
 
 function App() {
   const [isLocalStorageChecked, setisLocalStorageChecked] = useState(false);
@@ -45,10 +45,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/cart" element={<Cart />} />
           {/* path variable */}
           <Route path="/products/:productId" element={<DetailProduct />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/note" element={<InputBox />} />
+          <Route path="/note" element={<UseStateComponent />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
