@@ -1,19 +1,15 @@
 import { Checkbox, Button, Loading } from "@nextui-org/react";
-import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
+import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
-import Input from "@mui/material/Input";
 import FilledInput from "@mui/material/FilledInput";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-export function Home() {
+export function Login() {
   const [click, setClick] = useState(0);
 
   const handleChange = (prop) => (event) => {
@@ -49,13 +45,14 @@ export function Home() {
     setClick(1);
   }
 
-  function abc() {}
-
   return (
-    <div className="h-[100vh] bg-gradient-to-r from-blue-800 to-green-800 flex justify-center items-center flex-col">
-      <p className="text-white text-[5vh] font-[300]">
-        <i class="fa-brands fa-atlassian text-cyan-500"></i> Arizonna
-      </p>
+    <div className="h-[100vh] bg-gradient-to-r from-blue-800 to-green-700 flex justify-center items-center flex-col">
+      <a
+        href=""
+        className="text-white text-[5vh] font-[300] no-underline mb-[2vh]"
+      >
+        <i class="fa-brands fa-atlassian text-cyan-400"></i> Arizonna
+      </a>
       <div className="w-[30%]  rounded-[2vh] opacity-100 bg-[#1E1E1E] font-[montserrat] flex flex-col items-center justify-center h-[60%] ">
         <div className="flex flex-col justify-center w-[80%]">
           <div className="text-[3vh] mb-[1vh] font-[500] text-white">
@@ -66,7 +63,7 @@ export function Home() {
             color="primary"
             sx={{ m: 0, width: "100%", borderColor: "red" }}
             id="outlined-basic"
-            label="Email"
+            label="Username or Email"
             variant="filled"
           />
           <FormControl sx={{ mt: 1, width: "100%" }} variant="filled">
