@@ -5,7 +5,6 @@ import { login } from "./store/slices/authSlice";
 import { useDispatch } from "react-redux";
 
 // NOTES
-import InputBox from "./components/InputBox";
 import UseEffectComponent from "./notes/useEffect";
 import UseStateComponent from "./notes/useState";
 

@@ -6,6 +6,7 @@ import axiosInstance from "../../services/axios";
 function Cart() {
   const [cart, setCart] = useState([]);
   const [checkout, setCheckout] = useState(0);
+  const [dummy, setDummy] = useState(0);
   const [checkoutCred, setCheckoutCred] = useState({
     recipientName: "",
     payment: "",
@@ -45,6 +46,8 @@ function Cart() {
     } catch (error) {
       console.log({ error: error.message });
     }
+    setDummy(1);
+    alert(dummy);
   };
 
   const renderCart = () => {
