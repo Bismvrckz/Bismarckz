@@ -15,6 +15,13 @@ import { Navigate, Link } from "react-router-dom";
 
 export function Register() {
   const [click, setClick] = useState(0);
+  const [values, setValues] = useState({
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
+    showPassword: false,
+  });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -41,16 +48,8 @@ export function Register() {
     event.preventDefault();
   };
 
-  const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
-
   return (
-    <div className="h-[100vh] bg-gradient-to-r from-blue-800 to-green-700 flex justify-start items-start flex-col">
+    <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-start items-start flex-col">
       <div className="flex items-start justify-start ml-[7vh] mt-[2vh]">
         <Link
           to="/login"
@@ -61,16 +60,23 @@ export function Register() {
       </div>
       <div className="grow grid grid-cols-2 w-[100%]">
         <div className="flex justify-center items-center">
-          <img src={leftPhoto} className="rounded-[50%]" />
+          <img
+            src={leftPhoto}
+            className="rounded-[50%] w-[80%] brightness-[.85]"
+          />
         </div>
-        <div className="flex flex-col">
-          <p className="font-[montserrat]">Create your account</p>
-          <p className="font-[montserrat]">
+        <div className="flex flex-col justify-start">
+          <p className="font-[montserrat] text-white text-[3vh] font-[500] mt-[10vh]">
+            Create your account
+          </p>
+          <p className="font-[montserrat] text-white font-[300]">
             Created for developers by developers
           </p>
+
           <TextField
+            autoComplete="off"
             color="info"
-            sx={{ m: 0, width: "50%" }}
+            sx={{ my: 0.5, width: "50%" }}
             id="outlined-basic"
             label="Username"
             InputProps={{
@@ -83,8 +89,9 @@ export function Register() {
             variant="outlined"
           />
           <TextField
+            autoComplete="off"
             color="info"
-            sx={{ m: 0, width: "50%" }}
+            sx={{ my: 0.5, width: "50%" }}
             id="outlined-basic"
             label="Email"
             InputProps={{
@@ -96,22 +103,8 @@ export function Register() {
             }}
             variant="outlined"
           />
-          <TextField
-            color="info"
-            sx={{ m: 0, width: "50%" }}
-            id="outlined-basic"
-            label="Password"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <KeyIcon sx={{ color: "white", opacity: "0.7" }} />
-                </InputAdornment>
-              ),
-            }}
-            variant="outlined"
-          />
           <FormControl
-            sx={{ mt: 0, width: "50%" }}
+            sx={{ my: 0.5, width: "50%" }}
             variant="outlined"
             color="info"
           >
@@ -145,6 +138,22 @@ export function Register() {
               label="Password"
             />
           </FormControl>
+          <TextField
+            autoComplete="off"
+            color="info"
+            sx={{ my: 0.5, width: "50%" }}
+            id="outlined-basic"
+            type="password"
+            label="Confirm Password"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <KeyIcon sx={{ color: "white", opacity: "0.7" }} />
+                </InputAdornment>
+              ),
+            }}
+            variant="outlined"
+          />
 
           <div className="flex flex-col w-[50%]">
             <Checkbox.Group defaultValue={["Remember_me"]}>
@@ -161,7 +170,7 @@ export function Register() {
               </Button>
             ) : (
               <Button onPress={onSignInClick} size="xl">
-                Sign in
+                Sign up
               </Button>
             )}
           </div>

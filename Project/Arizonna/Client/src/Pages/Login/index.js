@@ -59,7 +59,7 @@ export function Login() {
   }
 
   return (
-    <div className="h-[100vh] bg-gradient-to-r from-blue-800 to-green-700 flex justify-center items-center flex-col relative z-[1]">
+    <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative z-[1]">
       <Link
         to="/login"
         className="text-white text-[5vh] font-[300] no-underline mb-[2vh]"
@@ -75,6 +75,7 @@ export function Login() {
           <p className="text-[2vh] font-[200] text-white">Login to Arizonna</p>
 
           <TextField
+            autoComplete="off"
             color="info"
             sx={{ m: 0, width: "100%" }}
             id="outlined-basic"
@@ -97,6 +98,7 @@ export function Login() {
               Password
             </InputLabel>
             <OutlinedInput
+              autoComplete="off"
               id="outlined-adornment-password"
               type={values.showPassword ? "text" : "password"}
               value={values.password}
