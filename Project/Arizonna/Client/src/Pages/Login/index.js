@@ -9,10 +9,10 @@ import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Navigate, Link } from "react-router-dom";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import LockIcon from "@mui/icons-material/Lock";
+import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
+import KeyIcon from "@mui/icons-material/Key";
 import { cyan } from "@mui/material/colors";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material";
 
 export function Login() {
   const [click, setClick] = useState(0);
@@ -87,13 +87,11 @@ export function Login() {
               ),
             }}
             variant="outlined"
-            focused
           />
           <FormControl
             sx={{ mt: 1, width: "100%" }}
             variant="outlined"
             color="info"
-            focused
           >
             <InputLabel htmlFor="outlined-adornment-password">
               Password
@@ -119,7 +117,7 @@ export function Login() {
               }
               startAdornment={
                 <InputAdornment position="start">
-                  <LockIcon sx={{ color: "white", opacity: "0.7" }} />
+                  <KeyIcon sx={{ color: "white", opacity: "0.7" }} />
                 </InputAdornment>
               }
               label="Password"
@@ -128,8 +126,8 @@ export function Login() {
 
           <div className="flex flex-col">
             <Checkbox.Group defaultValue={["Remember_me"]}>
-              <Checkbox value="Remember_me" color="gradient">
-                <p className="text-white font-[montserrat] my-[3vh]">
+              <Checkbox value="Remember_me" color="gradient" className="flex ">
+                <p className="flex justify-start items-center text-white font-[montserrat] text-[2vh] w-[20vh] h-[5vh] my-[0.1vh]">
                   Remember me
                 </p>
               </Checkbox>
