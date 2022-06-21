@@ -18,14 +18,6 @@ import MainLogo from "../../Components/ArizonnaLogo";
 export function Login() {
   const [click, setClick] = useState(0);
 
-  const whiteTheme = createTheme({
-    palette: {
-      primary: {
-        main: cyan[50],
-      },
-    },
-  });
-
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
