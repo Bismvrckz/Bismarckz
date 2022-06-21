@@ -13,6 +13,7 @@ import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
 import KeyIcon from "@mui/icons-material/Key";
 import { cyan } from "@mui/material/colors";
 import { createTheme } from "@mui/material";
+import MainLogo from "../../Components/ArizonnaLogo";
 
 export function Login() {
   const [click, setClick] = useState(0);
@@ -60,12 +61,9 @@ export function Login() {
 
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative z-[1]">
-      <Link
-        to="/login"
-        className="text-white text-[5vh] font-[300] no-underline mb-[2vh]"
-      >
-        <i class="fa-brands fa-atlassian text-cyan-400"></i> Arizonna
-      </Link>
+      <div className="flex justify-start pl-[15vh] w-[30%]">
+        <MainLogo />
+      </div>
       <div className="absolute z-[2] w-[30%]  rounded-[2vh] opacity-25 bg-black h-[60%]"></div>
       <div className="w-[30%] z-[3]  rounded-[2vh bg-transparent font-[montserrat] flex flex-col items-center justify-center h-[60%] ">
         <div className="flex flex-col justify-center w-[80%]">
