@@ -22,16 +22,52 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
         <MainLogo collapsedState={collapsedState} />
       </div>
       <div className="absolute -z-[1] bg-gradient-to-r from-gray-900 to-teal-900 w-[100%] h-[100%] opacity-[1]"></div>
-      <Menu iconShape="square" className={sidebarIconToggle()}>
+      <Menu className={sidebarIconToggle()}>
         <MenuItem>
           {collapsedState ? (
-            <div className="absolute left-[5.5vh]">
-              <i class="fa-solid fa-compass "></i>
+            <div className="">
+              <i class="fa-solid fa-compass ml-[2.5vh] ease-in-out duration-[2000]"></i>
             </div>
           ) : (
-            <i class="fa-solid fa-compass absolute left-[5.5vh] top-[1.7vh]">
+            <i class="fa-solid fa-compass  ease-in-out duration-[2000]">
               {" "}
               Dashboard
+            </i>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {collapsedState ? (
+            <div className="">
+              <i class="fa-solid fa-house-user ml-[2.5vh] ease-in-out duration-[2000]"></i>
+            </div>
+          ) : (
+            <i class="fa-solid fa-house-user  ease-in-out duration-[2000]">
+              {" "}
+              My Page
+            </i>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {collapsedState ? (
+            <div className="">
+              <i class="fa-solid fa-gears ml-[2.5vh] ease-in-out duration-[2000]"></i>
+            </div>
+          ) : (
+            <i class="fa-solid fa-gears  ease-in-out duration-[2000]">
+              {" "}
+              Settings
+            </i>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {collapsedState ? (
+            <div className="">
+              <i class="fa-solid fa-power-off ml-[2.5vh] ease-in-out duration-[2000]"></i>
+            </div>
+          ) : (
+            <i class="fa-solid fa-power-off  ease-in-out duration-[2000]">
+              {" "}
+              Logout
             </i>
           )}
         </MenuItem>

@@ -1,9 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "test-api",
   "main": "index.js",
   "scripts": {
+    "server": "json-server --watch ./database/data.json --port 1243",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
