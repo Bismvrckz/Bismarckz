@@ -13,19 +13,21 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Navigate, Link } from "react-router-dom";
 import MainLogo from "../../Components/ArizonnaLogo";
+import axiosInstance from "../../services/axiosInstance";
 
 export function Register() {
   const [click, setClick] = useState(0);
-  const [values, setValues] = useState({
-    amount: "",
+  const [inputs, setInputs] = useState({
+    userName: "",
+    email: "",
     password: "",
-    weight: "",
-    weightRange: "",
+    confirmPassword: "",
     showPassword: false,
   });
 
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+    setInputs({ ...inputs, [prop]: event.target.value });
+    console.log(prop);
   };
 
   function afterSignInClick() {
@@ -34,14 +36,53 @@ export function Register() {
     }, 3000);
   }
 
-  function onSignInClick() {
+  async function onSignUpClick() {
     setClick(1);
+    try {
+      const { userName, email, password, confirmPassword } = inputs;
+
+      const foundUsername = await axiosInstance.get("/users", {
+        params: { userName },
+      });
+      if (foundUsername.data.length) {
+        return alert("Username sudah digunakan");
+      }
+
+      let validator = require("email-validator");
+      let validEmailFormat = validator.validate(email);
+      if (!validEmailFormat) {
+        return alert("format email tidak benar");
+      }
+
+      const foundEmail = await axiosInstance.get("/users", {
+        params: { email },
+      });
+      if (foundEmail.data.length) {
+        return alert("Email sudah digunakan");
+      }
+
+      if (password != confirmPassword) {
+        alert("Password ga sama");
+      }
+
+      let idMaker = new Date();
+      let postFormat = {
+        id: idMaker.getTime(),
+        userName,
+        email,
+        password,
+      };
+      await axiosInstance.post("/users", postFormat);
+      alert("Berhasil Register");
+    } catch (error) {
+      alert("Gagal, coba cek API");
+    }
   }
 
   const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
+    setInputs({
+      ...inputs,
+      showPassword: !inputs.showPassword,
     });
   };
 
@@ -72,6 +113,7 @@ export function Register() {
           <TextField
             autoComplete="off"
             color="info"
+            onChange={handleChange("userName")}
             sx={{ my: 0.5, width: "50%" }}
             id="outlined-basic"
             label="Username"
@@ -87,6 +129,7 @@ export function Register() {
           <TextField
             autoComplete="off"
             color="info"
+            onChange={handleChange("email")}
             sx={{ my: 0.5, width: "50%" }}
             id="outlined-basic"
             label="Email"
@@ -109,8 +152,8 @@ export function Register() {
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
+              type={inputs.showPassword ? "text" : "password"}
+              value={inputs.password}
               onChange={handleChange("password")}
               endAdornment={
                 <InputAdornment position="end">
@@ -122,7 +165,7 @@ export function Register() {
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    {inputs.showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
@@ -137,6 +180,7 @@ export function Register() {
           <TextField
             autoComplete="off"
             color="info"
+            onChange={handleChange("confirmPassword")}
             sx={{ my: 0.5, width: "50%" }}
             id="outlined-basic"
             type="password"
@@ -155,7 +199,7 @@ export function Register() {
             <Checkbox.Group defaultValue={["Remember_me"]}>
               <Checkbox value="Remember_me" color="gradient" className="flex ">
                 <p className="flex justify-start items-center text-white font-[montserrat] text-[2vh] w-[50vh] h-[5vh] my-[0.1vh]">
-                  I aggre to the Terms & Conditions
+                  I aggre to the <a className="ml-[1vh]"> Terms & Conditions</a>
                 </p>
               </Checkbox>
             </Checkbox.Group>
@@ -166,7 +210,7 @@ export function Register() {
                 {afterSignInClick()}
               </Button>
             ) : (
-              <Button className="mt-[2vh]" onPress={onSignInClick} size="xl">
+              <Button className="mt-[2vh]" onPress={onSignUpClick} size="xl">
                 Sign up
               </Button>
             )}

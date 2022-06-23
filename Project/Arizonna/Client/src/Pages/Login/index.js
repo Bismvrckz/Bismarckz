@@ -11,21 +11,25 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Navigate, Link } from "react-router-dom";
 import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
 import KeyIcon from "@mui/icons-material/Key";
-import { cyan } from "@mui/material/colors";
-import { createTheme } from "@mui/material";
 import MainLogo from "../../Components/ArizonnaLogo";
+import axiosInstance from "../../services/axiosInstance";
 
 export function Login() {
   const [click, setClick] = useState(0);
+  const [inputs, setInputs] = useState({
+    nameOrEmail: "",
+    password: "",
+    showPassword: false,
+  });
 
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+    setInputs({ ...inputs, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
+    setInputs({
+      ...inputs,
+      showPassword: !inputs.showPassword,
     });
   };
 
@@ -33,22 +37,28 @@ export function Login() {
     event.preventDefault();
   };
 
-  const [values, setValues] = useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
-
   function afterSignInClick() {
     setTimeout(() => {
       setClick(0);
     }, 3000);
   }
 
-  function onSignInClick() {
+  async function onSignInClick() {
     setClick(1);
+    try {
+      const { nameOrEmail, password } = inputs;
+
+      let validator = require("email-validator");
+      const isAnEmail = validator.validate(nameOrEmail);
+      const usersCred = await axiosInstance.get("/users");
+      // const filterRes = usersCred.data.filter((user) => {
+      //   return user.includes(nameOrEmail);
+      // });
+
+      // console.log(filterRes);
+    } catch (error) {
+      alert("Gagal, coba cek API");
+    }
   }
 
   return (
@@ -70,6 +80,7 @@ export function Login() {
             sx={{ m: 0, width: "100%" }}
             id="outlined-basic"
             label="Username or Email"
+            onChange={handleChange("nameOrEmail")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -90,8 +101,8 @@ export function Login() {
             <OutlinedInput
               autoComplete="off"
               id="outlined-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
+              type={inputs.showPassword ? "text" : "password"}
+              value={inputs.password}
               onChange={handleChange("password")}
               endAdornment={
                 <InputAdornment position="end">
@@ -103,7 +114,7 @@ export function Login() {
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                    {inputs.showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
