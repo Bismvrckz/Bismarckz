@@ -1,5 +1,5 @@
 import { Checkbox, Button, Loading } from "@nextui-org/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import { OutlinedInput } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -13,14 +13,26 @@ import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
 import KeyIcon from "@mui/icons-material/Key";
 import MainLogo from "../../Components/ArizonnaLogo";
 import axiosInstance from "../../services/axiosInstance";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store/slices/authSlice";
 
 export function Login() {
+  const [currentUser, setCurrentUser] = useState();
+  const globalstateUser = useSelector((state) => state.auth.userName);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    setCurrentUser(user);
+  }, []);
+
   const [click, setClick] = useState(0);
   const [inputs, setInputs] = useState({
     nameOrEmail: "",
     password: "",
     showPassword: false,
   });
+
+  const dispatch = useDispatch();
 
   const handleChange = (prop) => (event) => {
     setInputs({ ...inputs, [prop]: event.target.value });
@@ -46,20 +58,36 @@ export function Login() {
   async function onSignInClick() {
     setClick(1);
     try {
+      const usersCred = await axiosInstance.get("/users");
       const { nameOrEmail, password } = inputs;
 
-      let validator = require("email-validator");
-      const isAnEmail = validator.validate(nameOrEmail);
-      const usersCred = await axiosInstance.get("/users");
-      // const filterRes = usersCred.data.filter((user) => {
-      //   return user.includes(nameOrEmail);
-      // });
+      const filterRes = usersCred.data.filter((user) => {
+        return user.userName == nameOrEmail || user.email == nameOrEmail;
+      });
 
-      // console.log(filterRes);
+      if (!filterRes.length) {
+        return alert("User tidak ditemukan");
+      }
+
+      if (filterRes[0].password != password) {
+        return alert("password salah");
+      }
+
+      const user = filterRes[0];
+      dispatch(login(user));
+
+      const localStorageUserInfo = JSON.stringify({
+        id: user.id,
+        userName: user.userName,
+      });
+      localStorage.setItem("userInfo", localStorageUserInfo);
     } catch (error) {
+      console.log(error);
       alert("Gagal, coba cek API");
     }
   }
+
+  if (currentUser || globalstateUser) return <Navigate to="/" replace />;
 
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative z-[1]">

@@ -3,7 +3,7 @@ import SideBar from "../../Components/NavigationSidebar";
 import leftPhoto from "../../Assets/img/leftPhoto.jpg";
 
 export default function Home() {
-  const [collapsedState, setCollapsedState] = useState(false);
+  const [collapsedState, setCollapsedState] = useState(true);
 
   function toggleCollapsed() {
     setCollapsedState(!collapsedState);

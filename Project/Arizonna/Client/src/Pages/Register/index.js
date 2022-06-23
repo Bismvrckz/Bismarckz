@@ -196,13 +196,17 @@ export function Register() {
           />
 
           <div className="flex flex-col w-[50%]">
-            <Checkbox.Group defaultValue={["Remember_me"]}>
-              <Checkbox value="Remember_me" color="gradient" className="flex ">
-                <p className="flex justify-start items-center text-white font-[montserrat] text-[2vh] w-[50vh] h-[5vh] my-[0.1vh]">
-                  I aggre to the <a className="ml-[1vh]"> Terms & Conditions</a>
-                </p>
-              </Checkbox>
-            </Checkbox.Group>
+            <div className="flex items-center my-[2vh]">
+              <Checkbox.Group defaultValue={["Remember_me"]}>
+                <Checkbox value="Remember_me" color="gradient" S></Checkbox>
+              </Checkbox.Group>
+              <p className="text-white font-[montserrat] mb-0 ml-[1vh]">
+                I aggre to the
+              </p>
+              <a href="" className="ml-[1vh] font-[montserrat] ">
+                Terms & Conditions
+              </a>
+            </div>
 
             {click ? (
               <Button clickable={false} size="xl">
@@ -210,7 +214,7 @@ export function Register() {
                 {afterSignInClick()}
               </Button>
             ) : (
-              <Button className="mt-[2vh]" onPress={onSignUpClick} size="xl">
+              <Button onPress={onSignUpClick} size="xl">
                 Sign up
               </Button>
             )}
