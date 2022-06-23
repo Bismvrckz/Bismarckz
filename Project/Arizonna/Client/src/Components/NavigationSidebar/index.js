@@ -9,16 +9,18 @@ import { Link } from "react-router-dom";
 
 export default function SideBar({ collapsedState, toggleCollapsed }) {
   const dispatch = useDispatch();
-  const { id, userName } = JSON.parse(localStorage.getItem("userInfo"));
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+  const [dummy, setdummy] = useState(0);
 
   function logOutClick() {
     dispatch(logout());
     localStorage.removeItem("userInfo");
+    setdummy(1);
   }
 
   function sidebarIconToggle() {
     return collapsedState
-      ? "flex justify-end items-center flex-col"
+      ? "flex justify-end items-start ml-[1.5vh] flex-col"
       : "flex justify-end items-start flex-col";
   }
 
@@ -47,27 +49,27 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
         <MenuItem>
           {collapsedState ? (
             <div className="">
-              <i class="fa-solid fa-house-user ml-[2.5vh] "></i>
+              <i class="fa-solid fa-house-user ml-[2.5vh]"></i>
             </div>
           ) : (
-            <i class="fa-solid fa-house-user ml-[4vh] "> My Page</i>
+            <i class="fa-solid fa-house-user ml-[4vh]"> My Page</i>
           )}
         </MenuItem>
         <MenuItem>
           {collapsedState ? (
             <div className="">
-              <i class="fa-solid fa-gear ml-[2.5vh] "></i>
+              <i class="fa-solid fa-gear ml-[2.5vh]"></i>
             </div>
           ) : (
             <i class="fa-solid fa-gear ml-[4vh]"> Settings</i>
           )}
         </MenuItem>
-        {id ? (
+        {user ? (
           <MenuItem onClick={logOutClick}>
             {collapsedState ? (
-              <i class="fa-solid fa-power-off ml-[2.5vh] "></i>
+              <i class="fa-solid fa-power-off ml-[2.5vh]"></i>
             ) : (
-              <i class="fa-solid fa-power-off   ml-[4vh]"> Logout</i>
+              <i class="fa-solid fa-power-off ml-[4vh]"> Logout</i>
             )}
           </MenuItem>
         ) : (
@@ -77,7 +79,7 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
                 <i class="fa-solid fa-power-off ml-[2.5vh] "></i>
               </Link>
             ) : (
-              <i class="fa-solid fa-power-off ml-[4vh] ">
+              <i class="fa-solid fa-power-off ml-[4vh]">
                 <Link to="/login" className="no-underline text-sky-500">
                   {""} login
                 </Link>
@@ -89,7 +91,7 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
           <MenuItem></MenuItem>
         ) : (
           <MenuItem>
-            {id ? <i className="ml-[4vh]">"Halo {userName}"</i> : ""}
+            {user ? <i className="ml-[4vh]">"Halo {user.userName}"</i> : ""}
           </MenuItem>
         )}
       </Menu>
