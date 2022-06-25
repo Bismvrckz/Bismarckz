@@ -1,7 +1,7 @@
 import { Checkbox, Button, Loading } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
-import { OutlinedInput } from "@mui/material";
+import { FormHelperText, OutlinedInput } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
@@ -17,19 +17,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/slices/authSlice";
 
 export function Login() {
-  const [currentUser, setCurrentUser] = useState();
   const globalstateUser = useSelector((state) => state.auth.userName);
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("userInfo"));
-    setCurrentUser(user);
-  }, []);
-
+  const [rememberMeCheckbox, setRememberMeCheckbox] = useState(true);
+  const [currentUser, setCurrentUser] = useState();
   const [click, setClick] = useState(0);
   const [inputs, setInputs] = useState({
     nameOrEmail: "",
     password: "",
     showPassword: false,
+  });
+  const [error, setError] = useState({
+    userError: false,
+    passwordError: false,
+  });
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    if (globalstateUser.id) {
+      user = globalstateUser;
+    }
+    setCurrentUser(user);
   });
 
   const dispatch = useDispatch();
@@ -54,6 +61,13 @@ export function Login() {
       setClick(0);
     }, 3000);
   }
+  function rememberMe() {
+    setRememberMeCheckbox(!rememberMeCheckbox);
+  }
+
+  const onInputFocus = (prop) => () => {
+    setError({ ...error, [prop]: false });
+  };
 
   async function onSignInClick() {
     setClick(1);
@@ -66,28 +80,34 @@ export function Login() {
       });
 
       if (!filterRes.length) {
-        return alert("User tidak ditemukan");
+        return setError({ ...error, userError: true });
       }
 
       if (filterRes[0].password != password) {
-        return alert("password salah");
+        return setError({ ...error, passwordError: true });
       }
 
       const user = filterRes[0];
-      dispatch(login(user));
 
       const localStorageUserInfo = JSON.stringify({
         id: user.id,
         userName: user.userName,
       });
-      localStorage.setItem("userInfo", localStorageUserInfo);
+
+      if (rememberMeCheckbox) {
+        localStorage.setItem("userInfo", localStorageUserInfo);
+        return dispatch(login(user));
+      }
+
+      dispatch(login(user));
     } catch (error) {
       console.log(error);
       alert("Gagal, coba cek API");
     }
   }
 
-  if (currentUser || globalstateUser) return <Navigate to="/" replace />;
+  if (currentUser) return <Navigate to="/" replace />;
+  const { userError, passwordError } = error;
 
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative z-[1]">
@@ -103,11 +123,14 @@ export function Login() {
           <p className="text-[2vh] font-[200] text-white">Login to Arizonna</p>
 
           <TextField
-            autoComplete="off"
             color="info"
-            sx={{ m: 0, width: "100%" }}
+            autoComplete="off"
+            onFocus={onInputFocus("userError")}
+            error={userError ? true : false}
+            helperText={userError ? "User tidak ditemukan" : ""}
             id="outlined-basic"
             label="Username or Email"
+            sx={{ m: 0, width: "100%" }}
             onChange={handleChange("nameOrEmail")}
             InputProps={{
               startAdornment: (
@@ -127,10 +150,13 @@ export function Login() {
               Password
             </InputLabel>
             <OutlinedInput
+              label="Password"
               autoComplete="off"
               id="outlined-adornment-password"
               type={inputs.showPassword ? "text" : "password"}
               value={inputs.password}
+              onFocus={onInputFocus("passwordError")}
+              error={passwordError ? true : false}
               onChange={handleChange("password")}
               endAdornment={
                 <InputAdornment position="end">
@@ -151,12 +177,23 @@ export function Login() {
                   <KeyIcon sx={{ color: "white", opacity: "0.7" }} />
                 </InputAdornment>
               }
-              label="Password"
             />
+            <FormHelperText id="outlined-weight-helper-text">
+              <p
+                className={
+                  passwordError ? "text-red-600 h-[0.1rem]" : "mb-[0vh]"
+                }
+              >
+                {passwordError ? "Password anda salah" : ""}
+              </p>
+            </FormHelperText>
           </FormControl>
 
           <div className="flex flex-col">
-            <Checkbox.Group defaultValue={["Remember_me"]}>
+            <Checkbox.Group
+              onChange={rememberMe}
+              defaultValue={["Remember_me"]}
+            >
               <Checkbox value="Remember_me" color="gradient" className="flex ">
                 <p className="flex justify-start items-center text-white font-[montserrat] text-[2vh] w-[20vh] h-[5vh] my-[0.1vh]">
                   Remember me

@@ -1,7 +1,7 @@
 import leftPhoto from "../../Assets/img/leftPhoto.jpg";
 import { TextField, InputAdornment } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmailIcon from "@mui/icons-material/esm/Email";
 import KeyIcon from "@mui/icons-material/Key";
 import { Checkbox, Button, Loading } from "@nextui-org/react";
@@ -14,6 +14,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Navigate, Link } from "react-router-dom";
 import MainLogo from "../../Components/ArizonnaLogo";
 import axiosInstance from "../../services/axiosInstance";
+import { useSelector } from "react-redux";
 
 export function Register() {
   const [click, setClick] = useState(0);
@@ -24,6 +25,16 @@ export function Register() {
     confirmPassword: "",
     showPassword: false,
   });
+  const [currentUser, setCurrentUser] = useState();
+  const globalstateUser = useSelector((state) => state.auth.userName);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("userInfo"));
+    if (globalstateUser.id) {
+      user = globalstateUser;
+    }
+    setCurrentUser(user);
+  }, []);
 
   const handleChange = (prop) => (event) => {
     setInputs({ ...inputs, [prop]: event.target.value });
@@ -89,6 +100,8 @@ export function Register() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  if (currentUser) return <Navigate to="/" replace />;
 
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-start items-start flex-col">

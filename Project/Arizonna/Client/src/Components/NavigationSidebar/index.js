@@ -9,7 +9,15 @@ import { Link } from "react-router-dom";
 
 export default function SideBar({ collapsedState, toggleCollapsed }) {
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("userInfo"));
+  let user = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(user);
+  let userGlobalstate = useSelector((state) => state.auth);
+  console.log(userGlobalstate);
+  if (userGlobalstate.id) {
+    user = userGlobalstate;
+  }
+  console.log(user);
+
   const [dummy, setdummy] = useState(0);
 
   function logOutClick() {
@@ -26,13 +34,15 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
 
   return (
     <ProSidebar
+      onMouseEnter={toggleCollapsed}
+      onMouseLeave={toggleCollapsed}
       image={leftPhoto}
       width={"20%"}
       className="relative"
       collapsed={collapsedState}
       collapsedWidth={"7%"}
     >
-      <div className="ml-[4vh] mt-[2vh] w-[100%]" onClick={toggleCollapsed}>
+      <div className="ml-[4vh] mt-[2vh] w-[100%]">
         <MainLogo collapsedState={collapsedState} />
       </div>
       <div className="absolute -z-[1] bg-gradient-to-r from-gray-900 to-teal-900 w-[100%] h-[100%] opacity-[1]"></div>
