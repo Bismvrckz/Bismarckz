@@ -110,17 +110,19 @@ export function Login() {
   const { userError, passwordError } = error;
 
   return (
-    <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative z-[1]">
+    <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-center items-center flex-col relative ">
       <div className="flex justify-start pl-[15vh] w-[30%]">
         <MainLogo />
       </div>
-      <div className="absolute z-[2] w-[30%]  rounded-[2vh] opacity-25 bg-black h-[60%]"></div>
+
       <div className="w-[30%] z-[3]  rounded-[2vh bg-transparent font-[montserrat] flex flex-col items-center justify-center h-[60%] ">
         <div className="flex flex-col justify-center w-[80%]">
           <div className="text-[3vh] mb-[1vh] font-[500] text-white">
             Sign in
           </div>
-          <p className="text-[2vh] font-[200] text-white">Login to Arizonna</p>
+          <p className="text-[1.5vh] font-[200] text-gray-400">
+            Sign in to Arizonna
+          </p>
 
           <TextField
             color="info"
@@ -213,15 +215,19 @@ export function Login() {
           </div>
         </div>
       </div>
+
       <p className="mt-[2vh] text-[white]">
         Don't have an account? <span> </span>
         <Link to="/register" className="no-underline text-sky-500">
           Sign up
         </Link>
       </p>
-      <a href="" className="no-underline text-sky-500">
-        Forgot password?
-      </a>
+
+      <Link to="/forgotpassword" className="no-underline text-sky-500">
+        Forgot password ?
+      </Link>
+
+      <div className="absolute z-[2] w-[30%]  rounded-[2vh] opacity-25 bg-black h-[60%]" />
     </div>
   );
 }

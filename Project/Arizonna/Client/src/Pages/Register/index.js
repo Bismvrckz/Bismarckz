@@ -26,6 +26,13 @@ export function Register() {
     showPassword: false,
   });
   const [currentUser, setCurrentUser] = useState();
+  const [errors, setError] = useState({
+    usernameError: false,
+    emailDuplicateError: false,
+    emailFormatError: false,
+    passwordError: false,
+    confirmPasswordError: false,
+  });
   const globalstateUser = useSelector((state) => state.auth.userName);
 
   useEffect(() => {
@@ -56,24 +63,26 @@ export function Register() {
         params: { userName },
       });
       if (foundUsername.data.length) {
-        return alert("Username sudah digunakan");
+        return setError({ ...errors, usernameError: true });
       }
 
       let validator = require("email-validator");
       let validEmailFormat = validator.validate(email);
       if (!validEmailFormat) {
-        return alert("format email tidak benar");
+        return setError({ ...errors, emailFormatError: true });
       }
 
       const foundEmail = await axiosInstance.get("/users", {
         params: { email },
       });
       if (foundEmail.data.length) {
-        return alert("Email sudah digunakan");
+        return setError({ ...errors, emailDuplicateError: true });
       }
 
+      if (password) {
+      }
       if (password != confirmPassword) {
-        alert("Password ga sama");
+        return setError({ ...errors, confirmPasswordError: true });
       }
 
       let idMaker = new Date();
@@ -119,7 +128,7 @@ export function Register() {
           <p className="font-[montserrat] text-white text-[3vh] font-[500] mt-[10vh]">
             Create your account
           </p>
-          <p className="font-[montserrat] text-white font-[300]">
+          <p className="font-[montserrat] text-gray-400 text[1.5vh] font-[300]">
             Created for developers by developers
           </p>
 

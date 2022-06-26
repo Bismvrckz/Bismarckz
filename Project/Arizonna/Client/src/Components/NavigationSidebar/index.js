@@ -53,7 +53,7 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
               <i class="fa-solid fa-compass ml-[2.5vh] "></i>
             </div>
           ) : (
-            <i class="fa-solid fa-compass ml-[4vh] "> Dashboard</i>
+            <i class="fa-solid fa-compass ml-[4vh] "> Explore</i>
           )}
         </MenuItem>
         <MenuItem>
@@ -62,7 +62,7 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
               <i class="fa-solid fa-house-user ml-[2.5vh]"></i>
             </div>
           ) : (
-            <i class="fa-solid fa-house-user ml-[4vh]"> My Page</i>
+            <i class="fa-solid fa-house-user ml-[4vh]"> Home</i>
           )}
         </MenuItem>
         <MenuItem>
