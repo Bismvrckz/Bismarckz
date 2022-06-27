@@ -101,7 +101,7 @@ export default function SideBar({ collapsedState, toggleCollapsed }) {
           <MenuItem></MenuItem>
         ) : (
           <MenuItem>
-            {user ? <i className="ml-[4vh]">"Halo {user.userName}"</i> : ""}
+            {user ? <i className="ml-[4vh]">"Halo {user.username}"</i> : ""}
           </MenuItem>
         )}
       </Menu>
