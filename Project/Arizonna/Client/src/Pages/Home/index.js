@@ -9,14 +9,14 @@ export default function Home() {
     setCollapsedState(!collapsedState);
   }
 
-  function a() {
-    return "bg-gradient-to-r from-teal-900  to-cyan-900 w-[80%] opacity-[1] absolute top-0 right-[0vh]  h-[100%] ease-in-out duration-300";
-  }
+  // function a() {
+  //   return "bg-gradient-to-r from-teal-900  to-cyan-900 w-[80%] opacity-[1] absolute top-0 right-[0vh]  h-[100%] ease-in-out duration-300";
+  // }
 
   function ifSideCollapsed() {
     return collapsedState
       ? "bg-gradient-to-r from-teal-900  to-cyan-900  w-[93%] opacity-[1] absolute top-0 right-[0vh]  h-[100%] ease-in-out duration-100"
-      : a();
+      : "bg-gradient-to-r from-teal-900  to-cyan-900 w-[80%] opacity-[1] absolute top-0 right-[0vh]  h-[100%] ease-in-out duration-300";
   }
 
   return (
@@ -27,8 +27,9 @@ export default function Home() {
       />
       <div className="border-l-[1px] z-[1] border-gray-600"></div>
       <div className={ifSideCollapsed()}>
-        <img className="h-[10vh]" src={leftPhoto} />
-        dawdawdasdw dwawwdawd wdawdwad wdawd
+        <div className="w-[70%] bg-gray-800">
+          <p>paragraph</p>
+        </div>
       </div>
       <div className="bg-black absolute w-[100%] -z-[1] h-[100%]"></div>
     </div>
