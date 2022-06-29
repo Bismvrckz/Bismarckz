@@ -1,3 +1,4 @@
+const pool = require("./lib/database");
 const express = require("express");
 const app = express();
 const port = 1000;
@@ -10,6 +11,31 @@ let users = [
   { id: 332120, username: "Price" },
   { id: 332353, username: "Heisenberg" },
 ];
+//
+//
+//
+//
+//
+app.get("/noodles", async (req, res) => {
+  try {
+    const connection = pool.promise();
+    const sqlGetNoodles = "SELECT * FROM product;";
+
+    const [noodlesResult] = await connection.query(sqlGetNoodles);
+
+    res.send({
+      status: "Success",
+      message: "Noodles test",
+      data: {
+        result: noodlesResult,
+      },
+    });
+  } catch (error) {
+    res.send({
+      error,
+    });
+  }
+});
 //
 //
 //
