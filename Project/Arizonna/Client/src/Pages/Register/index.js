@@ -45,7 +45,6 @@ export function Register() {
 
   const handleChange = (prop) => (event) => {
     setInputs({ ...inputs, [prop]: event.target.value });
-    console.log(prop);
   };
 
   function afterSignInClick() {
@@ -59,42 +58,58 @@ export function Register() {
     try {
       const { userName, email, password, confirmPassword } = inputs;
 
+      if (!userName) return alert("Username belum di isi");
+
       const foundUsername = await axiosInstance.get("/users", {
         params: { userName },
       });
-      if (foundUsername.data.length) {
+      if (foundUsername.data.result.length) {
+        const { username } = foundUsername.data.result[0];
+        alert(`username ${username} sudah dipakai `);
         return setError({ ...errors, usernameError: true });
       }
 
       let validator = require("email-validator");
       let validEmailFormat = validator.validate(email);
       if (!validEmailFormat) {
-        return setError({ ...errors, emailFormatError: true });
+        alert("format email salah");
+        setError({ ...errors, emailFormatError: true });
+        return;
       }
 
       const foundEmail = await axiosInstance.get("/users", {
         params: { email },
       });
-      if (foundEmail.data.length) {
-        return setError({ ...errors, emailDuplicateError: true });
+
+      if (foundEmail.data.result.length) {
+        alert(`email ${email} sudah terpakai`);
+        setError({ ...errors, emailDuplicateError: true });
+        return;
       }
 
-      if (password) {
+      if (!password) {
+        alert("password belum di isi");
+        return;
       }
       if (password != confirmPassword) {
-        return setError({ ...errors, confirmPasswordError: true });
+        alert("password beda");
+        setError({ ...errors, confirmPasswordError: true });
+        return;
       }
 
-      let idMaker = new Date();
+      const idMaker = new Date();
+      const user_id = idMaker.getTime();
       let postFormat = {
-        id: idMaker.getTime(),
+        user_id,
         userName,
         email,
         password,
       };
-      await axiosInstance.post("/users", postFormat);
+
+      await axiosInstance.post("/users", { postFormat });
       alert("Berhasil Register");
     } catch (error) {
+      console.log({ error });
       alert("Gagal, coba cek API");
     }
   }
@@ -120,6 +135,7 @@ export function Register() {
       <div className="grow grid grid-cols-2 w-[100%]">
         <div className="flex justify-center items-center">
           <img
+            alt=""
             src={leftPhoto}
             className="rounded-[50%] w-[80%] brightness-[.85]"
           />
