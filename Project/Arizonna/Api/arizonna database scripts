@@ -1,0 +1,22 @@
+CREATE database Arizonna;
+
+use arizonna;
+
+CREATE table users (
+	user_id bigint(20) primary key,
+	username varchar(20) unique not null,
+	email varchar(25) unique not null,
+	user_password varchar(20) not null,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+DROP table users;
+
+INSERT into USERS  (USERNAME, EMAIL, USER_PASSWORD) 
+values ('Udin','Uds@gmail.com','1234');
+
+SELECT * FROM users WHERE USERNAME = 'Udin';
+
+INSERT into USERS  (USER_ID, USERNAME, EMAIL, USER_PASSWORD) 
+values (23123232323,'Udin','udin@gmail.com','123');
