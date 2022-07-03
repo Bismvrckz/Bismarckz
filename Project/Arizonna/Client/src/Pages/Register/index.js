@@ -26,12 +26,14 @@ export function Register() {
     showPassword: false,
   });
   const [currentUser, setCurrentUser] = useState();
-  const [errors, setError] = useState({
-    usernameError: false,
-    emailDuplicateError: false,
-    emailFormatError: false,
-    passwordError: false,
-    confirmPasswordError: false,
+  const [emailErr, setEmailErr] = useState({ invalid: false, used: false });
+  const [passwordErr, setPasswordErr] = useState({
+    invalid: false,
+    dontMatch: false,
+  });
+  const [userNameErr, setUserNameErr] = useState({
+    empty: false,
+    used: false,
   });
   const globalstateUser = useSelector((state) => state.auth.userName);
 
@@ -55,47 +57,46 @@ export function Register() {
 
   async function onSignUpClick() {
     setClick(1);
+    const errors = 0;
     try {
       const { userName, email, password, confirmPassword } = inputs;
 
-      if (!userName) return alert("Username belum di isi");
-
-      const foundUsername = await axiosInstance.get("/users", {
-        params: { userName },
-      });
-      if (foundUsername.data.result.length) {
-        const { username } = foundUsername.data.result[0];
-        alert(`username ${username} sudah dipakai `);
-        return setError({ ...errors, usernameError: true });
+      if (!userName) {
+        setUserNameErr({ ...userNameErr, empty: true });
+        errors++;
+      } else {
+        const foundUsername = await axiosInstance.get("/users", {
+          params: { userName },
+        });
+        if (foundUsername.data.result.length) {
+          return setUserNameErr({ ...userNameErr, used: true });
+        }
       }
 
-      let validator = require("email-validator");
-      let validEmailFormat = validator.validate(email);
-      if (!validEmailFormat) {
-        alert("format email salah");
-        setError({ ...errors, emailFormatError: true });
-        return;
-      }
-
-      const foundEmail = await axiosInstance.get("/users", {
-        params: { email },
-      });
-
-      if (foundEmail.data.result.length) {
-        alert(`email ${email} sudah terpakai`);
-        setError({ ...errors, emailDuplicateError: true });
-        return;
+      if (!email) {
+        setEmailErr({ ...emailErr, invalid: true });
+      } else {
+        let validator = require("email-validator");
+        let validEmailFormat = validator.validate(email);
+        if (!validEmailFormat) {
+          setEmailErr({ ...emailErr, invalid: true });
+        }
+        const foundEmail = await axiosInstance.get("/users", {
+          params: { email },
+        });
+        if (foundEmail.data.result.length) {
+          setEmailErr({ ...emailErr, used: true });
+        }
       }
 
       if (!password) {
-        alert("password belum di isi");
-        return;
+        setPasswordErr({ ...passwordErr, invalid: true });
       }
       if (password != confirmPassword) {
-        alert("password beda");
-        setError({ ...errors, confirmPasswordError: true });
-        return;
+        setPasswordErr({ ...passwordErr, dontMatch: true });
       }
+
+      if (!userName || !email || !password || !confirmPassword) return;
 
       const idMaker = new Date();
       const user_id = idMaker.getTime();
@@ -149,6 +150,10 @@ export function Register() {
           </p>
 
           <TextField
+            error={userNameErr.empty || userNameErr.used}
+            onFocus={() => {
+              setUserNameErr({ empty: false, used: false });
+            }}
             autoComplete="off"
             color="info"
             onChange={handleChange("userName")}
@@ -162,9 +167,14 @@ export function Register() {
                 </InputAdornment>
               ),
             }}
+            helperText={userNameErr.used ? "Username already used" : ""}
             variant="outlined"
           />
           <TextField
+            error={emailErr.invalid || emailErr.used}
+            onFocus={() => {
+              setEmailErr({ invalid: false, used: false });
+            }}
             autoComplete="off"
             color="info"
             onChange={handleChange("email")}
@@ -178,6 +188,7 @@ export function Register() {
                 </InputAdornment>
               ),
             }}
+            helperText={emailErr.used ? "Email already used" : ""}
             variant="outlined"
           />
           <FormControl
