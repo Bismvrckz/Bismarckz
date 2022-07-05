@@ -57,7 +57,7 @@ export function Register() {
 
   async function onSignUpClick() {
     setClick(1);
-    const errors = 0;
+    let errors = 0;
     try {
       const { userName, email, password, confirmPassword } = inputs;
 

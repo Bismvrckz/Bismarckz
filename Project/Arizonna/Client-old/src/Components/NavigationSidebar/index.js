@@ -39,7 +39,7 @@ export default function SideBar({
       // onMouseEnter={toggleCollapsed}
       onMouseLeave={setCollapsedTrue}
       width={"20%"}
-      className="relative "
+      className="relative"
       collapsed={collapsedState}
       collapsedWidth={"7%"}
     >

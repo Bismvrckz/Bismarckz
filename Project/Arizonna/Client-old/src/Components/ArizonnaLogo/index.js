@@ -10,8 +10,8 @@ export default function MainLogo({ collapsedState }) {
   }
 
   return (
-    <button className="text-white text-[5vh] font-[300] no-underline mb-[2vh] z-10 relative ">
-      <i class="fa-brands fa-atlassian text-cyan-400"></i>
+    <button className="text-white no-underline mb-[2vh] relative">
+      <i class="fa-brands fa-atlassian "></i>
       {collapsedState ? "" : arizonnaNotCollapsed()}
     </button>
   );
