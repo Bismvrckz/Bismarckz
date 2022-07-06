@@ -12,7 +12,7 @@ function ForgotPassword() {
 
       <img
         src="https://static.vecteezy.com/system/resources/previews/000/690/821/original/blue-mailbox-with-red-flag-and-letters-vector.jpg"
-        className="rounded-[50%] w-[15%] z-[2] m-[0vh]"
+        className="rounded-[50%] w-[15%] z-[2] m-[0vh] opacity-[.8]"
       />
 
       <div className="w-[30%] z-[3] mt-[-15vh] rounded-[2vh bg-transparent font-[montserrat] flex flex-col items-center justify-center h-[60%] ">

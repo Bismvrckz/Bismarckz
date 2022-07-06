@@ -161,7 +161,7 @@ function SignUp() {
           )}
           <p className="mt-[3vh] self-center text-[white]">
             Already have an account? <span> </span>
-            <NextLink href="/login">
+            <NextLink href="/signin">
               <a className="no-underline text-sky-500">Sign in</a>
             </NextLink>
           </p>

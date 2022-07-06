@@ -139,17 +139,19 @@ function Login() {
             <p className="text-[2vh]">Sign In</p>
           </Button>
         )}
-        <p className="mt-[14vh] text-[white]">
-          Don't have an account? <span> </span>
-          <NextLink href="/signup">
-            <a className="no-underline text-sky-500">Sign up</a>
-          </NextLink>
-        </p>
-        <p className="mt-[2vh] text-[white]">
-          <NextLink href="/forgotpassword">
-            <a className="no-underline text-sky-500">Forgot password?</a>
-          </NextLink>
-        </p>
+        <div className="flex bottom-[10vh] absolute flex-col items-center">
+          <p className="text-[white]">
+            Don't have an account? <span> </span>
+            <NextLink href="/signup">
+              <a className="no-underline text-sky-500">Sign up</a>
+            </NextLink>
+          </p>
+          <p className="text-[white]">
+            <NextLink href="/forgotpassword">
+              <a className="no-underline text-sky-500">Forgot password?</a>
+            </NextLink>
+          </p>
+        </div>
       </div>
       <div className="absolute z-[2] w-[35%]  rounded-[2vh] opacity-25 bg-black h-[65%]" />
       <ChakraProvider></ChakraProvider>
