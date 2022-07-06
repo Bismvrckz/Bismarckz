@@ -15,6 +15,7 @@ import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
+import { ChakraProvider } from '@chakra-ui/react'
 
 function Login() {
   const [click, setclick] = useState(false);
@@ -151,6 +152,7 @@ function Login() {
         </p>
       </div>
       <div className="absolute z-[2] w-[35%]  rounded-[2vh] opacity-25 bg-black h-[65%]" />
+      <ChakraProvider></ChakraProvider>
     </div>
   );
 }
