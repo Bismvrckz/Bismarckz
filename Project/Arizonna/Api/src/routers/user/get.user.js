@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../../../lib/database");
+const pool = require("../../lib/database");
 
 const getUser = async (req, res) => {
   try {

@@ -1,19 +1,19 @@
-import leftPhoto from "../../Assets/img/leftPhoto.jpg";
-import { TextField, InputAdornment } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/esm/AccountBox";
-import { useEffect, useState } from "react";
-import EmailIcon from "@mui/icons-material/esm/Email";
-import KeyIcon from "@mui/icons-material/Key";
-import { Checkbox, Button, Loading } from "@nextui-org/react";
-import IconButton from "@mui/material/IconButton";
-import { OutlinedInput } from "@mui/material";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Navigate, Link } from "react-router-dom";
-import MainLogo from "../../Components/ArizonnaLogo";
+import { Checkbox, Button, Loading } from "@nextui-org/react";
+import { TextField, InputAdornment } from "@mui/material";
 import axiosInstance from "../../services/axiosInstance";
+import Visibility from "@mui/icons-material/Visibility";
+import leftPhoto from "../../Assets/img/leftPhoto.jpg";
+import EmailIcon from "@mui/icons-material/esm/Email";
+import MainLogo from "../../Components/ArizonnaLogo";
+import FormControl from "@mui/material/FormControl";
+import { Navigate, Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import KeyIcon from "@mui/icons-material/Key";
+import { OutlinedInput } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export function Register() {

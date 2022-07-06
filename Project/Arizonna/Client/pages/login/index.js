@@ -13,24 +13,37 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import KeyIcon from "@mui/icons-material/Key";
 import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SaveIcon from "@mui/icons-material/Save";
 
 function Login() {
-  const [values, setValues] = React.useState({
-    amount: "",
+  const [click, setclick] = useState(false);
+
+  const [inputs, setInputs] = useState({
+    usernameOrEmail: "",
     password: "",
-    weight: "",
-    weightRange: "",
     showPassword: false,
   });
 
+  function afterSigninClick() {
+    setTimeout(() => {
+      setclick(false);
+    }, 5000);
+  }
+
+  async function onSigninClick() {
+    setclick(true);
+    console.log(inputs);
+  }
+
   const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+    setInputs({ ...inputs, [prop]: event.target.value });
   };
 
   const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
+    setInputs({
+      ...inputs,
+      showPassword: !inputs.showPassword,
     });
   };
 
@@ -58,6 +71,7 @@ function Login() {
           variant="outlined"
           className="w-[95%] "
           autoComplete="off"
+          onChange={handleChange("usernameOrEmail")}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -72,8 +86,8 @@ function Login() {
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={values.showPassword ? "text" : "password"}
-            value={values.password}
+            type={inputs.showPassword ? "text" : "password"}
+            value={inputs.password}
             onChange={handleChange("password")}
             endAdornment={
               <InputAdornment position="end">
@@ -83,7 +97,7 @@ function Login() {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.showPassword ? (
+                  {inputs.showPassword ? (
                     <VisibilityOff sx={{ color: "white", opacity: "0.7" }} />
                   ) : (
                     <Visibility sx={{ color: "white", opacity: "0.7" }} />
@@ -104,9 +118,26 @@ function Login() {
           <p>Remember me</p>
         </div>
         <div className="mb-[4vh]" />
-        <Button className="w-[95%] h-[7vh]" variant="contained">
-          <p className="text-[2vh]">Sign In</p>
-        </Button>
+        {click ? (
+          <LoadingButton
+            loading
+            className="w-[95%] h-[7vh]"
+            loadingPosition="start"
+            startIcon={<SaveIcon />}
+            variant="outlined"
+          >
+            {afterSigninClick()}
+            Bentar...
+          </LoadingButton>
+        ) : (
+          <Button
+            onClick={onSigninClick}
+            className="w-[95%] h-[7vh]"
+            variant="contained"
+          >
+            <p className="text-[2vh]">Sign In</p>
+          </Button>
+        )}
         <p className="mt-[14vh] text-[white]">
           Don't have an account? <span> </span>
           <NextLink href="/signup">
@@ -119,7 +150,7 @@ function Login() {
           </NextLink>
         </p>
       </div>
-      <div className="absolute z-[2] w-[35%]  rounded-[2vh] opacity-25 bg-black h-[70%]" />
+      <div className="absolute z-[2] w-[35%]  rounded-[2vh] opacity-25 bg-black h-[65%]" />
     </div>
   );
 }

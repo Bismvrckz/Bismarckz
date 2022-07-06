@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLogo from "../../components/mainLogo";
-import leftPhoto from "../../public/static/images/letter-a.png";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -10,8 +9,40 @@ import GppGoodIcon from "@mui/icons-material/GppGood";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import NextLink from "next/link";
+import LoadingButton from "@mui/lab/LoadingButton";
+import SaveIcon from "@mui/icons-material/Save";
+import axiosInstance from "../../services/axiosinstance";
 
 function SignUp() {
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [click, setclick] = useState(false);
+
+  function afterSignupClick() {
+    setTimeout(() => {
+      setclick(false);
+    }, 5000);
+  }
+
+  async function onSignupClick() {
+    setclick(true);
+    try {
+      await axiosInstance.post("users/register", inputs);
+      alert("Sukses Maszeh");
+    } catch (error) {
+      console.log({ error });
+      alert("Gagal, cek API");
+    }
+  }
+
+  const handleChange = (prop) => (event) => {
+    setInputs({ ...inputs, [prop]: event.target.value });
+  };
+
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-start items-start flex-col">
       <div className="flex items-start justify-start ml-[7vh] mt-[2vh]">
@@ -49,6 +80,7 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            onChange={handleChange("username")}
           />
           <TextField
             margin="dense"
@@ -65,6 +97,7 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            onChange={handleChange("email")}
           />
           <TextField
             margin="dense"
@@ -82,6 +115,7 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            onChange={handleChange("password")}
           />
           <TextField
             margin="dense"
@@ -99,15 +133,33 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            onChange={handleChange("confirmPassword")}
           />
           <div className="flex items-center text-white self-start h-[2rem] my-[2vh]">
             <Checkbox color="info" defaultChecked />
             <p>I Agree with the Terms and Conditions</p>
           </div>
-          <Button className="w-[95%] h-[7vh]" variant="contained">
-            <p className="text-[2vh]">Sign In</p>
-          </Button>
-          <p className="mt-[3vh] text-[white]">
+          {click ? (
+            <LoadingButton
+              loading
+              className="w-[95%] h-[7vh]"
+              loadingPosition="start"
+              startIcon={<SaveIcon />}
+              variant="outlined"
+            >
+              {afterSignupClick()}
+              Bentar...
+            </LoadingButton>
+          ) : (
+            <Button
+              onClick={onSignupClick}
+              className="w-[95%] h-[7vh]"
+              variant="contained"
+            >
+              <p className="text-[2vh]">Sign Up</p>
+            </Button>
+          )}
+          <p className="mt-[3vh] self-center text-[white]">
             Already have an account? <span> </span>
             <NextLink href="/login">
               <a className="no-underline text-sky-500">Sign in</a>

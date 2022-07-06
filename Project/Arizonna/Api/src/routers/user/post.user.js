@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../../../lib/database");
+const pool = require("../../lib/database");
 
 const userRegister = async (req, res) => {
   try {
@@ -23,6 +23,22 @@ const userRegister = async (req, res) => {
   }
 };
 
-router.post("/", userRegister);
+const registerUser = async (req, res) => {
+  try {
+    const { username, email, password, confirmPassword } = req.body;
+
+    res.send({
+      status: "Success",
+      message: "Success resgister user",
+      data: {
+        result: "success",
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+router.post("/register", registerUser);
 
 module.exports = router;

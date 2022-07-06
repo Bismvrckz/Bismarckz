@@ -3,7 +3,6 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import mailPhoto from "../../Assets/img/mailbox_mailbox.svg";
 import { Button, Loading } from "@nextui-org/react";
-import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [click, setClick] = useState(0);
