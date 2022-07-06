@@ -15,6 +15,7 @@ import MainLogo from "../../Components/ArizonnaLogo";
 import axiosInstance from "../../services/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/slices/authSlice";
+import "tailwindcss/tailwind.css";
 
 export function Login() {
   const globalstateUser = useSelector((state) => state.auth.userName);
@@ -132,7 +133,6 @@ export function Login() {
             helperText={userError ? "User tidak ditemukan" : ""}
             id="outlined-basic"
             label="Username or Email"
-            sx={{ m: 0, width: "100%" }}
             onChange={handleChange("nameOrEmail")}
             InputProps={{
               startAdornment: (
@@ -143,11 +143,7 @@ export function Login() {
             }}
             variant="outlined"
           />
-          <FormControl
-            sx={{ mt: 1, width: "100%" }}
-            variant="outlined"
-            color="info"
-          >
+          <FormControl variant="outlined" color="info">
             <InputLabel htmlFor="outlined-adornment-password">
               Password
             </InputLabel>

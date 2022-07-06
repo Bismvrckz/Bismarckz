@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MainLogo from "../mainLogo";
 import Link from "next/link";
+import { Navigate } from "react-router-dom";
 
 function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
   return (
@@ -24,7 +25,6 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
       <div className="w-[100%]">
         <MainLogo collapsedState={collapsedState} />
       </div>
-
       <Menu className="flex flex-col w-[15vw] pl-[2vw] h-[30vh] absolute z-10">
         <MenuItem
           className="my-[3vh]"
