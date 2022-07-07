@@ -22,20 +22,21 @@ function SignUp() {
   });
   const [click, setclick] = useState(false);
 
-  function afterSignupClick() {
-    setTimeout(() => {
-      setclick(false);
-    }, 5000);
-  }
-
   async function onSignupClick() {
     setclick(true);
     try {
       await axiosInstance.post("users/register", inputs);
       alert("Sukses Maszeh");
     } catch (error) {
-      console.log({ error });
-      alert("Gagal, cek API");
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+        console.log(error.response.data.detail);
+        return;
+      }
+      alert("Error dari web");
+      console.log(error);
+    } finally {
+      setclick(false);
     }
   }
 
@@ -147,7 +148,6 @@ function SignUp() {
               startIcon={<SaveIcon />}
               variant="outlined"
             >
-              {afterSignupClick()}
               Bentar...
             </LoadingButton>
           ) : (
