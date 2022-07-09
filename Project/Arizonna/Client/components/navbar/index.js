@@ -45,11 +45,11 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
           </i>
         </MenuItem>
         <MenuItem className="my-[3vh]">
-          <Link href="/signin">
+          <a href="/signin">
             <i class="fa-solid fa-arrow-right-to-bracket">
               {collapsedState ? "" : " Sign In"}
             </i>
-          </Link>
+          </a>
         </MenuItem>
       </Menu>
     </ProSidebar>

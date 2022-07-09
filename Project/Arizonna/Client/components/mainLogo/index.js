@@ -1,6 +1,4 @@
 import React from "react";
-import letterA from "../../public/static/images/letter-a.png";
-import Link from "next/link";
 
 function MainLogo({ collapsedState }) {
   function arizonnaNotCollapsed() {

@@ -4,6 +4,8 @@ const router = express.Router();
 const pool = require("../../lib/database");
 const validator = require("email-validator");
 const { hash } = require("../../lib/bcryptjs");
+const { createToken } = require("../../lib/token");
+const { sendMail } = require("../../lib/email-auth");
 
 const userRegister = async (req, res) => {
   try {
@@ -97,18 +99,30 @@ const registerUser = async (req, res, next) => {
 
     console.log({ encryptedPassword });
 
-    const sqlCreateNewUser = `INSERT into USERS  (USER_ID, USERNAME, EMAIL, USER_PASSWORD) 
-                              values (${userIdMaker},'${username}','${email}','${encryptedPassword}')`;
+    const sqlCreateNewUser = `INSERT into USERS set ?`;
+    const createUserData = [
+      {
+        user_id: userIdMaker,
+        username,
+        email,
+        user_password: encryptedPassword,
+      },
+    ];
 
-    const [createNewUserResult] = await connection.query(sqlCreateNewUser);
+    const [createNewUserResult] = await connection.query(
+      sqlCreateNewUser,
+      createUserData
+    );
 
-    const token = "";
+    const token = createToken({ user_id: userIdMaker, username });
+
+    sendMail({ email, token, username });
 
     res.send({
       status: "Success",
       message: "Success resgister user",
       data: {
-        result: "success",
+        result: createNewUserResult,
       },
     });
   } catch (error) {

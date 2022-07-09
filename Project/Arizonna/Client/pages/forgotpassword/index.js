@@ -40,7 +40,7 @@ function ForgotPassword() {
         </div>
       </div>
 
-      <a className="z-[2] absolute left-[2vw] top-[3vh]" href="/login">
+      <a className="z-[2] absolute left-[2vw] top-[3vh]" href="/signin">
         <i class="fa-solid fa-arrow-left-long" /> Back to Login
       </a>
 

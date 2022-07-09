@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLogo from "../../components/mainLogo";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -12,8 +12,10 @@ import NextLink from "next/link";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import axiosInstance from "../../services/axiosinstance";
+import { useRouter } from "next/router";
 
 function SignUp() {
+  const router = useRouter();
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -21,19 +23,27 @@ function SignUp() {
     confirmPassword: "",
   });
   const [click, setclick] = useState(false);
+  const [isRegistered, setisRegistered] = useState(false);
+
+  useEffect(() => {
+    if (isRegistered) {
+      router.push("/verificationsent");
+    }
+  }, [isRegistered]);
 
   async function onSignupClick() {
     setclick(true);
     try {
       await axiosInstance.post("users/register", inputs);
       alert("Sukses Maszeh");
+      setisRegistered(true);
     } catch (error) {
-      if (error.response.data.message) {
+      if (error.response.data?.message) {
         alert(error.response.data.message);
         console.log(error.response.data.detail);
         return;
       }
-      alert("Error dari web");
+      alert(error.message);
       console.log(error);
     } finally {
       setclick(false);
@@ -161,9 +171,9 @@ function SignUp() {
           )}
           <p className="mt-[3vh] self-center text-[white]">
             Already have an account? <span> </span>
-            <NextLink href="/signin">
-              <a className="no-underline text-sky-500">Sign in</a>
-            </NextLink>
+            <a href="/signin" className="no-underline text-sky-500">
+              Sign in
+            </a>
           </p>
         </div>
       </div>

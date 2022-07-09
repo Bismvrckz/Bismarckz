@@ -15,16 +15,19 @@ import { Button } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function Login() {
   const [click, setclick] = useState(false);
-
   const [inputs, setInputs] = useState({
     usernameOrEmail: "",
     password: "",
     showPassword: false,
   });
+
+  const router = useRouter();
 
   function afterSigninClick() {
     setTimeout(() => {
@@ -35,6 +38,16 @@ function Login() {
   async function onSigninClick() {
     setclick(true);
     console.log(inputs);
+    const res = await signIn("credentials", {
+      redirect: false,
+      inputs,
+    });
+
+    if (!res?.error) {
+      router.replace("/");
+    } else {
+      alert(res?.error);
+    }
   }
 
   const handleChange = (prop) => (event) => {
@@ -58,7 +71,7 @@ function Login() {
         <div className="flex mt-[6vh] justify-start pl-[10vh] w-[100%]">
           <MainLogo />
         </div>
-        <p className="text-[5vh] mb-[1vh] font-[500] ml-[1vh] self-start text-white mt-[3vh]">
+        <p className="text-[5vh] mb-[1vh] font-[500] ml-[1vh] self-start text-white mt-[10vh]">
           Sign in
         </p>
         <p className="text-[3.4vh] font-[200] ml-[1vh] self-start text-gray-400">
@@ -142,14 +155,14 @@ function Login() {
         <div className="flex bottom-[10vh] absolute flex-col items-center">
           <p className="text-[white]">
             Don't have an account? <span> </span>
-            <NextLink href="/signup">
-              <a className="no-underline text-sky-500">Sign up</a>
-            </NextLink>
+            <a href="/signup" className="no-underline text-sky-500">
+              Sign up
+            </a>
           </p>
           <p className="text-[white]">
-            <NextLink href="/forgotpassword">
-              <a className="no-underline text-sky-500">Forgot password?</a>
-            </NextLink>
+            <a href="/forgotpassword" className="no-underline text-sky-500">
+              Forgot password?
+            </a>
           </p>
         </div>
       </div>
