@@ -36,6 +36,14 @@ const registerUser = async (req, res, next) => {
       password,
     });
 
+    if (emptyFields.length) {
+      throw {
+        code: 400,
+        message: "Empty fields",
+        detail: `Empty fields: ${emptyFields}`,
+      };
+    }
+
     const validEmail = validator.validate(email);
 
     if (!validEmail) {
@@ -43,14 +51,6 @@ const registerUser = async (req, res, next) => {
         code: 400,
         message: "Wrong email format",
         detail: email,
-      };
-    }
-
-    if (emptyFields.length) {
-      throw {
-        code: 400,
-        message: "Empty fields",
-        detail: `Empty fields: ${emptyFields}`,
       };
     }
 

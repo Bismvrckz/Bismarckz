@@ -36,6 +36,6 @@ app.listen(port, (error) => {
   if (error) return console.log({ err: error.message });
   console.log(
     `API berhasil running di port ${port} 
-Lancar jaya mazseh (^///^) ✊😎`
+Lancar jaya mazseh (^////^)' `
   );
 });
