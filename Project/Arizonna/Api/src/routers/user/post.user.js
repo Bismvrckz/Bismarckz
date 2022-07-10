@@ -36,23 +36,26 @@ const userRegister = async (req, res, next) => {
       };
     }
 
-    if (password != confirmPassword) {
-      throw {
-        code: 400,
-        message: "Password does not match",
-        detail: `Password: ${password}, Confirm Password: ${confirmPassword}`,
-      };
-    }
-
     const strengthTester = new taiPasswordStrength.PasswordStrength();
     const results = strengthTester.check(password);
-    const { number, upper, symbol } = results;
+    const { number, upper, symbol } = results.charsets;
+    console.log(password);
+    console.log(results);
 
     if (!number || !upper || !symbol) {
       throw {
         code: 400,
         message:
           "Passwords should contain at least 8 characters including an uppercase letter, a symbol, and a number.",
+        detail: { password },
+      };
+    }
+
+    if (password != confirmPassword) {
+      throw {
+        code: 400,
+        message: "Password does not match",
+        detail: `Password: ${password}, Confirm Password: ${confirmPassword}`,
       };
     }
 
@@ -69,7 +72,7 @@ const userRegister = async (req, res, next) => {
       if (getUserResult[0].username == username) {
         throw {
           code: 400,
-          message: "Username telah dipakai",
+          message: "Username already used",
           detail: {
             databaseUsername: getUserResult[0],
             clientUsername: username,
@@ -78,7 +81,7 @@ const userRegister = async (req, res, next) => {
       } else if (getUserResult[0].email == email) {
         throw {
           code: 400,
-          message: "Email telah dipakai",
+          message: "Email already used",
           detail: { databaseEmail: getUserResult[0], clientEmail: email },
         };
       }
@@ -88,8 +91,6 @@ const userRegister = async (req, res, next) => {
     const userIdMaker = date.getTime();
 
     const encryptedPassword = hash(password);
-
-    console.log({ encryptedPassword });
 
     const sqlCreateNewUser = `INSERT into USERS set ?`;
     const createUserData = [

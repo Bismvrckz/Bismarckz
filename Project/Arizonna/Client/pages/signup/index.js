@@ -8,47 +8,64 @@ import PasswordIcon from "@mui/icons-material/Password";
 import GppGoodIcon from "@mui/icons-material/GppGood";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
-import NextLink from "next/link";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import axiosInstance from "../../services/axiosinstance";
 import { useRouter } from "next/router";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 function SignUp() {
   const router = useRouter();
+  const [click, setclick] = useState(false);
+  // const [severity, setseverity] = useState("error");
+  const [isRegistered, setisRegistered] = useState(false);
+  const [bottomAlert, setBottomAlert] = useState({
+    isShowed: false,
+    severity: "error",
+    message: "",
+  });
+  // const [alertMessage, setalertMessage] = useState("");
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [click, setclick] = useState(false);
-  const [isRegistered, setisRegistered] = useState(false);
 
   useEffect(() => {
     if (isRegistered) {
-      router.replace("/verificationsent");
+      setTimeout(() => {
+        router.replace("/verificationsent");
+      }, 2000);
     }
   }, [isRegistered]);
-
-  function strongPassword() {
-    const pass = "abc";
-    return pass;
-  }
 
   async function onSignupClick() {
     setclick(true);
     try {
       await axiosInstance.post("users/register", inputs);
-      alert("Sukses Maszeh");
+      setBottomAlert({
+        ...bottomAlert,
+        isShowed: true,
+        severity: "success",
+        message: "Success register user",
+      });
       setisRegistered(true);
     } catch (error) {
       if (error.response.data?.message) {
-        alert(error.response.data.message);
         console.log(error.response.data.detail);
-        return;
+        return setBottomAlert({
+          ...bottomAlert,
+          isShowed: true,
+          message: error.response.data.message,
+        });
       }
-      alert(error.message);
+      setBottomAlert({
+        ...bottomAlert,
+        isShowed: true,
+        message: error.message,
+      });
       console.log(error);
     } finally {
       setclick(false);
@@ -174,12 +191,20 @@ function SignUp() {
               <p className="text-[2vh]">Sign Up</p>
             </Button>
           )}
-          <p className="mt-[3vh] self-center text-[white]">
+          <p className="mt-[3vh] ml-[10vw] text-[white]">
             Already have an account? <span> </span>
             <a href="/signin" className="no-underline text-sky-500">
               Sign in
             </a>
           </p>
+          {bottomAlert.isShowed ? (
+            <Alert severity={bottomAlert.severity} className="w-[95%]">
+              <AlertTitle>{bottomAlert.severity}</AlertTitle>
+              <strong>—{bottomAlert.message} </strong>
+            </Alert>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
