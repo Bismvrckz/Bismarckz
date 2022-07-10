@@ -17,9 +17,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
   const getSessionAsync = async () => {
     try {
       const session = await getSession();
-      if (!session) {
-        router.replace("/");
-      } else {
+      if (session) {
         setCurrentSession(true);
       }
     } catch (error) {
