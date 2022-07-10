@@ -1,13 +1,14 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axiosInstance from "../../../services/axios";
+import axiosInstance from "../../../services/axiosinstance";
 
 const credentialInstance = CredentialsProvider({
   async authorize(credentials) {
     try {
-      const { userCred, password } = credentials;
+      const { usernameOrEmail, password } = credentials;
+
       const res = await axiosInstance.post("/users/login", {
-        userCred,
+        usernameOrEmail,
         password,
       });
 
@@ -15,7 +16,7 @@ const credentialInstance = CredentialsProvider({
 
       return user;
     } catch (error) {
-      throw error.response.data;
+      throw error;
     }
   },
 });

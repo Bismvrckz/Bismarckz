@@ -1,11 +1,32 @@
+import { getSession, signOut } from "next-auth/react";
 import * as React from "react";
-import NextLink from "next/link";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import MainLogo from "../mainLogo";
-import Link from "next/link";
-import { Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
+  const router = useRouter();
+  const [currentSession, setCurrentSession] = useState(false);
+
+  useEffect(() => {
+    getSessionAsync();
+  }, []);
+
+  const getSessionAsync = async () => {
+    try {
+      const session = await getSession();
+      if (!session) {
+        router.replace("/");
+      } else {
+        setCurrentSession(true);
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   return (
     <ProSidebar
       width={"22vw"}
@@ -45,11 +66,23 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
           </i>
         </MenuItem>
         <MenuItem className="my-[3vh]">
-          <a href="/signin">
-            <i class="fa-solid fa-arrow-right-to-bracket">
-              {collapsedState ? "" : " Sign In"}
-            </i>
-          </a>
+          {currentSession ? (
+            <button
+              onClick={() => {
+                signOut();
+              }}
+            >
+              <i class="fa-solid fa-power-off">
+                {collapsedState ? "" : " Sign Out"}
+              </i>
+            </button>
+          ) : (
+            <a href="/signin">
+              <i class="fa-solid fa-arrow-right-to-bracket">
+                {collapsedState ? "" : " Sign In"}
+              </i>
+            </a>
+          )}
         </MenuItem>
       </Menu>
     </ProSidebar>

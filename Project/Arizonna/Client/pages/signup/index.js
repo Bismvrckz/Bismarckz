@@ -27,7 +27,7 @@ function SignUp() {
 
   useEffect(() => {
     if (isRegistered) {
-      router.push("/verificationsent");
+      router.replace("/verificationsent");
     }
   }, [isRegistered]);
 

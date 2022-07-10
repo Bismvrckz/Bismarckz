@@ -3,7 +3,7 @@ import "tailwindcss/tailwind.css";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, appHead }) {
   return (
     <SessionProvider session={pageProps.session}>
       <div className="font-[montserrat] text-white">

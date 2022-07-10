@@ -27,7 +27,7 @@ app.use((error, req, res, next) => {
     detail: error.detail,
   };
 
-  const httpCode = typeof error.code == "number " ? error.code : 500;
+  const httpCode = typeof error.code == "number" ? error.code : 500;
 
   res.status(httpCode).send(errorFormat);
 });

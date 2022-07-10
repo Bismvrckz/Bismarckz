@@ -3,32 +3,11 @@ const { fieldIsEmpty } = require("../../helpers");
 const router = express.Router();
 const pool = require("../../lib/database");
 const validator = require("email-validator");
-const { hash } = require("../../lib/bcryptjs");
+const { hash, compare } = require("../../lib/bcryptjs");
 const { createToken } = require("../../lib/token");
 const { sendMail } = require("../../lib/email-auth");
 
-const userRegister = async (req, res) => {
-  try {
-    const { user_id, userName, email, password } = req.body.postFormat;
-    const connection = pool.promise();
-    const sqlArizonnaRegisterUser = `INSERT into USERS  (USER_ID, USERNAME, EMAIL, USER_PASSWORD) values (${user_id},'${userName}','${email}','${password}');`;
-
-    const [registerStatus] = await connection.query(sqlArizonnaRegisterUser);
-
-    res.send({
-      status: "Success",
-      message: "Success resgister user",
-      data: {
-        result: registerStatus,
-      },
-    });
-  } catch (error) {
-    res.send({ error });
-    console.log({ error });
-  }
-};
-
-const registerUser = async (req, res, next) => {
+const userRegister = async (req, res, next) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
 
@@ -130,6 +109,63 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-router.post("/register", registerUser);
+const userLogin = async (req, res, next) => {
+  try {
+    const { usernameOrEmail, password } = req.body;
+
+    const connection = pool.promise();
+
+    const sqlGetUser = `SELECT user_id, username, user_password, isVerified FROM users WHERE email = '${usernameOrEmail}' OR username = '${usernameOrEmail}';`;
+
+    const [resGetUser] = await connection.query(sqlGetUser);
+
+    if (!resGetUser.length) {
+      throw {
+        code: 404,
+        message: "User doesn't exist",
+      };
+    }
+
+    const user = resGetUser[0];
+
+    if (!user.isVerified) {
+      throw {
+        code: 403,
+        message: "User is not verified",
+      };
+    }
+
+    const isPasswordMatch = compare(password, user.user_password);
+
+    if (!isPasswordMatch) {
+      throw {
+        code: 401,
+        message: "Incorrect password",
+      };
+    }
+
+    const token = createToken({
+      user_id: user.user_id,
+      username: user.username,
+    });
+
+    res.send({
+      status: "Success",
+      message: "Login success",
+      data: {
+        result: {
+          user_id: user.user_id,
+          username: user.username,
+          accessToken: token,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+router.post("/register", userRegister);
+router.post("/login", userLogin);
 
 module.exports = router;

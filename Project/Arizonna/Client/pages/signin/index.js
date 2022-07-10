@@ -37,16 +37,25 @@ function Login() {
 
   async function onSigninClick() {
     setclick(true);
-    console.log(inputs);
-    const res = await signIn("credentials", {
-      redirect: false,
-      inputs,
-    });
 
-    if (!res?.error) {
-      router.replace("/");
-    } else {
-      alert(res?.error);
+    try {
+      const { usernameOrEmail, password } = inputs;
+      const res = await signIn("credentials", {
+        redirect: false,
+        usernameOrEmail,
+        password,
+      });
+
+      if (!res?.error) {
+        router.replace("/");
+      } else {
+        console.log({ res });
+        alert(res.error);
+      }
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      setclick(false);
     }
   }
 
@@ -140,7 +149,6 @@ function Login() {
             startIcon={<SaveIcon />}
             variant="outlined"
           >
-            {afterSigninClick()}
             Bentar...
           </LoadingButton>
         ) : (
