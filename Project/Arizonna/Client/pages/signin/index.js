@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import { ChakraProvider } from "@chakra-ui/react";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 function Login() {
@@ -28,12 +28,6 @@ function Login() {
   });
 
   const router = useRouter();
-
-  function afterSigninClick() {
-    setTimeout(() => {
-      setclick(false);
-    }, 5000);
-  }
 
   async function onSigninClick() {
     setclick(true);
@@ -47,7 +41,7 @@ function Login() {
       });
 
       if (!res?.error) {
-        router.replace("/");
+        router.replace("/afterSignIn");
       } else {
         console.log({ res });
         alert(res.error);

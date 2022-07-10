@@ -6,6 +6,7 @@ const validator = require("email-validator");
 const { hash, compare } = require("../../lib/bcryptjs");
 const { createToken } = require("../../lib/token");
 const { sendMail } = require("../../lib/email-auth");
+const taiPasswordStrength = require("tai-password-strength");
 
 const userRegister = async (req, res, next) => {
   try {
@@ -40,6 +41,18 @@ const userRegister = async (req, res, next) => {
         code: 400,
         message: "Password does not match",
         detail: `Password: ${password}, Confirm Password: ${confirmPassword}`,
+      };
+    }
+
+    const strengthTester = new taiPasswordStrength.PasswordStrength();
+    const results = strengthTester.check(password);
+    const { number, upper, symbol } = results;
+
+    if (!number || !upper || !symbol) {
+      throw {
+        code: 400,
+        message:
+          "Passwords should contain at least 8 characters including an uppercase letter, a symbol, and a number.",
       };
     }
 

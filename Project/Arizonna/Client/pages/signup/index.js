@@ -31,6 +31,11 @@ function SignUp() {
     }
   }, [isRegistered]);
 
+  function strongPassword() {
+    const pass = "abc";
+    return pass;
+  }
+
   async function onSignupClick() {
     setclick(true);
     try {
