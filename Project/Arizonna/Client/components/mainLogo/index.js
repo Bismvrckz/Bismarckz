@@ -14,7 +14,7 @@ function MainLogo({ collapsedState }) {
       href="/"
       className="text-white text-[5vh] mt-[1vw] pl-[1.5vw] font-[300] no-underline mb-[2vh] z-10 relative "
     >
-      <i class="fa-brands fa-atlassian text-cyan-400 text-[6vh]"></i>
+      <i className="fa-brands fa-atlassian text-cyan-400 text-[6vh]"></i>
       {collapsedState ? "" : arizonnaNotCollapsed()}
     </a>
   );
