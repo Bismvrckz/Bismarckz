@@ -38,11 +38,11 @@ const userRegister = async (req, res, next) => {
 
     const strengthTester = new taiPasswordStrength.PasswordStrength();
     const results = strengthTester.check(password);
-    const { number, upper, symbol } = results.charsets;
+    const { number, upper, symbol, passwordLength } = results.charsets;
     console.log(password);
     console.log(results);
 
-    if (!number || !upper || !symbol) {
+    if (!number || !upper || !symbol || passwordLength < 8) {
       throw {
         code: 400,
         message:
