@@ -78,8 +78,19 @@ function SignUp() {
 
   return (
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-start items-start flex-col">
-      <div className="flex items-start justify-start ml-[7vh] mt-[2vh]">
+      <div className="flex justify-start ml-[7vh] w-[90%]">
         <MainLogo />
+        {bottomAlert.isShowed ? (
+          <Alert
+            severity={bottomAlert.severity}
+            className="ml-[27vw] mt-[1vh] justify-self-start"
+          >
+            <AlertTitle>{bottomAlert.severity}</AlertTitle>
+            <strong>—{bottomAlert.message} </strong>
+          </Alert>
+        ) : (
+          ""
+        )}
       </div>
       <div className="grow grid grid-cols-2 w-[100%]">
         <div className="flex justify-center items-center ">
@@ -197,14 +208,6 @@ function SignUp() {
               Sign in
             </a>
           </p>
-          {bottomAlert.isShowed ? (
-            <Alert severity={bottomAlert.severity} className="w-[95%]">
-              <AlertTitle>{bottomAlert.severity}</AlertTitle>
-              <strong>—{bottomAlert.message} </strong>
-            </Alert>
-          ) : (
-            ""
-          )}
         </div>
       </div>
     </div>
