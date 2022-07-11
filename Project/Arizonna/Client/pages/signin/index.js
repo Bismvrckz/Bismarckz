@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import MainLogo from "../../components/mainLogo";
 import IconButton from "@mui/material/IconButton";
@@ -29,6 +29,21 @@ function Login() {
 
   const router = useRouter();
 
+  useEffect(() => {
+    getSessionAsync();
+  }, []);
+
+  async function getSessionAsync() {
+    try {
+      const session = await getSession();
+      if (session) {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
   async function onSigninClick() {
     setclick(true);
 
@@ -49,7 +64,9 @@ function Login() {
     } catch (error) {
       console.log({ error });
     } finally {
-      setclick(false);
+      setTimeout(() => {
+        setclick(false);
+      }, 3000);
     }
   }
 
@@ -74,7 +91,7 @@ function Login() {
         <div className="flex mt-[6vh] justify-start pl-[10vh] w-[100%]">
           <MainLogo />
         </div>
-        <p className="text-[5vh] mb-[1vh] font-[500] ml-[1vh] self-start text-white mt-[10vh]">
+        <p className="text-[5vh] mb-[1vh] font-[500] ml-[1vh] self-start text-white mt-[15vh]">
           Sign in
         </p>
         <p className="text-[3.4vh] font-[200] ml-[1vh] self-start text-gray-400">

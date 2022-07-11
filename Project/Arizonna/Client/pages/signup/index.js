@@ -14,18 +14,17 @@ import axiosInstance from "../../services/axiosinstance";
 import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { getSession } from "next-auth/react";
 
 function SignUp() {
   const router = useRouter();
   const [click, setclick] = useState(false);
-  // const [severity, setseverity] = useState("error");
   const [isRegistered, setisRegistered] = useState(false);
   const [bottomAlert, setBottomAlert] = useState({
     isShowed: false,
     severity: "error",
     message: "",
   });
-  // const [alertMessage, setalertMessage] = useState("");
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -33,12 +32,24 @@ function SignUp() {
     confirmPassword: "",
   });
 
+  async function getSessionAsync() {
+    try {
+      const session = await getSession();
+      if (session) {
+        router.replace("/");
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
   useEffect(() => {
     if (isRegistered) {
       setTimeout(() => {
         router.replace("/verificationsent");
       }, 2000);
     }
+    getSessionAsync();
   }, [isRegistered]);
 
   async function onSignupClick() {
@@ -68,7 +79,9 @@ function SignUp() {
       });
       console.log(error);
     } finally {
-      setclick(false);
+      setTimeout(() => {
+        setclick(false);
+      }, 3000);
     }
   }
 
@@ -80,17 +93,6 @@ function SignUp() {
     <div className="h-[100vh] bg-gradient-to-r from-blue-900 to-green-800 flex justify-start items-start flex-col">
       <div className="flex justify-start ml-[7vh] w-[90%]">
         <MainLogo />
-        {bottomAlert.isShowed ? (
-          <Alert
-            severity={bottomAlert.severity}
-            className="ml-[27vw] mt-[1vh] justify-self-start"
-          >
-            <AlertTitle>{bottomAlert.severity}</AlertTitle>
-            <strong>—{bottomAlert.message} </strong>
-          </Alert>
-        ) : (
-          ""
-        )}
       </div>
       <div className="grow grid grid-cols-2 w-[100%]">
         <div className="flex justify-center items-center ">
@@ -208,6 +210,17 @@ function SignUp() {
               Sign in
             </a>
           </p>
+          {bottomAlert.isShowed ? (
+            <Alert
+              severity={bottomAlert.severity}
+              className="w-[95%] mt-[1vh] justify-self-start"
+            >
+              <AlertTitle>{bottomAlert.severity}</AlertTitle>
+              <strong>—{bottomAlert.message} </strong>
+            </Alert>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

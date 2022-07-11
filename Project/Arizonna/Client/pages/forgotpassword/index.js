@@ -2,6 +2,7 @@ import React from "react";
 import MainLogo from "../../components/mainLogo";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ForgotPassword() {
   return (
@@ -12,7 +13,7 @@ function ForgotPassword() {
 
       <img
         src="https://static.vecteezy.com/system/resources/previews/000/690/821/original/blue-mailbox-with-red-flag-and-letters-vector.jpg"
-        className="rounded-[50%] w-[15%] z-[2] m-[0vh] opacity-[.8]"
+        className="rounded-[50%] mt-[8vh] w-[15%] z-[2] m-[0vh] opacity-[.8]"
       />
 
       <div className="w-[30%] z-[3] mt-[-15vh] rounded-[2vh bg-transparent font-[montserrat] flex flex-col items-center justify-center h-[60%] ">
@@ -41,7 +42,8 @@ function ForgotPassword() {
       </div>
 
       <a className="z-[2] absolute left-[2vw] top-[3vh]" href="/signin">
-        <i class="fa-solid fa-arrow-left-long" /> Back to Login
+        <FontAwesomeIcon icon="fa-solid fa-arrow-left" className="w-[1vw]" />{" "}
+        Back to Login
       </a>
 
       <div className="absolute z-[1]  w-[30%] mt-[20vh] rounded-[2vh] opacity-25 bg-black h-[63%]" />

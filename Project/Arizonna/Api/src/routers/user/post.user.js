@@ -5,7 +5,7 @@ const pool = require("../../lib/database");
 const validator = require("email-validator");
 const { hash, compare } = require("../../lib/bcryptjs");
 const { createToken } = require("../../lib/token");
-const { sendMail } = require("../../lib/email-auth");
+const { sendVerificationMail } = require("../../lib/email-auth");
 const taiPasswordStrength = require("tai-password-strength");
 
 const userRegister = async (req, res, next) => {
@@ -109,7 +109,7 @@ const userRegister = async (req, res, next) => {
 
     const token = createToken({ user_id: userIdMaker, username });
 
-    sendMail({ email, token, username });
+    sendVerificationMail({ email, token, username });
 
     res.send({
       status: "Success",
@@ -142,12 +142,12 @@ const userLogin = async (req, res, next) => {
 
     const user = resGetUser[0];
 
-    if (!user.isVerified) {
-      throw {
-        code: 403,
-        message: "User is not verified",
-      };
-    }
+    // if (!user.isVerified) {
+    //   throw {
+    //     code: 403,
+    //     message: "User is not verified",
+    //   };
+    // }
 
     const isPasswordMatch = compare(password, user.user_password);
 

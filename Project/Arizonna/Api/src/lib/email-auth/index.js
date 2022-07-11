@@ -14,7 +14,7 @@ const mailCourier = nodemailer.createTransport({
   },
 });
 
-const sendMail = async ({ email, username, token }) => {
+const sendVerificationMail = async ({ email, username, token }) => {
   const mail = {
     from: "Arizonna verification <ahmadfayruzsyamil33@gmail.com>",
     to: email,
@@ -73,4 +73,4 @@ const sendMail = async ({ email, username, token }) => {
   }
 };
 
-module.exports = { sendMail };
+module.exports = { sendVerificationMail };

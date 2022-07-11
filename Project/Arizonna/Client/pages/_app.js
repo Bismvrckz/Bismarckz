@@ -2,6 +2,10 @@ import "../styles/globals.css";
 import "tailwindcss/tailwind.css";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+library.add(fas, fab);
 
 function MyApp({ Component, pageProps, appHead }) {
   return (
@@ -9,10 +13,7 @@ function MyApp({ Component, pageProps, appHead }) {
       <div className="font-[montserrat] text-white">
         <Head>
           <title>Arizonna</title>
-          <script
-            src="https://kit.fontawesome.com/880ed11170.js"
-            crossorigin="anonymous"
-          />
+
           <link
             rel="icon"
             type="image/png"
