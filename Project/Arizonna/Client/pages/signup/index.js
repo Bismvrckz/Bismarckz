@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { getSession } from "next-auth/react";
+const taiPasswordStrength = require("tai-password-strength");
 
 function SignUp() {
   const router = useRouter();
@@ -24,6 +25,7 @@ function SignUp() {
     isShowed: false,
     severity: "error",
     message: "",
+    errorType: "",
   });
   const [inputs, setInputs] = useState({
     username: "",
@@ -61,21 +63,24 @@ function SignUp() {
         isShowed: true,
         severity: "success",
         message: "Success register user",
+        errorType: "",
       });
       setisRegistered(true);
     } catch (error) {
       if (error.response.data?.message) {
-        console.log(error.response.data.detail);
+        console.log(error.response.data);
         return setBottomAlert({
           ...bottomAlert,
-          isShowed: true,
+          isShowed: false,
           message: error.response.data.message,
+          errorType: error.response.data.errorType,
         });
       }
       setBottomAlert({
         ...bottomAlert,
         isShowed: true,
         message: error.message,
+        errorType: "",
       });
       console.log(error);
     } finally {
@@ -83,6 +88,39 @@ function SignUp() {
         setclick(false);
       }, 3000);
     }
+  }
+
+  function passwordStrengthNotif() {
+    if (!inputs.password) return;
+    const strengthTester = new taiPasswordStrength.PasswordStrength();
+    const passwordResults = strengthTester.check(inputs.password);
+
+    let textColor;
+    let textWord;
+
+    switch (passwordResults.strengthCode) {
+      case "VERY_WEAK":
+        textColor = "text-red-500";
+        textWord = "Very Weak";
+        break;
+      case "WEAK":
+        textColor = "text-yellow-500";
+        textWord = "Weak";
+        break;
+      case "REASONABLE":
+        textColor = "text-orange-500";
+        textWord = "Reasonable";
+        break;
+      case "STRONG":
+        textColor = "text-green-500";
+        textWord = "Strong";
+        break;
+      case "VERY_STRONG":
+        textColor = "text-cyan-500";
+        textWord = "Very Strong";
+        break;
+    }
+    return <p className={`${textColor} w-[6vw]`}>{textWord}</p>;
   }
 
   const handleChange = (prop) => (event) => {
@@ -100,8 +138,6 @@ function SignUp() {
             src="https://www.utviklingssenter.no/aktiviteter/kompetanseutvikling/prosjektlederskolen?pid=Utviklingssenter-ArticlePage-Image&r_n_d=23103_&adjust=1&x=843&from=0"
             className="rounded-[50%] w-[80%] brightness-[.85]"
           />
-          {/* <i class="fa-solid absolute z-[19] fa-feather-pointed text-gray-400 text-[40vh]"></i>
-          <i class="fa-solid absolute rotate-[225deg] z-[10] fa-circle-notch text-[40vh]"></i> */}
         </div>
 
         <div className="flex flex-col justify-start w-[75%]">
@@ -112,6 +148,10 @@ function SignUp() {
             Created for developers by developers
           </p>
           <TextField
+            error={
+              bottomAlert.errorType == "username" ||
+              bottomAlert.errorType == "emptyFields"
+            }
             margin="dense"
             color="info"
             id="outlined-basic"
@@ -126,9 +166,16 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            helperText={
+              bottomAlert.errorType == "username" ? bottomAlert.message : ""
+            }
             onChange={handleChange("username")}
           />
           <TextField
+            error={
+              bottomAlert.errorType == "email" ||
+              bottomAlert.errorType == "emptyFields"
+            }
             margin="dense"
             color="info"
             id="outlined-basic"
@@ -143,9 +190,16 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            helperText={
+              bottomAlert.errorType == "email" ? bottomAlert.message : ""
+            }
             onChange={handleChange("email")}
           />
           <TextField
+            error={
+              bottomAlert.errorType == "password" ||
+              bottomAlert.errorType == "emptyFields"
+            }
             margin="dense"
             color="info"
             id="outlined-basic"
@@ -160,10 +214,18 @@ function SignUp() {
                   <PasswordIcon sx={{ color: "white", opacity: "0.7" }} />
                 </InputAdornment>
               ),
+              endAdornment: <>{passwordStrengthNotif()}</>,
             }}
+            helperText={
+              bottomAlert.errorType == "password" ? bottomAlert.message : ""
+            }
             onChange={handleChange("password")}
           />
           <TextField
+            error={
+              bottomAlert.errorType == "confirmPassword" ||
+              bottomAlert.errorType == "emptyFields"
+            }
             margin="dense"
             color="info"
             id="outlined-basic"
@@ -179,6 +241,12 @@ function SignUp() {
                 </InputAdornment>
               ),
             }}
+            helperText={
+              bottomAlert.errorType == "confirmPassword" ||
+              bottomAlert.errorType == "emptyFields"
+                ? bottomAlert.message
+                : ""
+            }
             onChange={handleChange("confirmPassword")}
           />
           <div className="flex items-center text-white self-start h-[2rem] my-[2vh]">

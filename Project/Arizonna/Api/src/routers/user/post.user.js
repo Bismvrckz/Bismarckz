@@ -21,8 +21,9 @@ const userRegister = async (req, res, next) => {
     if (emptyFields.length) {
       throw {
         code: 400,
-        message: "Empty fields",
+        message: "Please fill all the required fields",
         detail: `Empty fields: ${emptyFields}`,
+        errorType: "emptyFields",
       };
     }
 
@@ -33,6 +34,7 @@ const userRegister = async (req, res, next) => {
         code: 400,
         message: "Wrong email format",
         detail: email,
+        errorType: "email",
       };
     }
 
@@ -48,6 +50,7 @@ const userRegister = async (req, res, next) => {
         message:
           "Passwords should contain at least 8 characters including an uppercase letter, a symbol, and a number.",
         detail: { password },
+        errorType: "password",
       };
     }
 
@@ -56,6 +59,7 @@ const userRegister = async (req, res, next) => {
         code: 400,
         message: "Password does not match",
         detail: `Password: ${password}, Confirm Password: ${confirmPassword}`,
+        errorType: "confirmPassword",
       };
     }
 
@@ -77,12 +81,14 @@ const userRegister = async (req, res, next) => {
             databaseUsername: getUserResult[0],
             clientUsername: username,
           },
+          errorType: "username",
         };
       } else if (getUserResult[0].email == email) {
         throw {
           code: 400,
           message: "Email already used",
           detail: { databaseEmail: getUserResult[0], clientEmail: email },
+          errorType: "email",
         };
       }
     }
