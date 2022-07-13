@@ -11,7 +11,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import KeyIcon from "@mui/icons-material/Key";
-import { Button } from "@mui/material";
+import { Button, FormHelperText } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
@@ -21,6 +21,10 @@ import { useRouter } from "next/router";
 
 function Login() {
   const [click, setclick] = useState(false);
+  const [inputError, setinputError] = useState({
+    errorType: "",
+    message: "",
+  });
   const [inputs, setInputs] = useState({
     usernameOrEmail: "",
     password: "",
@@ -31,7 +35,8 @@ function Login() {
 
   useEffect(() => {
     getSessionAsync();
-  }, []);
+    console.log(inputError);
+  });
 
   async function getSessionAsync() {
     try {
@@ -58,8 +63,14 @@ function Login() {
       if (!res?.error) {
         router.replace("/afterSignIn");
       } else {
-        console.log({ res });
-        alert(res.error);
+        console.log(res.error);
+        setinputError({
+          ...inputError,
+          message: res.error,
+          errorType: res.error.includes("password")
+            ? "password"
+            : "usernameOrEmail",
+        });
       }
     } catch (error) {
       console.log({ error });
@@ -98,6 +109,7 @@ function Login() {
           Sign in to Arizonna
         </p>
         <TextField
+          error={inputError.errorType == "usernameOrEmail"}
           margin="normal"
           color="info"
           id="outlined-basic"
@@ -113,12 +125,20 @@ function Login() {
               </InputAdornment>
             ),
           }}
+          helperText={
+            inputError.errorType == "usernameOrEmail" ? inputError.message : ""
+          }
         />{" "}
-        <FormControl variant="outlined" className="w-[95%]">
+        <FormControl
+          error={inputError.errorType == "password"}
+          variant="outlined"
+          className="w-[95%]"
+        >
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
           <OutlinedInput
+            error={inputError.errorType == "password"}
             id="outlined-adornment-password"
             type={inputs.showPassword ? "text" : "password"}
             value={inputs.password}
@@ -146,6 +166,9 @@ function Login() {
             }
             label="Password"
           />
+          <FormHelperText className="text-red-600">
+            {inputError.errorType == "password" ? inputError.message : ""}
+          </FormHelperText>
         </FormControl>
         <div className="flex items-center text-white self-start h-[2rem] mt-[2vh]">
           <Checkbox color="info" defaultChecked />

@@ -143,6 +143,7 @@ const userLogin = async (req, res, next) => {
       throw {
         code: 404,
         message: "User doesn't exist",
+        errorType: "usernameOrEmail",
       };
     }
 
@@ -161,6 +162,7 @@ const userLogin = async (req, res, next) => {
       throw {
         code: 401,
         message: "Incorrect password",
+        errorType: "password",
       };
     }
 
