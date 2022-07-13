@@ -52,7 +52,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
             setmainPageContent("Explore");
           }}
         >
-          <FontAwesomeIcon icon="fa-solid fa-compass" className="w-[1vw]" />
+          <FontAwesomeIcon icon="fa-solid fa-compass" className="w-[1rem]" />
           <p className="mt-[-2.7vh] mb-[-4vh] ml-[1.1vw] text-[1.5rem] font-[500]">
             {collapsedState ? "" : "Explore"}
           </p>
