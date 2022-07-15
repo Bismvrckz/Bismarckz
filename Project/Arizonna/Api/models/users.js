@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
       },
       username: {
         type: DataTypes.STRING(20),
@@ -40,8 +40,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "users",
+      modelName: "user",
     }
   );
   return users;
 };
+
+// asdsd

@@ -25,5 +25,8 @@
     "nodemon": "^2.0.18",
     "sequelize": "^6.21.3",
     "tai-password-strength": "^1.1.3"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
   }
 }

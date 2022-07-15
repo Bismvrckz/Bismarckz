@@ -22,7 +22,7 @@ function SignUp() {
   const [click, setclick] = useState(false);
   const [isRegistered, setisRegistered] = useState(false);
   const [bottomAlert, setBottomAlert] = useState({
-    isShowed: false,
+    isShowed: true,
     severity: "error",
     message: "",
     errorType: "",
@@ -69,6 +69,13 @@ function SignUp() {
     } catch (error) {
       if (error.response.data?.message) {
         console.log(error.response.data);
+        if (!error.response.data.errorType) {
+          return setBottomAlert({
+            ...bottomAlert,
+            isShowed: true,
+            message: error.response.data.message,
+          });
+        }
         return setBottomAlert({
           ...bottomAlert,
           isShowed: false,
@@ -80,9 +87,8 @@ function SignUp() {
         ...bottomAlert,
         isShowed: true,
         message: error.message,
-        errorType: "",
       });
-      console.log(error);
+      console.log({ error });
     } finally {
       setTimeout(() => {
         setclick(false);

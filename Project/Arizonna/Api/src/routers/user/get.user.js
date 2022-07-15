@@ -2,30 +2,23 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../../lib/database");
 const { verifyToken } = require("../../lib/token");
+const { user } = require("../../../models");
+const { Op } = require("sequelize");
 
 const getUser = async (req, res) => {
   try {
-    const { userName, email } = req.query;
-    const connection = pool.promise();
-    let arizonnaGetUser;
-    switch (userName) {
-      case undefined:
-        arizonnaGetUser = `SELECT * FROM users WHERE email = '${email}';`;
+    const { username, email } = req.query;
 
-        break;
-
-      default:
-        arizonnaGetUser = `SELECT * FROM users WHERE username = '${userName}';`;
-        break;
-    }
-
-    const [getUserResult] = await connection.query(arizonnaGetUser);
+    const resGetUserSequelize = await user.findOne({
+      where: { [Op.or]: { username: username, email: email } },
+    });
 
     res.send({
-      result: getUserResult,
+      result: resGetUserSequelize,
     });
   } catch (error) {
-    res.send({ error });
+    console.log(error);
+    res.send(error);
   }
 };
 
@@ -37,17 +30,18 @@ const userVerificationHandler = async (req, res, next) => {
 
     const { username, user_id } = verifiedToken;
 
-    const connection = pool.promise();
-    const updateUserIsVerifiedStatus = `UPDATE USERS SET ? where USER_ID  = ?`;
-    const updateUserIsVerifiedStatusData = [{ isVerified: true }, user_id];
-
-    const [resUpdateUserIsVerifiedStatus] = await connection.query(
-      updateUserIsVerifiedStatus,
-      updateUserIsVerifiedStatusData
+    const updateVerifyUserSequelize = await user.update(
+      { isVerified: true },
+      {
+        where: { user_id },
+      }
     );
 
-    if (!resUpdateUserIsVerifiedStatus.affectedRows)
-      throw { message: "Failed user verification" };
+    if (!updateVerifyUserSequelize[0])
+      throw {
+        message: "Failed user verification",
+        errorType: "auth",
+      };
 
     res.send(`<!DOCTYPE html>
       <html lang="en">
@@ -82,7 +76,7 @@ const userVerificationHandler = async (req, res, next) => {
                   Your email is verified
             </p>
       
-            <a href="http://localhost:3000" target="_blank"
+            <a href="http://localhost:3000/signin" target="_blank"
               class="bg-blue-500 flex items-center justify-center h-[3rem] my-[1vh] w-[15vw] text-[1.2rem] rounded-[1vh]"
             >
               Continue to Arizonna
@@ -97,7 +91,7 @@ const userVerificationHandler = async (req, res, next) => {
         </body>
       </html>`);
   } catch (error) {
-    console.log({ error });
+    next(error);
   }
 };
 

@@ -1,16 +1,24 @@
-const { users } = require("../models");
+const { user } = require("../models");
 
 const createUser = async () => {
   try {
-    const res = await users.create({
+    const res = await user.create({
       username: "abcdef",
       email: "mail@mdefail.com",
       user_password: "123",
     });
     console.log("success");
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
 };
 
-createUser();
+const findUser = async () => {
+  try {
+    const resFindUser = await user.findOne({ where: { username: "1234" } });
+    console.log(resFindUser == true);
+  } catch (error) {}
+};
+
+findUser();
