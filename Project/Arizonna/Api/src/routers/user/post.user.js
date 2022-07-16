@@ -64,29 +64,29 @@ const userRegister = async (req, res, next) => {
       };
     }
 
-    const resGetUserSequelize = await user.findOne({
+    const resGetUser = await user.findOne({
       where: { [Op.or]: { username, email } },
     });
 
-    console.log(resGetUserSequelize?.dataValues);
+    // console.log(resGetUser?.dataValues);
     // console.log({ getUserResult });
 
-    if (resGetUserSequelize) {
-      if (resGetUserSequelize.dataValues.username == username) {
+    if (resGetUser) {
+      if (resGetUser.dataValues.username == username) {
         throw {
           code: 400,
           message: "Username already used",
           detail: {
-            databaseUsername: resGetUserSequelize,
+            databaseUsername: resGetUser,
             currentClientUsername: username,
           },
           errorType: "username",
         };
-      } else if (resGetUserSequelize.dataValues.email == email) {
+      } else if (resGetUser.dataValues.email == email) {
         throw {
           code: 400,
           message: "Email already used",
-          detail: { databaseEmail: resGetUserSequelize, clientEmail: email },
+          detail: { databaseEmail: resGetUser, clientEmail: email },
           errorType: "email",
         };
       }
@@ -96,21 +96,6 @@ const userRegister = async (req, res, next) => {
     const userIdMaker = date.getTime();
 
     const encryptedPassword = hash(password);
-
-    const sqlCreateNewUser = `INSERT into USERS set ?`;
-    const createUserData = [
-      {
-        user_id: userIdMaker,
-        username,
-        email,
-        user_password: encryptedPassword,
-      },
-    ];
-
-    // const [createNewUserResult] = await connection.query(
-    //   sqlCreateNewUser,
-    //   createUserData
-    // );
 
     const resCreateNewUser = await user.create({
       user_id: userIdMaker,
@@ -142,11 +127,11 @@ const userLogin = async (req, res, next) => {
   try {
     const { usernameOrEmail, password } = req.body;
 
-    const resGetUserSequelize = await user.findOne({
+    const resGetUser = await user.findOne({
       where: { [Op.or]: { username: usernameOrEmail, email: usernameOrEmail } },
     });
 
-    if (!resGetUserSequelize) {
+    if (!resGetUser) {
       throw {
         code: 404,
         message: "User doesn't exist",
@@ -154,9 +139,9 @@ const userLogin = async (req, res, next) => {
       };
     }
 
-    console.log(resGetUserSequelize.dataValues);
+    console.log(resGetUser.dataValues);
 
-    const currentUser = resGetUserSequelize.dataValues;
+    const currentUser = resGetUser.dataValues;
 
     // if (!currentUser.isVerified) {
     //   throw {

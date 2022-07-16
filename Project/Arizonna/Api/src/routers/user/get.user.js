@@ -1,22 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const pool = require("../../lib/database");
 const { verifyToken } = require("../../lib/token");
 const { user } = require("../../../models");
 const { Op } = require("sequelize");
+const { auth } = require("../../helpers/auth");
 // const defaultAvatar = require("../../../public/userAvatar");
 
 const getUser = async (req, res) => {
   try {
-    const { username, email } = req.query;
+    const { dataValues } = req.user;
+    // console.log({ dataValues });
 
-    const resGetUserSequelize = await user.findOne({
-      where: { [Op.or]: { username: username, email: email } },
-    });
-
-    res.send({
-      result: resGetUserSequelize,
-    });
+    res.send({ dataValues });
   } catch (error) {
     console.log(error);
     res.send(error);
@@ -106,7 +101,7 @@ const userAvatar = async (req, res, next) => {
   }
 };
 
-router.get("/", getUser);
+router.get("/:user_id", auth, getUser);
 router.get("/verify/:token", userVerificationHandler);
 router.get("/avatar", userAvatar);
 
