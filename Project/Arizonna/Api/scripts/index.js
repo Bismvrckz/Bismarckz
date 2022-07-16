@@ -6,6 +6,7 @@ const createUser = async () => {
       username: "abcdef",
       email: "mail@mdefail.com",
       user_password: "123",
+      bio: "Bio lorem ipsum sit dolor amet",
     });
     console.log("success");
     console.log(res);

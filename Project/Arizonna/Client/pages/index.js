@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { getSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import ExplorePage from "./explore/index.js";
 import MyProfilePage from "./myprofile/index.js";
 
 export default function Home() {
   const [collapsedState, setcollapsedState] = useState(true);
+
+  async function asyncGetSession() {
+    try {
+      const a = await getSession();
+      console.log(a);
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    asyncGetSession();
+  }, []);
 
   const [mainPageContent, setmainPageContent] = useState("Explore");
 

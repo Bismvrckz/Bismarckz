@@ -11,6 +11,7 @@ const credentialInstance = CredentialsProvider({
         usernameOrEmail,
         password,
       });
+      // console.log({ res });
 
       const user = res.data.data.result;
 

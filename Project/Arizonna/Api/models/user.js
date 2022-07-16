@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      bio: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      fullname: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
       user_avatar: {
         type: DataTypes.STRING(100),
         defaultValue:

@@ -22,6 +22,14 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      bio: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      fullname: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+      },
       user_avatar: {
         type: DataTypes.STRING,
         defaultValue:

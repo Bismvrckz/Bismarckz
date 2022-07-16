@@ -22,7 +22,7 @@ function SignUp() {
   const [click, setclick] = useState(false);
   const [isRegistered, setisRegistered] = useState(false);
   const [bottomAlert, setBottomAlert] = useState({
-    isShowed: true,
+    isShowed: false,
     severity: "error",
     message: "",
     errorType: "",

@@ -35,7 +35,6 @@ function Login() {
 
   useEffect(() => {
     getSessionAsync();
-    console.log(inputError);
   });
 
   async function getSessionAsync() {

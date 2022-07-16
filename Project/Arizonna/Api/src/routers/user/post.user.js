@@ -117,6 +117,7 @@ const userRegister = async (req, res, next) => {
       username,
       email,
       user_password: encryptedPassword,
+      bio: "",
     });
 
     console.log(`Success create user ${username}`);
