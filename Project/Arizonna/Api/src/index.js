@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 2000;
+const rootPath = require("app-root-path");
 
 // ROUTERS
 const usersRouter = require("./routers/user");
@@ -11,6 +12,7 @@ const usersRouter = require("./routers/user");
 app.use(express.json());
 app.use(bearerToken());
 app.use(cors());
+app.use(express.static(rootPath + "/public"));
 
 app.get("/", (req, res) => {
   res.send("Akses API aman 👍");

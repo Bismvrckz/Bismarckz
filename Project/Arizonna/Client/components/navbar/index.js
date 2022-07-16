@@ -93,7 +93,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
                 icon="fa-solid fa-arrow-right-to-bracket"
                 className="w-[1vw]"
               />
-              <p className="mt-[-2.7vh] ml-[1.1vw] text-[1.5rem] font-[500]">
+              <p className="mt-[-2.7vh] ml-[1.2vw] text-[1.5rem] font-[500]">
                 {" "}
                 {collapsedState ? "" : " Sign In"}
               </p>

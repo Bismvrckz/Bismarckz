@@ -18,7 +18,10 @@ const findUser = async () => {
   try {
     const resFindUser = await user.findOne({ where: { username: "1234" } });
     console.log(resFindUser == true);
-  } catch (error) {}
+  } catch (error) {
+    console.log({ error });
+  }
 };
 
-findUser();
+// findUser();
+createUser();

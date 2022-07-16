@@ -4,6 +4,7 @@ const pool = require("../../lib/database");
 const { verifyToken } = require("../../lib/token");
 const { user } = require("../../../models");
 const { Op } = require("sequelize");
+// const defaultAvatar = require("../../../public/userAvatar");
 
 const getUser = async (req, res) => {
   try {
@@ -95,7 +96,18 @@ const userVerificationHandler = async (req, res, next) => {
   }
 };
 
+const userAvatar = async (req, res, next) => {
+  try {
+    res.send(
+      `<html> <img src="/userAvatar/defaultAvatar.png" alt="image" /> </html>`
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 router.get("/", getUser);
 router.get("/verify/:token", userVerificationHandler);
+router.get("/avatar", userAvatar);
 
 module.exports = router;

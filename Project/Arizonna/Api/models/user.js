@@ -8,7 +8,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      users.hasMany(models.post, { foreignKey: "user_id", as: "posts" });
+      users.hasMany(models.comment, {
+        foreignKey: "user_id",
+        as: "userComments",
+      });
+      users.hasMany(models.like, { foreignKey: "user_id", as: "userLikes" });
     }
   }
   users.init(
@@ -28,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
+      },
+      user_avatar: {
+        type: DataTypes.STRING(100),
+        defaultValue:
+          "C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png",
       },
       user_password: {
         type: DataTypes.STRING(100),

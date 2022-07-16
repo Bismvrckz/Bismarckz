@@ -1,5 +1,7 @@
 "use strict";
 const { DataTypes } = require("sequelize");
+const rootPath = require("app-root-path");
+// const defaultAvatarPath = require("C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -8,20 +10,25 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
+        type: DataTypes.BIGINT,
       },
       username: {
-        type: Sequelize.STRING(20),
+        type: DataTypes.STRING(20),
         allowNull: false,
         unique: true,
       },
       email: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
       },
+      user_avatar: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png",
+      },
       user_password: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       isVerified: {
