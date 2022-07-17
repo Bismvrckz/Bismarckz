@@ -2,8 +2,8 @@ import { getSession } from "next-auth/react";
 import React from "react";
 import axiosInstance from "../../services/axiosinstance";
 
-function MyProfilePage(props) {
-  console.log(props);
+function MyProfilePage() {
+  console.log();
   // const { user } = props;
   return (
     <div className="bg-gray-500 opacity-[1] flex items-center justify-center w-[98%] h-[98%]">
