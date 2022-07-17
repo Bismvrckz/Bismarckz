@@ -191,7 +191,18 @@ const userLogin = async (req, res, next) => {
   }
 };
 
+const userResendVerificationMail = async (req, res, next) => {
+  try {
+    const { username, email } = req.body.user;
+    const token = req.body.accessToken;
+    sendVerificationMail({ username, token, email });
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
 router.post("/register", userRegister);
 router.post("/login", userLogin);
+router.post("/resendVerificationMail", userResendVerificationMail);
 
 module.exports = router;
