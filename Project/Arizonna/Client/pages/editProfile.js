@@ -9,21 +9,17 @@ function editProfile(props) {
     props.user.dataValues;
 
   return (
-    <div className="bg-gradient-to-r flex items-center justify-center from-teal-900 to-cyan-900 w-[100vw] h-[100vh]">
-      <div className="w-[95%] h-[95%] flex flex-col justify-evenly items-start">
-        <div className="flex items-center">
+    <div className="bg-gradient-to-r flex items-center justify-center from-teal-900 to-cyan-900 w-[100vw] h-[100vh] relative">
+      <div className="w-[95%] h-[95%] flex flex-col justify-evenly items-start z-[2]">
+        <div id="changeUserImage" className="flex items-center">
           <img className="rounded-[50%] w-[10vw] h-[10vw]" src={user_avatar} />
           <label
             for="imageInput"
-            className="font-[montserrat] hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
+            className="font-[montserrat] cursor-pointer hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
           >
             <a className="cursor-pointer">Change Image</a>
             <input id="imageInput" className="hidden" type={"file"} />
           </label>
-
-          {/* <Button className="ml-[3vw] w-[14vw]" variant="outlined">
-            Change Picture
-          </Button> */}
         </div>
         <TextField
           className="w-[20vw]"
@@ -51,6 +47,7 @@ function editProfile(props) {
         />
         <Button variant="contained">Save Changes</Button>
       </div>
+      <div className="bg-black z-[1] w-[98vw] h-[98vh] opacity-[.3] rounded-[1vh] absolute" />
     </div>
   );
 }

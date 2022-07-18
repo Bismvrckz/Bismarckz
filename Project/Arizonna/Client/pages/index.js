@@ -53,6 +53,15 @@ function Home(props) {
   // }, []);
 
   function ExplorePage() {
+    if (!props.user?.dataValues) {
+      return (
+        <div className="w-[98%] h-[98%]">
+          <div>abcd</div>
+          <img src={require("../public/static/user.png")} />
+        </div>
+      );
+    }
+
     const { bio, username, createdAt, isVerified } = props.user.dataValues;
 
     if (!isVerified)
@@ -74,15 +83,24 @@ function Home(props) {
 
     return (
       <div className="bg-cyan-500 opacity-[.2] w-[98%] h-[98%]">
-        <div>abc</div>
-        <img src="/public/static/login.png" />
+        <div>abcd</div>
+        <img src={require("../public/static/user.png")} />
       </div>
     );
   }
 
   function MyProfilePage() {
     // console.log(props);
-
+    if (!props.user?.dataValues) {
+      return (
+        <div className="w-[98%] flex flex-col items-center justify-center h-[98%]">
+          <p className="text-[2rem] mb-[3vh]">You are not Signed In</p>
+          <Button variant="outlined" className="w-[6vw] h-[2vw] ">
+            <a href="/signin">Sign In</a>
+          </Button>
+        </div>
+      );
+    }
     const {
       bio,
       username,
