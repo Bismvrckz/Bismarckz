@@ -40,7 +40,7 @@ function editProfile(props) {
 
       const res = await axiosInstance.patch("/users/avatar", body, config);
 
-      alert(res.data);
+      setPictureIsChanged(false);
     } catch (error) {
       console.log({ error });
     }

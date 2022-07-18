@@ -13,9 +13,13 @@ const updateUserProfilePicture = async (req, res, next) => {
     await updateImageUser.update({
       user_avatar: `http://localhost:2000/userAvatar/${username}-avatar.png`,
     });
-    await updateImageUser.save();
+    const resUpdateProfilePicture = await updateImageUser.save();
 
-    next();
+    res.send({
+      status: "Success",
+      message: "Success update profile picture",
+      detail: { resUpdateProfilePicture },
+    });
   } catch (error) {
     next(error);
   }

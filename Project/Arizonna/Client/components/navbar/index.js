@@ -52,7 +52,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
             setmainPageContent("Explore");
           }}
         >
-          <FontAwesomeIcon icon="fa-solid fa-compass" className="w-[1rem]" />
+          <FontAwesomeIcon icon="fa-solid fa-compass" className="w-[1vw]" />
           <p className="mt-[-2.7vh] mb-[-4vh] ml-[1.1vw] text-[1.5rem] font-[500]">
             {collapsedState ? "" : "Explore"}
           </p>
@@ -71,7 +71,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
             {collapsedState ? "" : "My Profile"}
           </p>
         </MenuItem>
-        <MenuItem className="my-[3vh]">
+        <MenuItem className="my-[7vh]">
           {currentSession ? (
             <a
               onClick={() => {
@@ -82,7 +82,7 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
                 icon="fa-solid fa-person-through-window"
                 className="w-[1vw]"
               />
-              <p className="mt-[-2.7vh] ml-[1.2vw] text-[1.5rem] font-[500]">
+              <p className="mt-[-2.5vh] ml-[1.2vw] text-[1.5rem] font-[500]">
                 {" "}
                 {collapsedState ? "" : " Sign Out"}
               </p>
