@@ -39,8 +39,8 @@ function Navbar({ collapsedState, setcollapsedState, setmainPageContent }) {
         setcollapsedState(true);
       }}
     >
-      {/* <div className="absolute -z-[2] bg-gradient-to-r from-gray-900 to-teal-900 w-[100%] h-[100vh] opacity-[1]"></div>
-      <div className="absolute blur-2xl -z-[1] bg-white opacity-[.1] w-[100%] h-[100vh] opacity-[1]"></div> */}
+      <div className="absolute -z-[2] bg-gradient-to-r from-gray-900 to-teal-900 w-[100%] h-[100vh] opacity-[1]"></div>
+      <div className="absolute blur-2xl -z-[1] bg-white opacity-[.1] w-[100%] h-[100vh] opacity-[1]"></div>
 
       <Menu className="w-[15vw] pl-[2vw] h-[30vh] absolute z-10">
         <div className=" ml-[-2.5vw] mt-[2vh]">
