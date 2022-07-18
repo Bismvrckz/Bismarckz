@@ -8,6 +8,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 function Home(props) {
   const [collapsedState, setcollapsedState] = useState(true);
   const [editProfileMenu, seteditProfileMenu] = useState(false);
+  const [avatar, setAvatar] = useState({});
+  const [imgSource, setImgSource] = useState(
+    props.user?.dataValues.user_avatar
+  );
 
   const { accessToken } = props;
 
@@ -151,13 +155,10 @@ function Home(props) {
           </a>
           <div className="border-t-[0.1vh] h-[8vh] border-cyan-500 flex flex-col items-center justify-end rounded-[3vh] w-[100%] ease-in-out duration-100">
             <div className="flex justify-between items-center w-[100%]">
-              <img
-                src={user_avatar}
-                className="w-[4vw] h-[4vw] rounded-[50%]"
-              />
+              <img src={imgSource} className="w-[4vw] h-[4vw] rounded-[50%]" />
               <div>
-                <p className="font-[600]">{username}</p>
-                <p className="font-[400]">{email}</p>
+                <p className="font-[600] text-[0.7rem]">{username}</p>
+                <p className="font-[400] text-[0.7rem]">{email}</p>
               </div>
               <button onClick={editProfileOption}>
                 <MenuIcon />

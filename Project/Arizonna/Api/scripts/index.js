@@ -1,4 +1,6 @@
 const { user } = require("../models");
+const path = require("path");
+const appRoot = require("app-root-path");
 
 const createUser = async () => {
   try {
@@ -25,4 +27,8 @@ const findUser = async () => {
 };
 
 // findUser();
-createUser();
+// createUser();
+
+const pathTest = path.join(appRoot.path, "public", "images", "ariznLogo.png");
+
+console.log(pathTest);

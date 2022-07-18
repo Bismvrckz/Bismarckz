@@ -1,24 +1,63 @@
 import { getSession } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
 import axiosInstance from "../services/axiosinstance";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 
 function editProfile(props) {
+  const [avatar, setAvatar] = useState({});
+  const [imgSource, setImgSource] = useState(
+    props.user?.dataValues.user_avatar
+  );
+
   const { bio, username, createdAt, isVerified, fullname, email, user_avatar } =
     props.user.dataValues;
+
+  function onImageChange(event) {
+    setAvatar(event.target.files[0]);
+    setImgSource(URL.createObjectURL(event.target.files[0]));
+  }
+
+  async function onSaveButton() {
+    try {
+      const { accessToken } = props;
+
+      const body = new FormData();
+
+      body.append("newAvatar", avatar);
+
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      };
+
+      const res = await axiosInstance.patch("/users/avatar", body, config);
+
+      alert(res.data);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
 
   return (
     <div className="bg-gradient-to-r flex items-center justify-center from-teal-900 to-cyan-900 w-[100vw] h-[100vh] relative">
       <div className="w-[95%] h-[95%] flex flex-col justify-evenly items-start z-[2]">
         <div id="changeUserImage" className="flex items-center">
-          <img className="rounded-[50%] w-[10vw] h-[10vw]" src={user_avatar} />
+          <img
+            className="rounded-[50%] w-[10vw] h-[10vw]"
+            src={imgSource}
+            // src={"http://localhost:2000/images/ariznLogo.png"}
+          />
           <label
             for="imageInput"
             className="font-[montserrat] cursor-pointer hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
           >
-            <a className="cursor-pointer">Change Image</a>
-            <input id="imageInput" className="hidden" type={"file"} />
+            <a className="cursor-pointer font-montserrat">Change Image</a>
+            <input
+              onChange={onImageChange}
+              id="imageInput"
+              className="hidden"
+              type={"file"}
+            />
           </label>
         </div>
         <TextField
@@ -45,9 +84,16 @@ function editProfile(props) {
           autoComplete="off"
           color="info"
         />
-        <Button variant="contained">Save Changes</Button>
+        <div className="flex w-[20vw] justify-between">
+          <Button color="error" variant="contained">
+            <a href="/"> Cancel</a>
+          </Button>
+          <Button onClick={onSaveButton} variant="contained">
+            Save Changes
+          </Button>
+        </div>
       </div>
-      <div className="bg-black z-[1] w-[98vw] h-[98vh] opacity-[.3] rounded-[1vh] absolute" />
+      <div className="bg-black z-[1] w-[98vw] h-[98vh] opacity-[.1] rounded-[1vh] absolute" />{" "}
     </div>
   );
 }

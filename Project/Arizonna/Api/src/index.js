@@ -12,7 +12,7 @@ const usersRouter = require("./routers/user");
 app.use(express.json());
 app.use(bearerToken());
 app.use(cors());
-app.use(express.static(rootPath + "/public"));
+app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("Akses API aman 👍");

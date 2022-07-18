@@ -44,8 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_avatar: {
         type: DataTypes.STRING(100),
-        defaultValue:
-          "C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png",
+        defaultValue: "http://localhost:2000/userAvatar/defaultAvatar.png",
       },
       user_password: {
         type: DataTypes.STRING(100),

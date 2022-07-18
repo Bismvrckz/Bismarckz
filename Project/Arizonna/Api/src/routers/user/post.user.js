@@ -139,7 +139,7 @@ const userLogin = async (req, res, next) => {
       };
     }
 
-    console.log(resGetUser.dataValues);
+    // console.log(resGetUser.dataValues);
 
     const currentUser = resGetUser.dataValues;
 
