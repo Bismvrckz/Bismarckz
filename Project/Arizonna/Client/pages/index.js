@@ -61,7 +61,6 @@ function Home(props) {
       return (
         <div className="w-[98%] h-[98%]">
           <div>abcd</div>
-          <img src={require("../public/static/user.png")} />
         </div>
       );
     }
@@ -88,7 +87,6 @@ function Home(props) {
     return (
       <div className="bg-cyan-500 opacity-[.2] w-[98%] h-[98%]">
         <div>abcd</div>
-        <img src={require("../public/static/user.png")} />
       </div>
     );
   }
