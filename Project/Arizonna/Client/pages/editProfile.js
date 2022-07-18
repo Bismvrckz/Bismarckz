@@ -55,7 +55,7 @@ function editProfile(props) {
             src={imgSource}
             // src={"http://localhost:2000/images/ariznLogo.png"}
           />
-          <div className="flex flex-col h-[60%] items-start">
+          <div className="flex flex-col h-[70%] items-center justify-center ea">
             <label
               for="imageInput"
               className="cursor-pointer hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
