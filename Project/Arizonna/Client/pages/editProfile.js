@@ -9,6 +9,7 @@ function editProfile(props) {
   const [imgSource, setImgSource] = useState(
     props.user?.dataValues.user_avatar
   );
+  const [pictureIsChanged, setPictureIsChanged] = useState(false);
 
   const { bio, username, createdAt, isVerified, fullname, email, user_avatar } =
     props.user.dataValues;
@@ -16,11 +17,18 @@ function editProfile(props) {
   function onImageChange(event) {
     setAvatar(event.target.files[0]);
     setImgSource(URL.createObjectURL(event.target.files[0]));
+    setPictureIsChanged(true);
   }
 
-  async function onSaveButton() {
+  async function onSaveProfileButton() {}
+
+  async function onSaveImageButton() {
     try {
       const { accessToken } = props;
+
+      const { username } = props.user.dataValues;
+
+      console.log({ username });
 
       const body = new FormData();
 
@@ -47,18 +55,30 @@ function editProfile(props) {
             src={imgSource}
             // src={"http://localhost:2000/images/ariznLogo.png"}
           />
-          <label
-            for="imageInput"
-            className="font-[montserrat] cursor-pointer hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
-          >
-            <a className="cursor-pointer font-montserrat">Change Image</a>
-            <input
-              onChange={onImageChange}
-              id="imageInput"
-              className="hidden"
-              type={"file"}
-            />
-          </label>
+          <div className="flex flex-col h-[60%] items-start">
+            <label
+              for="imageInput"
+              className="cursor-pointer hover:bg-cyan-500 ml-[3vw] flex items-center justify-center bg-cyan-800 h-[5vh] w-[10vw] rounded-[3vh]"
+            >
+              <a className="cursor-pointer font-montserrat">Change Image</a>
+              <input
+                onChange={onImageChange}
+                id="imageInput"
+                className="hidden"
+                type={"file"}
+              />
+            </label>
+            {pictureIsChanged ? (
+              <button
+                onClick={onSaveImageButton}
+                className="hover:bg-red-500 mt-[2vh] ml-[3vw] flex items-center justify-center bg-red-800 h-[5vh] w-[10vw] rounded-[3vh]"
+              >
+                Save image
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
         <TextField
           className="w-[20vw]"
@@ -88,8 +108,8 @@ function editProfile(props) {
           <Button color="error" variant="contained">
             <a href="/"> Cancel</a>
           </Button>
-          <Button onClick={onSaveButton} variant="contained">
-            Save Changes
+          <Button onClick={onSaveProfileButton} variant="contained">
+            Save Profile
           </Button>
         </div>
       </div>

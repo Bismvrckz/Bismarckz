@@ -8,11 +8,14 @@ const { uploadAvatar } = require("../../lib/multer");
 
 const updateUserProfilePicture = async (req, res, next) => {
   try {
-    const { username } = req.user;
-    const { filename } = req.file;
-    const updateImageUser = await user.findOne({ where: username });
-    const { dataValues } = updateImageUser;
-    console.log({ dataValues });
+    const { username } = req.user.dataValues;
+    const updateImageUser = await user.findOne({ where: { username } });
+    await updateImageUser.update({
+      user_avatar: `http://localhost:2000/userAvatar/${username}-avatar.png`,
+    });
+    await updateImageUser.save();
+
+    next();
   } catch (error) {
     next(error);
   }
