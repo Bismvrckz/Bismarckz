@@ -8,10 +8,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 function Home(props) {
   const [collapsedState, setcollapsedState] = useState(true);
   const [editProfileMenu, seteditProfileMenu] = useState(false);
-  const [avatar, setAvatar] = useState({});
   const [imgSource, setImgSource] = useState(
     props.user?.dataValues.user_avatar
   );
+
+  const { userPosts } = props;
 
   const { accessToken } = props;
 
@@ -92,7 +93,22 @@ function Home(props) {
   }
 
   function MyProfilePage() {
-    // console.log(props);
+    function renderUserPosts() {
+      if (!userPosts.length) {
+        return (
+          <div className="flex items-center justify-center w-[100%] h-[100%]">
+            <p>
+              {" "}
+              You havent post anything yet,{" "}
+              <a href="/postImage" className="text-blue-500 hover:underline">
+                Post your first image!
+              </a>
+            </p>
+          </div>
+        );
+      }
+    }
+
     if (!props.user?.dataValues) {
       return (
         <div className="w-[98%] flex flex-col items-center justify-center h-[98%]">
@@ -132,9 +148,8 @@ function Home(props) {
 
     return (
       <div className="flex items-center justify-center w-[98%] h-[98%]">
-        <div className="w-[80%] h-[100%] border-solid border-2 border-sky-500">
-          posts
-        </div>
+        <div className="w-[80%] h-[100%]">{renderUserPosts()}</div>
+
         <div className="bg-gray-800 w-[20%] h-[100%] flex flex-col justify-end items-center rounded-[3vh] relative">
           <div className="absolute top-[3vh] w-[100%] flex flex-col items-center">
             <p className="w-[15vw] text-[2rem]">{fullname}</p>
@@ -196,7 +211,6 @@ export async function getServerSideProps(context) {
     const noSession = "Fuckoff";
 
     if (!session) return { props: { noSession } };
-    // console.log("jalan");
 
     const { accessToken, user_id, username } = session.user;
 
@@ -211,11 +225,20 @@ export async function getServerSideProps(context) {
       },
     };
 
-    const res = await axiosInstance.get(`/users/${user_id}`, config);
+    const resGetUser = await axiosInstance.get(`/users/${user_id}`, config);
 
-    // console.log(res);
+    const resGetUserPersonalPost = await axiosInstance.get(
+      `/posts/${user_id}`,
+      config
+    );
 
-    return { props: { user: res.data, accessToken } };
+    return {
+      props: {
+        user: resGetUser.data,
+        accessToken,
+        userPosts: resGetUserPersonalPost.data,
+      },
+    };
   } catch (error) {
     const errorMessage = error.message;
     return { props: { errorMessage } };

@@ -3,10 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const port = 2000;
-const rootPath = require("app-root-path");
 
 // ROUTERS
 const usersRouter = require("./routers/user");
+const postsRouter = require("./routers/posts");
 
 // APP.USE
 app.use(express.json());
@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
 
 app.use((error, req, res, next) => {
   console.log({ error });

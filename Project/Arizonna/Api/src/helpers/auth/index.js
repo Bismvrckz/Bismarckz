@@ -5,6 +5,8 @@ async function auth(req, res, next) {
   try {
     const token = req.token;
 
+    console.log({ token });
+
     const verifiedToken = verifyToken(token);
 
     const resGetUser = await user.findOne({
