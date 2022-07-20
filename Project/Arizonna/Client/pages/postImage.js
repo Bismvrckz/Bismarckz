@@ -1,13 +1,36 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import axiosInstance from "../services/axiosinstance";
+import { getSession } from "next-auth/react";
 
-function postImage() {
+function postImage(props) {
   const [imgSource, setImgSource] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [caption, setCaption] = useState("");
+
+  const { user_id } = props;
 
   function onAddImage(event) {
     setAvatar(event.target.files[0]);
     setImgSource(URL.createObjectURL(event.target.files[0]));
+  }
+
+  async function onClickPost() {
+    try {
+      const resCreateNewPost = await axiosInstance.post(
+        `/posts/newPosts/${user_id}`
+      );
+
+      console.log({ resCreateNewPost });
+    } catch (error) {
+      console.log({ error });
+    }
+  }
+
+  function onCaptionChange(event) {
+    setCaption(event.target.value);
   }
 
   return (
@@ -50,11 +73,62 @@ function postImage() {
             </label>
           )}
         </div>
-        <div className="bg-cyan-500 w-[70%]">textfield</div>
+        {imgSource ? (
+          <div className="w-[70%] flex flex-col">
+            <p className="mt-[15vh] text-[3rem] font-[600]">
+              2. Write a caption!
+            </p>
+            <p className="font-[montserrat] mb-[2vh]">Make it a lovely one.</p>
+            <TextField
+              onChange={onCaptionChange}
+              className="w-[50%]"
+              variant="outlined"
+              focused
+            />
+            <div className="my-[1vh]" />
+            <Button
+              onClick={onClickPost}
+              variant="outlined"
+              className="w-[30%] h-[5vh] font-[montserrat]"
+            >
+              3. Post It!
+            </Button>
+          </div>
+        ) : (
+          <p className="font-[montserrat] text-[3rem] font-[600] mt-[15vh]">
+            1. Choose an image.
+          </p>
+        )}
       </div>
       <div className="bg-black z-[1] w-[98vw] h-[98vh] opacity-[.1] rounded-[1vh] absolute" />
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  try {
+    const session = await getSession({ req: context.req });
+
+    const noSession = "Fuckoff";
+
+    if (!session) return { props: { noSession } };
+
+    const { user_id } = session.user;
+
+    return {
+      props: {
+        user_id,
+      },
+    };
+  } catch (error) {
+    const errorMessage = error.message;
+    console.log({ error });
+    return {
+      props: {
+        errorMessage,
+      },
+    };
+  }
 }
 
 export default postImage;

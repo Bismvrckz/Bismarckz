@@ -3,6 +3,7 @@ const path = require("path");
 const appRoot = require("app-root-path");
 
 const avatarPath = path.join(appRoot.path, "public", "userAvatar");
+const postsPath = path.join(appRoot.path, "public", "userPosts");
 
 const avatarStorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,4 +36,9 @@ const uploadAvatar = multer({
   },
 });
 
+const postStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, postsPath);
+  },
+});
 module.exports = { uploadAvatar };

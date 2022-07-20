@@ -14,6 +14,8 @@ function Home(props) {
 
   const { userPosts } = props;
 
+  console.log({ props });
+
   const { accessToken } = props;
 
   function editProfileOption() {
