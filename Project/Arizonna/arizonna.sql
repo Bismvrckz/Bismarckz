@@ -87,6 +87,7 @@ DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `post_id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` bigint NOT NULL,
+  `caption` varchar(100) DEFAULT '',
   `postImage` varchar(100) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
@@ -142,7 +143,7 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `bio` varchar(255) NOT NULL,
   `fullname` varchar(255) DEFAULT '',
-  `user_avatar` varchar(255) DEFAULT 'C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png',
+  `user_avatar` varchar(255) DEFAULT 'http://localhost:2000/userAvatar/defaultAvatar.png',
   `user_password` varchar(100) NOT NULL,
   `isVerified` tinyint(1) DEFAULT '0',
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -150,7 +151,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=1658020911882 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1658119847014 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +160,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'abcdef','mail@mdefail.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','','https://cdn.myportfolio.com/5f38493d38f9b59d0dd58e3b207d3992/6e3b98ff-29bf-4d70-8c9c-7aadf934cfa7_rwc_0x0x622x623x622.jpg?h=5566f629d1f26ec29d9aa11f9bc42c21','123',0,'2022-07-16 11:38:29','2022-07-17 16:51:00'),(1657973845517,'Bismvrckz','Bismarck@R3ich.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','Otto von','https://cdn.myportfolio.com/5f38493d38f9b59d0dd58e3b207d3992/6e3b98ff-29bf-4d70-8c9c-7aadf934cfa7_rwc_0x0x622x623x622.jpg?h=5566f629d1f26ec29d9aa11f9bc42c21','$2a$10$E0nEEiv6OKOcyFTVQ96Wp.2x/CkydsMH/xWAX3NbWhH8Q5CBOu2d6',1,'2022-07-16 12:17:25','2022-07-17 16:51:00'),(1658020911881,'07M@r200412430','123@mail.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','','https://cdn.myportfolio.com/5f38493d38f9b59d0dd58e3b207d3992/6e3b98ff-29bf-4d70-8c9c-7aadf934cfa7_rwc_0x0x622x623x622.jpg?h=5566f629d1f26ec29d9aa11f9bc42c21','$2a$10$/5aXe7bp4PnwUNQHPK7cIeCIHik1Ce90lwsQJ6dOIG5ImJAongJ5C',1,'2022-07-17 01:21:51','2022-07-17 16:51:00');
+INSERT INTO `users` VALUES (1,'abcdef','mail@mdefail.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','','https://cdn.myportfolio.com/5f38493d38f9b59d0dd58e3b207d3992/6e3b98ff-29bf-4d70-8c9c-7aadf934cfa7_rwc_0x0x622x623x622.jpg?h=5566f629d1f26ec29d9aa11f9bc42c21','123',0,'2022-07-16 11:38:29','2022-07-17 16:51:00'),(1657973845517,'Bismvrckz','Bismarck@R3ich.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','Otto von','http://localhost:2000/userAvatar/Bismvrckz-avatar.png','$2a$10$E0nEEiv6OKOcyFTVQ96Wp.2x/CkydsMH/xWAX3NbWhH8Q5CBOu2d6',1,'2022-07-16 12:17:25','2022-07-18 13:56:02'),(1658020911881,'07M@r200412430','123@mail.com','Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam neque quam, interdum at nulla ut, ultrices vehicula dui. In diam diam, vestibulum eu iaculis pretium, congue eu nisl.','','https://cdn.myportfolio.com/5f38493d38f9b59d0dd58e3b207d3992/6e3b98ff-29bf-4d70-8c9c-7aadf934cfa7_rwc_0x0x622x623x622.jpg?h=5566f629d1f26ec29d9aa11f9bc42c21','$2a$10$/5aXe7bp4PnwUNQHPK7cIeCIHik1Ce90lwsQJ6dOIG5ImJAongJ5C',1,'2022-07-17 01:21:51','2022-07-17 16:51:00'),(1658119847013,'weqwe','ahmadfayruzsyamil33@gmail.com','','','C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png','$2a$10$IA7LQEQ1WKrC36n.e4RhneLEnu3JZBaH4YY9r1s6A0qJHfUCZS./y',0,'2022-07-18 04:50:47','2022-07-18 04:50:47');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -172,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-17 17:22:41
+-- Dump completed on 2022-07-20 16:01:05

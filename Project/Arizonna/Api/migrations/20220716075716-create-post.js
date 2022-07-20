@@ -16,6 +16,11 @@ module.exports = {
           key: "user_id",
         },
       },
+      caption: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+        defaultValue: "",
+      },
       postImage: {
         type: Sequelize.STRING(100),
       },

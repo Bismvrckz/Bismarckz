@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
           key: "user_id",
         },
       },
+      caption: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+        defaultValue: "",
+      },
       postImage: {
         type: DataTypes.STRING(100),
       },
