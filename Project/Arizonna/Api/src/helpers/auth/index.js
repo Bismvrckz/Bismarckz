@@ -1,5 +1,6 @@
 const { verifyToken } = require("../../lib/token");
 const { user } = require("../../../models");
+const { post } = require("../../../models");
 
 async function auth(req, res, next) {
   try {
@@ -13,12 +14,17 @@ async function auth(req, res, next) {
       where: { user_id: verifiedToken.user_id },
     });
 
+    const resGetUserPost = await post.findAll({
+      where: { user_id: verifiedToken.user_id },
+    });
+
     if (!resGetUser) {
       throw { message: "User not found" };
     }
     const { dataValues } = resGetUser;
     // console.log(resGetUser);
     req.user = { dataValues };
+    req.userPost = resGetUserPost;
     next();
   } catch (error) {
     next(error);

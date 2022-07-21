@@ -42,9 +42,10 @@ const postStorage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const { username } = req.user.dataValues;
+    const postCount = req.userPost.length;
     const cuurentDate = new Date();
     const postId = cuurentDate.getTime();
-    cb(null, `${username}-post-${postId}.png`);
+    cb(null, `${username}-post-${postCount}.png`);
   },
 });
 
@@ -59,7 +60,7 @@ const uploadPosts = multer({
     const extname = path.extname(file.originalname);
 
     if (!allowedExtension.includes(extname)) {
-      const error = new error(
+      const error = new Error(
         "Please upload a valid extension (jpg, jpeg, png)."
       );
       return cb(error);

@@ -6,7 +6,7 @@ const { uploadPosts } = require("../../lib/multer");
 
 const newUserPosts = async (req, res, next) => {
   try {
-    console.log(req.params);
+    const postCount = req.userPost.length;
     // console.log(req);
     const { user_id } = req.params;
     const currentDate = new Date();
@@ -16,7 +16,7 @@ const newUserPosts = async (req, res, next) => {
     const resCreateUserPost = await post.create({
       user_id,
       post_id: `${username}-${postId_maker}`,
-      postImage: `http://localhost:2000/userPosts/${username}-${postId_maker}.png`,
+      postImage: `http://localhost:2000/userPosts/${username}-post-${postCount}.png`,
       caption: req.body.caption,
     });
 

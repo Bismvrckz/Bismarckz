@@ -1,4 +1,6 @@
 const { user } = require("../models");
+const { post } = require("../models");
+const { like } = require("../models");
 const path = require("path");
 const appRoot = require("app-root-path");
 
@@ -20,15 +22,21 @@ const createUser = async () => {
 
 const findUser = async () => {
   try {
-    const resFindUser = await user.findOne({ where: { username: "1234" } });
-    console.log(resFindUser == true);
+    const resFindUser = await post.findAll({
+      where: { user_id: 1658382703336 },
+      include: {
+        model: like,
+        as: "postLikes",
+      },
+    });
+    console.log(resFindUser);
   } catch (error) {
     console.log({ error });
   }
 };
 
-// findUser();
-createUser();
+findUser();
+// createUser();
 
 const pathTest = path.join(appRoot.path, "public", "images", "ariznLogo.png");
 

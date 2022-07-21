@@ -21,6 +21,6 @@ const getUserPosts = async (req, res, next) => {
   }
 };
 
-router.get("/:user_id", auth, getUserPosts);
+router.get("/", auth, getUserPosts);
 
 module.exports = router;
