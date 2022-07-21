@@ -20,9 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       post_id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
       },
       user_id: {
         type: DataTypes.BIGINT,

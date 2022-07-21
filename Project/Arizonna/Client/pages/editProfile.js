@@ -81,10 +81,6 @@ function editProfile(props) {
     try {
       const { accessToken } = props;
 
-      const { username } = props.user.dataValues;
-
-      console.log({ username });
-
       const body = new FormData();
 
       body.append("newAvatar", avatar);
@@ -98,6 +94,8 @@ function editProfile(props) {
         body,
         config
       );
+
+      console.log({ resSaveUserImage });
 
       setPictureIsChanged(false);
     } catch (error) {

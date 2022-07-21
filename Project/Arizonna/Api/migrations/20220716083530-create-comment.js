@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable("comments", {
       comment_id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.BIGINT,
+        type: Sequelize.STRING,
       },
       user_id: {
         type: Sequelize.BIGINT,
@@ -17,7 +16,7 @@ module.exports = {
         },
       },
       post_id: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.STRING,
         allowNull: false,
         references: {
           model: "posts",

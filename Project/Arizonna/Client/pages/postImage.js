@@ -19,8 +19,24 @@ function postImage(props) {
 
   async function onClickPost() {
     try {
+      const { accessToken } = props;
+
+      const body = new FormData();
+
+      body.append("newPosts", avatar);
+      body.append("caption", caption);
+
+      console.log({ accessToken });
+
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        caption,
+      };
+
       const resCreateNewPost = await axiosInstance.post(
-        `/posts/newPosts/${user_id}`
+        `/posts/newPosts/${user_id}`,
+        body,
+        config
       );
 
       console.log({ resCreateNewPost });
@@ -113,11 +129,12 @@ export async function getServerSideProps(context) {
 
     if (!session) return { props: { noSession } };
 
-    const { user_id } = session.user;
+    const { user_id, accessToken } = session.user;
 
     return {
       props: {
         user_id,
+        accessToken,
       },
     };
   } catch (error) {
