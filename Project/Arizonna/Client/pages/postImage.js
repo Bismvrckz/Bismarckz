@@ -4,11 +4,13 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import axiosInstance from "../services/axiosinstance";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function postImage(props) {
   const [imgSource, setImgSource] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [caption, setCaption] = useState("");
+  const router = useRouter();
 
   const { user_id } = props;
 
@@ -38,6 +40,8 @@ function postImage(props) {
         body,
         config
       );
+
+      router.replace("/");
 
       console.log({ resCreateNewPost });
     } catch (error) {
@@ -96,6 +100,7 @@ function postImage(props) {
             </p>
             <p className="font-[montserrat] mb-[2vh]">Make it a lovely one.</p>
             <TextField
+              autoComplete="off"
               onChange={onCaptionChange}
               className="w-[50%]"
               variant="outlined"

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import axiosInstance from "../services/axiosinstance";
 import MenuIcon from "@mui/icons-material/Menu";
+const tailwindScrollbar = require("tailwind-scrollbar");
 
 function Home(props) {
   const [collapsedState, setcollapsedState] = useState(true);
@@ -11,6 +12,17 @@ function Home(props) {
   const [imgSource, setImgSource] = useState(
     props.user?.dataValues.user_avatar
   );
+
+  if (!props.user?.dataValues) {
+    return (
+      <div className="w-[98%] flex flex-col items-center justify-center h-[98%]">
+        <p className="text-[2rem] mb-[3vh]">You are not Signed In</p>
+        <Button variant="outlined" className="w-[6vw] h-[2vw] ">
+          <a href="/signin">Sign In</a>
+        </Button>
+      </div>
+    );
+  }
 
   const { userPosts } = props;
 
@@ -31,33 +43,6 @@ function Home(props) {
       console.log({ error });
     }
   }
-
-  // console.log(props.user?.dataValues);
-  // console.log(props);
-  // bio: "";
-  // createdAt: "2022-07-17T01:21:51.000Z";
-  // email: "123@mail.com";
-  // fullname: "";
-  // isVerified: false;
-  // updatedAt: "2022-07-17T01:21:51.000Z";
-  // user_avatar: "C:/Users/Wicked Wench/Documents/GitHub/GeneralRepo/Project/Arizonna/Api/public/userAvatar/default-avatar.png";
-  // user_id: 1658020911881;
-  // user_password: "$2a$10$/5aXe7bp4PnwUNQHPK7cIeCIHik1Ce90lwsQJ6dOIG5ImJAongJ5C";
-  // username: "07M@r200412430";
-
-  // async function asyncGetSession() {
-  //   try {
-  //     const a = await getSession();
-  //     console.log(a.user.accessToken);
-  //     return;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   asyncGetSession();
-  // }, []);
 
   function ExplorePage() {
     if (!props.user?.dataValues) {
@@ -95,6 +80,32 @@ function Home(props) {
   }
 
   function MyProfilePage() {
+    const {
+      bio,
+      username,
+      createdAt,
+      isVerified,
+      fullname,
+      email,
+      user_avatar,
+    } = props.user.dataValues;
+
+    const postMap = userPosts.map((post) => {
+      return (
+        <div className="w-[20vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border my-[1vh] relative overflow-hidden">
+          <img
+            className="w-[20vw] h-[20vw] rounded-[1vh] z-[2]"
+            src={post.postImage}
+          />
+          <div className="flex flex-col items-between justify-between w-[100%] h-[2rem] z-[2]">
+            <p className="text-[0.9rem] text-gray-400">{createdAt}</p>
+            <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
+          </div>
+          <div className="absolute w-[100%] h-[100%] bg-white blur-[60px] opacity-[.2]" />
+        </div>
+      );
+    });
+
     function renderUserPosts() {
       if (!userPosts.length) {
         return (
@@ -109,27 +120,13 @@ function Home(props) {
           </div>
         );
       }
-    }
 
-    if (!props.user?.dataValues) {
       return (
-        <div className="w-[98%] flex flex-col items-center justify-center h-[98%]">
-          <p className="text-[2rem] mb-[3vh]">You are not Signed In</p>
-          <Button variant="outlined" className="w-[6vw] h-[2vw] ">
-            <a href="/signin">Sign In</a>
-          </Button>
+        <div className="flex flex-wrap items-start justify-evenly">
+          {postMap}
         </div>
       );
     }
-    const {
-      bio,
-      username,
-      createdAt,
-      isVerified,
-      fullname,
-      email,
-      user_avatar,
-    } = props.user.dataValues;
 
     if (!isVerified)
       return (
@@ -149,10 +146,12 @@ function Home(props) {
       );
 
     return (
-      <div className="flex items-center justify-center w-[98%] h-[98%]">
-        <div className="w-[80%] h-[100%]">{renderUserPosts()}</div>
+      <div className="flex items-center justify-evenly w-[98%] h-[98%]">
+        <div className="w-[79%] h-[100%] overflow-auto scrollbar scrollbar-thumb-gray-500 scrollbar-track-white">
+          {renderUserPosts()}
+        </div>
 
-        <div className="bg-gray-800 w-[20%] h-[100%] flex flex-col justify-end items-center rounded-[3vh] relative">
+        <div className="bg-gray-800 w-[20%] h-[100%] flex flex-col justify-end items-center rounded-[4vh] relative">
           <div className="absolute top-[3vh] w-[100%] flex flex-col items-center">
             <p className="w-[15vw] text-[2rem]">{fullname}</p>
             <p className="w-[15vw] font-[300]">{bio}</p>
@@ -162,13 +161,23 @@ function Home(props) {
             href="/editProfile"
             className={
               editProfileMenu
-                ? "bg-cyan-600 z-[1] w-[90%] h-[5vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
-                : "bg-cyan-600 -z-[1] w-[90%] h-[0vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
+                ? "bg-cyan-900 hover:bg-cyan-500 z-[1] w-[90%] h-[5vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
+                : "bg-cyan-900 hover:bg-cyan-500 -z-[1] w-[90%] h-[0vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
             }
           >
             Edit Profile
           </a>
-          <div className="border-t-[0.1vh] h-[8vh] border-cyan-500 flex flex-col items-center justify-end rounded-[3vh] w-[100%] ease-in-out duration-100">
+          <a
+            href="/postImage"
+            className={
+              editProfileMenu
+                ? "bg-green-900 hover:bg-green-500 z-[1] w-[90%] h-[5vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
+                : "bg-green-900 hover:bg-green-500 -z-[1] w-[90%] h-[0vh] flex items-center mb-[1vh] rounded-[2vh] justify-center ease-in-out duration-300"
+            }
+          >
+            New Post
+          </a>
+          <div className="border-t-[0.1vh] h-[8vh] border-cyan-500 flex flex-col items-center justify-end rounded-[4vh] w-[100%] ease-in-out duration-100">
             <div className="flex justify-between items-center w-[100%]">
               <img src={imgSource} className="w-[4vw] h-[4vw] rounded-[50%]" />
               <div>
@@ -229,16 +238,13 @@ export async function getServerSideProps(context) {
 
     const resGetUser = await axiosInstance.get(`/users/${user_id}`, config);
 
-    const resGetUserPersonalPost = await axiosInstance.get(
-      `/posts/${user_id}`,
-      config
-    );
+    const resGetUserPersonalPost = await axiosInstance.get(`/posts`, config);
 
     return {
       props: {
         user: resGetUser.data,
         accessToken,
-        userPosts: resGetUserPersonalPost.data,
+        userPosts: resGetUserPersonalPost.data.data,
       },
     };
   } catch (error) {
