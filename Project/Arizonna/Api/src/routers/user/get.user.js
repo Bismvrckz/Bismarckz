@@ -6,10 +6,15 @@ const { Op } = require("sequelize");
 const { auth } = require("../../helpers/auth");
 // const defaultAvatar = require("../../../public/userAvatar");
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   try {
-    const { dataValues } = req.user;
-    // console.log({ dataValues });
+    const { user_id } = req.params;
+
+    const resGetUser = await user.findOne({
+      where: { user_id },
+    });
+
+    const { dataValues } = resGetUser;
 
     res.send({ dataValues });
   } catch (error) {

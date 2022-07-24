@@ -7,6 +7,8 @@ const port = 2000;
 // ROUTERS
 const usersRouter = require("./routers/user");
 const postsRouter = require("./routers/posts");
+const likesRouter = require("./routers/likes");
+const commentsRouter = require("./routers/comments");
 
 // APP.USE
 app.use(express.json());
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
+app.use("/likes", likesRouter);
+app.use("/comments", commentsRouter);
 
 app.use((error, req, res, next) => {
   console.log({ error });
