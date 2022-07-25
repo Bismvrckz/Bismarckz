@@ -42,6 +42,8 @@ const getPostDetail = async (req, res, next) => {
       ],
     });
 
+    console.log({ resGetUserPosts });
+
     res.send({
       status: "Success",
       message: "Get post detail",
@@ -52,7 +54,24 @@ const getPostDetail = async (req, res, next) => {
   }
 };
 
-router.get("/", auth, getUserPosts);
+const getAllPost = async (req, res, next) => {
+  try {
+    const resGetAllPost = await post.findAll({
+      include: { model: like, as: "postLikes" },
+    });
+
+    res.send({
+      status: "Success",
+      message: "Success get all post",
+      data: resGetAllPost,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+router.get("/", auth, getAllPost);
+router.get("/user/:user_id", auth, getUserPosts);
 router.get("/:post_id", getPostDetail);
 
 module.exports = router;

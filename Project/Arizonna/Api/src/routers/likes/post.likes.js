@@ -12,7 +12,9 @@ const newPostLike = async (req, res, next) => {
     // console.log(resFindPostLike.dataValues.liked);
 
     if (resFindPostLike) {
-      resFindPostLike.destroy({ where: { like_id: `${post_id}-${user_id}` } });
+      resFindPostLike.destroy({
+        where: { like_id: `${post_id}-like-${user_id}` },
+      });
 
       res.send({
         status: "Success delete like",

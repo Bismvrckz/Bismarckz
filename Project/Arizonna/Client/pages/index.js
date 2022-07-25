@@ -17,11 +17,11 @@ function Home(props) {
 
   useEffect(() => {}, [renderDummy]);
 
-  // console.log({ props });
-
   const { userPosts } = props;
 
   const { accessToken } = props;
+
+  const { allPost } = props;
 
   function editProfileOption() {
     seteditProfileMenu(!editProfileMenu);
@@ -41,7 +41,7 @@ function Home(props) {
     if (!props.user?.dataValues) {
       return (
         <div className="w-[98%] h-[98%]">
-          <div>abcd</div>
+          <div>Tiyu lah</div>
         </div>
       );
     }
@@ -74,9 +74,62 @@ function Home(props) {
         </div>
       );
 
+    function renderUserPosts() {
+      if (!allPost.length) {
+        return (
+          <div className="flex items-center justify-center w-[100%] h-[100%]">
+            <p>
+              {" "}
+              You havent post anything yet,{" "}
+              <a href="/postImage" className="text-blue-500 hover:underline">
+                Post your first image!
+              </a>
+            </p>
+          </div>
+        );
+      }
+
+      const postMap = allPost.map((post) => {
+        return (
+          <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
+            <a href={`/postDetail/${post.post_id}`} className="z-[2]">
+              <img
+                className="w-[19vw] h-[19vw] rounded-[1vh] z-[2]"
+                src={post.postImage}
+              />
+            </a>
+            <div className="flex flex-col items-between justify-between w-[100%] h-[2rem] z-[2]">
+              <p className="text-[0.9rem] text-gray-400">
+                {createdAt.slice(0, 10)}
+              </p>
+
+              <div className="flex items-center">
+                {/* <FontAwesomeIcon
+                    onClick={() => {
+                      addOneLike(user_id, post.post_id);
+                    }}
+                    className="w-[1vw] h-[1vw] mr-[0.1vw]"
+                    icon="fa-solid fa-heart"
+                  /> */}
+                <p>Likes: {post.postLikes.length}</p>
+              </div>
+              <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
+            </div>
+            <div className="absolute w-[100%] h-[100%] bg-white blur-[60px] opacity-[.2]" />
+          </div>
+        );
+      });
+
+      return (
+        <div className="flex flex-wrap items-start justify-evenly">
+          {postMap}
+        </div>
+      );
+    }
+
     return (
-      <div className="bg-cyan-500 opacity-[.2] w-[98%] h-[98%]">
-        <div>abcd</div>
+      <div className="w-[100%] h-[100%] oveflow-auto scrollbar">
+        <div>{renderUserPosts()}</div>
       </div>
     );
   }
@@ -134,30 +187,27 @@ function Home(props) {
       }
 
       const postMap = userPosts.map((post) => {
-        // const { postLikes } = post;
-        // const isLikedByCurrentUser = postLikes.map((like) => {
-        //   return like.user_id == user_id;
-        // })[0];
-
         return (
-          <div className="w-[20vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border my-[1vh] relative overflow-hidden">
+          <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
             <a href={`/postDetail/${post.post_id}`} className="z-[2]">
               <img
-                className="w-[20vw] h-[20vw] rounded-[1vh] z-[2]"
+                className="w-[19vw] h-[19vw] rounded-[1vh] z-[2] "
                 src={post.postImage}
               />
             </a>
             <div className="flex flex-col items-between justify-between w-[100%] h-[2rem] z-[2]">
-              <p className="text-[0.9rem] text-gray-400">{createdAt}</p>
+              <p className="text-[0.9rem] text-gray-400">
+                {createdAt.slice(0, 10)}
+              </p>
 
               <div className="flex items-center">
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   onClick={() => {
                     addOneLike(user_id, post.post_id);
                   }}
                   className="w-[1vw] h-[1vw] mr-[0.1vw]"
                   icon="fa-solid fa-heart"
-                />
+                /> */}
                 <p>Likes: {post.postLikes.length}</p>
               </div>
               <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
@@ -193,7 +243,7 @@ function Home(props) {
 
     return (
       <div className="flex items-center justify-evenly w-[98%] h-[98%]">
-        <div className="w-[79%] h-[100%] overflow-auto scrollbar scrollbar-thumb-gray-500 scrollbar-track-white">
+        <div className="w-[79%] h-[100%] overflow-auto scrollbar">
           {renderUserPosts()}
         </div>
 
@@ -283,13 +333,19 @@ export async function getServerSideProps(context) {
 
     const resGetUser = await axiosInstance.get(`/users/${user_id}`, config);
 
-    const resGetUserPersonalPost = await axiosInstance.get(`/posts`, config);
+    const resGetUserPersonalPost = await axiosInstance.get(
+      `/posts/user/${user_id}`,
+      config
+    );
+
+    const resGetAllPost = await axiosInstance.get("/posts", config);
 
     return {
       props: {
         user: resGetUser.data,
         accessToken,
         userPosts: resGetUserPersonalPost.data.data,
+        allPost: resGetAllPost.data.data,
       },
     };
   } catch (error) {

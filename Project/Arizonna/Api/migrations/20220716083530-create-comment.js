@@ -23,8 +23,16 @@ module.exports = {
           key: "post_id",
         },
       },
-      commentPhrase: {
+      username: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      user_avatar: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      commentPhrase: {
+        type: Sequelize.STRING(300),
         allowNull: false,
         defaultValue: "",
       },

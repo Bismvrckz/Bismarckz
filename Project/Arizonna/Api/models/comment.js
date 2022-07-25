@@ -41,8 +41,16 @@ module.exports = (sequelize, DataTypes) => {
           key: "post_id",
         },
       },
-      commentPhrase: {
+      username: {
         type: DataTypes.STRING,
+        allowNull: false,
+      },
+      user_avatar: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      commentPhrase: {
+        type: DataTypes.STRING(300),
         allowNull: false,
         defaultValue: "",
       },
