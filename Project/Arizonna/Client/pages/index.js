@@ -5,6 +5,7 @@ import Navbar from "../components/navbar";
 import axiosInstance from "../services/axiosinstance";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home(props) {
   const [collapsedState, setcollapsedState] = useState(true);
@@ -16,6 +17,8 @@ function Home(props) {
   const [renderDummy, setRenderDummy] = useState(true);
 
   useEffect(() => {}, [renderDummy]);
+
+  console.log({ props });
 
   const { userPosts } = props;
 
@@ -127,9 +130,50 @@ function Home(props) {
       );
     }
 
+    const getMorePost = async () => {
+      axiosInstance.get();
+    };
+
     return (
       <div className="w-[100%] h-[100%] oveflow-auto scrollbar">
-        <div>{renderUserPosts()}</div>
+        {/* <div>{renderUserPosts()}</div> */}
+        <InfiniteScroll
+          dataLength={20}
+          next={this.fetchMoreData}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          {allPost.map((post) => {
+            return (
+              <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
+                <a href={`/postDetail/${post.post_id}`} className="z-[2]">
+                  <img
+                    className="w-[19vw] h-[19vw] rounded-[1vh] z-[2]"
+                    src={post.postImage}
+                  />
+                </a>
+                <div className="flex flex-col items-between justify-between w-[100%] h-[2rem] z-[2]">
+                  <p className="text-[0.9rem] text-gray-400">
+                    {createdAt.slice(0, 10)}
+                  </p>
+
+                  <div className="flex items-center">
+                    {/* <FontAwesomeIcon
+                    onClick={() => {
+                      addOneLike(user_id, post.post_id);
+                    }}
+                    className="w-[1vw] h-[1vw] mr-[0.1vw]"
+                    icon="fa-solid fa-heart"
+                  /> */}
+                    <p>Likes: {post.postLikes.length}</p>
+                  </div>
+                  <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
+                </div>
+                <div className="absolute w-[100%] h-[100%] bg-white blur-[60px] opacity-[.2]" />
+              </div>
+            );
+          })}
+        </InfiniteScroll>
       </div>
     );
   }
@@ -337,6 +381,8 @@ export async function getServerSideProps(context) {
       `/posts/user/${user_id}`,
       config
     );
+
+    const getLimit = 10;
 
     const resGetAllPost = await axiosInstance.get("/posts", config);
 

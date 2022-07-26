@@ -29,7 +29,7 @@ const updateUserCredential = async (req, res, next) => {
     const { inputUsername, inputFullname, inputBio } = req.body;
 
     const findSameUsername = await user.findOne({
-      where: { username: inputUsername },
+      where: { user_id },
     });
 
     if (

@@ -24,6 +24,36 @@ function postDetail(props) {
     }
   }, []);
 
+  const getComments = async () => {
+    const session = await getSession();
+  };
+
+  const commentsMap = comments.map((comment) => {
+    return (
+      <div className="w-[90%] flex items-center my-[1vh]">
+        <img
+          src={comment.user_avatar}
+          className="w-[2.5vw] h-[2.5vw] rounded-[50%] mr-[1vw]"
+        />
+        <div>
+          <p className="font-[600]">{comment.username}</p>
+          <p className="text-[.9rem]">-{comment.commentPhrase}</p>
+        </div>
+      </div>
+    );
+  });
+
+  commentsMap.reverse();
+
+  // const sortedComments = postDetail.postComments.sort((first, second) => {
+  //   const firstDate = first.createdAt.slice(0,10) + first.createdAt.slice(12,19)
+  //   const secondDate = second.createdAt.slice(0,10) + second.createdAt.slice(12,19)
+  //
+  // });
+
+  console.log(postDetail.postComments);
+  console.log(postDetail);
+
   function onImageDoubleClick() {
     if (liked) {
       setLikesCount(likesCount - 1);
@@ -49,21 +79,6 @@ function postDetail(props) {
     setCommentInput(event.target.value);
   }
 
-  const commentsMap = comments.map((comment) => {
-    return (
-      <div className="w-[90%] flex items-center my-[1vh]">
-        <img
-          src={comment.user_avatar}
-          className="w-[2.5vw] h-[2.5vw] rounded-[50%] mr-[1vw]"
-        />
-        <div>
-          <p className="font-[600]">{comment.username}</p>
-          <p className="text-[.9rem]">-{comment.commentPhrase}</p>
-        </div>
-      </div>
-    );
-  });
-
   async function onClickAddComment() {
     try {
       if (!commentInput) return;
@@ -79,14 +94,15 @@ function postDetail(props) {
         body,
         config
       );
+
       console.log({ resPostComments });
       setComments([
+        ...comments,
         {
           username: userData.username,
           user_avatar: userData.user_avatar,
           commentPhrase: commentInput,
         },
-        ...comments,
       ]);
     } catch (error) {
       console.log({ error });
@@ -140,11 +156,11 @@ function postDetail(props) {
             </Button>
           </div>
           <div className="w-[51vw] h-[65.6vh] flex flex-col border border-gray-500 rounded-[1vh] items-center justify-start mt-[3vh] overflow-auto scrollbar">
-            {comments.length ? (
-              commentsMap.reverse()
+            {/* {comments.length ? (
+              commentsMap
             ) : (
               <p className="mt-[3vh]">"Nobody has commented yet."</p>
-            )}
+            )} */}
           </div>
           <a
             href="/"
