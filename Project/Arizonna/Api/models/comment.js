@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "userComments",
       });
+      comment.belongsTo(models.user, {
+        foreignKey: "user_avatar",
+        as: "userComments",
+      });
     }
   }
   comment.init(

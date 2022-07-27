@@ -9,6 +9,7 @@ function postDetail(props) {
   const { postDetail } = props;
   const { userData } = props;
   const { poster } = props;
+  const [commentsOffset, setCommentsOffset] = useState(1);
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState(postDetail.postComments);
   const [likesCount, setLikesCount] = useState(postDetail.postLikes.length);
@@ -24,8 +25,33 @@ function postDetail(props) {
     }
   }, []);
 
-  const getComments = async () => {
-    const session = await getSession();
+  const getMoreComments = async () => {
+    const { accessToken } = props;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const { post_id } = props;
+
+    const body = {
+      commentLimit: 5,
+      commentOffset: commentsOffset * 5,
+    };
+
+    const resGetPostComments = await axiosInstance.post(
+      `/posts/${post_id}`,
+      body,
+      config
+    );
+
+    const moreComment = resGetPostComments.data.detail[0].postComments;
+
+    setComments([...comments, ...moreComment]);
+
+    setCommentsOffset(commentsOffset + 1);
   };
 
   const commentsMap = comments.map((comment) => {
@@ -42,14 +68,6 @@ function postDetail(props) {
       </div>
     );
   });
-
-  commentsMap.reverse();
-
-  // const sortedComments = postDetail.postComments.sort((first, second) => {
-  //   const firstDate = first.createdAt.slice(0,10) + first.createdAt.slice(12,19)
-  //   const secondDate = second.createdAt.slice(0,10) + second.createdAt.slice(12,19)
-  //
-  // });
 
   console.log(postDetail.postComments);
   console.log(postDetail);
@@ -97,12 +115,12 @@ function postDetail(props) {
 
       console.log({ resPostComments });
       setComments([
-        ...comments,
         {
           username: userData.username,
           user_avatar: userData.user_avatar,
           commentPhrase: commentInput,
         },
+        ...comments,
       ]);
     } catch (error) {
       console.log({ error });
@@ -156,11 +174,14 @@ function postDetail(props) {
             </Button>
           </div>
           <div className="w-[51vw] h-[65.6vh] flex flex-col border border-gray-500 rounded-[1vh] items-center justify-start mt-[3vh] overflow-auto scrollbar">
-            {/* {comments.length ? (
+            {comments.length ? (
               commentsMap
             ) : (
               <p className="mt-[3vh]">"Nobody has commented yet."</p>
-            )} */}
+            )}
+            <Button onClick={getMoreComments} variant="text">
+              See more
+            </Button>
           </div>
           <a
             href="/"
@@ -196,8 +217,13 @@ export async function getServerSideProps(context) {
 
     const resGetUser = await axiosInstance.get(`/users/${user_id}`, config);
 
-    const resGetPostDetail = await axiosInstance.get(
+    const body = {
+      commentLimit: 5,
+      commentOffset: 0,
+    };
+    const resGetPostDetail = await axiosInstance.post(
       `/posts/${post_id}`,
+      body,
       config
     );
 
@@ -214,7 +240,7 @@ export async function getServerSideProps(context) {
     const poster = resGetPostUser.data.dataValues;
 
     return {
-      props: { accessToken, user_id, postDetail, userData, poster },
+      props: { accessToken, user_id, postDetail, userData, poster, post_id },
     };
   } catch (error) {
     console.log({ error });

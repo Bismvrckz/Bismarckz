@@ -56,21 +56,23 @@ const getPostDetail = async (req, res, next) => {
 
 const getAllPost = async (req, res, next) => {
   try {
-    const resGetAllPost = await post.findAll({
-      include: { model: like, as: "postLikes" },
-    });
+    // const resGetAllPost = await post.findAll({
+    //   include: { model: like, as: "postLikes" },
+    // });
+
+    console.log(req);
 
     res.send({
       status: "Success",
       message: "Success get all post",
-      data: resGetAllPost,
+      data: req.body,
     });
   } catch (error) {
     next(error);
   }
 };
 
-router.get("/", auth, getAllPost);
+router.get("/", getAllPost);
 router.get("/user/:user_id", auth, getUserPosts);
 router.get("/:post_id", getPostDetail);
 

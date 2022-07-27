@@ -5,29 +5,41 @@ import Navbar from "../components/navbar";
 import axiosInstance from "../services/axiosinstance";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home(props) {
+  const { allPost } = props;
   const [collapsedState, setcollapsedState] = useState(true);
   const [editProfileMenu, seteditProfileMenu] = useState(false);
+  const [postContent, setPostContent] = useState(allPost);
   const [imgSource, setImgSource] = useState(
     props.user?.dataValues.user_avatar
   );
   const [mainPageContent, setmainPageContent] = useState("Explore");
   const [renderDummy, setRenderDummy] = useState(true);
 
-  useEffect(() => {}, [renderDummy]);
-
-  console.log({ props });
+  console.log({ postContent });
 
   const { userPosts } = props;
 
   const { accessToken } = props;
 
-  const { allPost } = props;
-
   function editProfileOption() {
     seteditProfileMenu(!editProfileMenu);
+  }
+
+  async function fetchMorePost() {
+    try {
+      const getLimit = { limit: 12 };
+
+      const resGetAllPostLimited = await axiosInstance.post(
+        "/posts/getPostLimited",
+        getLimit
+      );
+
+      setPostContent([...postContent, resGetAllPostLimited.data.detail]);
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   async function resendVerificationMail() {
@@ -78,7 +90,7 @@ function Home(props) {
       );
 
     function renderUserPosts() {
-      if (!allPost.length) {
+      if (!postContent.length) {
         return (
           <div className="flex items-center justify-center w-[100%] h-[100%]">
             <p>
@@ -92,7 +104,7 @@ function Home(props) {
         );
       }
 
-      const postMap = allPost.map((post) => {
+      const postMap = postContent.map((post) => {
         return (
           <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
             <a href={`/postDetail/${post.post_id}`} className="z-[2]">
@@ -136,44 +148,7 @@ function Home(props) {
 
     return (
       <div className="w-[100%] h-[100%] oveflow-auto scrollbar">
-        {/* <div>{renderUserPosts()}</div> */}
-        <InfiniteScroll
-          dataLength={20}
-          next={this.fetchMoreData}
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
-        >
-          {allPost.map((post) => {
-            return (
-              <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
-                <a href={`/postDetail/${post.post_id}`} className="z-[2]">
-                  <img
-                    className="w-[19vw] h-[19vw] rounded-[1vh] z-[2]"
-                    src={post.postImage}
-                  />
-                </a>
-                <div className="flex flex-col items-between justify-between w-[100%] h-[2rem] z-[2]">
-                  <p className="text-[0.9rem] text-gray-400">
-                    {createdAt.slice(0, 10)}
-                  </p>
-
-                  <div className="flex items-center">
-                    {/* <FontAwesomeIcon
-                    onClick={() => {
-                      addOneLike(user_id, post.post_id);
-                    }}
-                    className="w-[1vw] h-[1vw] mr-[0.1vw]"
-                    icon="fa-solid fa-heart"
-                  /> */}
-                    <p>Likes: {post.postLikes.length}</p>
-                  </div>
-                  <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
-                </div>
-                <div className="absolute w-[100%] h-[100%] bg-white blur-[60px] opacity-[.2]" />
-              </div>
-            );
-          })}
-        </InfiniteScroll>
+        <div>{renderUserPosts()}</div>
       </div>
     );
   }
@@ -382,16 +357,19 @@ export async function getServerSideProps(context) {
       config
     );
 
-    const getLimit = 10;
+    const getLimit = { limit: 12 };
 
-    const resGetAllPost = await axiosInstance.get("/posts", config);
+    const resGetAllPostLimited = await axiosInstance.post(
+      "/posts/getPostLimited",
+      getLimit
+    );
 
     return {
       props: {
         user: resGetUser.data,
         accessToken,
         userPosts: resGetUserPersonalPost.data.data,
-        allPost: resGetAllPost.data.data,
+        allPost: resGetAllPostLimited.data.detail,
       },
     };
   } catch (error) {
