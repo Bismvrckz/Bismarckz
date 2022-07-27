@@ -1,19 +1,26 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axiosInstance from "../../services/axiosinstance";
+import React, { useEffect, useState } from "react";
+import Typography from "@mui/material/Typography";
 import { Button, TextField } from "@mui/material";
 import { getSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
-import axiosInstance from "../../services/axiosinstance";
+import Popover from "@mui/material/Popover";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 
 function postDetail(props) {
-  const { accessToken } = props;
-  const { postDetail } = props;
-  const { userData } = props;
   const { poster } = props;
-  const [commentsOffset, setCommentsOffset] = useState(1);
+  const { userData } = props;
+  const { postDetail } = props;
+  const { accessToken } = props;
+  const [liked, setLiked] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [commentInput, setCommentInput] = useState("");
+  const [commentsOffset, setCommentsOffset] = useState(1);
   const [comments, setComments] = useState(postDetail.postComments);
   const [likesCount, setLikesCount] = useState(postDetail.postLikes.length);
-  const [liked, setLiked] = useState(false);
+  const [postOwner, setPostOwner] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const isLikedByCurrentUser = postDetail.postLikes.find((postLike) => {
@@ -21,9 +28,31 @@ function postDetail(props) {
     });
 
     if (isLikedByCurrentUser) {
-      return setLiked(true);
+      setLiked(true);
+    }
+
+    if (postDetail.user_id == userData.user_id) {
+      setPostOwner(true);
     }
   }, []);
+
+  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal = () => setOpenModal(true);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  const { user_id, post_id } = props;
+
+  console.log({ props });
 
   const getMoreComments = async () => {
     const { accessToken } = props;
@@ -57,10 +86,10 @@ function postDetail(props) {
   const commentsMap = comments.map((comment) => {
     return (
       <div className="w-[90%] flex items-center my-[1vh]">
-        <img
+        {/* <img
           src={comment.user_avatar}
           className="w-[2.5vw] h-[2.5vw] rounded-[50%] mr-[1vw]"
-        />
+        /> */}
         <div>
           <p className="font-[600]">{comment.username}</p>
           <p className="text-[.9rem]">-{comment.commentPhrase}</p>
@@ -69,28 +98,29 @@ function postDetail(props) {
     );
   });
 
-  console.log(postDetail.postComments);
-  console.log(postDetail);
-
-  function onImageDoubleClick() {
+  async function alterLikeTrigger() {
     if (liked) {
+      const likeData = { user_id, post_id };
+
+      const resRemoveLike = await axiosInstance.post(
+        `/likes/alterLike`,
+        likeData
+      );
+
+      console.log({ resRemoveLike });
+
       setLikesCount(likesCount - 1);
       setLiked(false);
     } else if (!liked) {
+      const likeData = { user_id, post_id };
+
+      const resAddLike = await axiosInstance.post(`/likes/alterLike`, likeData);
+
+      console.log({ resAddLike });
+
       setLikesCount(likesCount + 1);
       setLiked(true);
     }
-    //   liked
-    //     ? () => {
-    //         setLikesCount(likesCount - 1);
-    //         setLiked(false);
-    //         return;
-    //       }
-    //     : () => {
-    //         setLikesCount(likesCount + 1);
-    //         setLiked(true);
-    //         return;
-    //       };
   }
 
   function onCommentInputChange(event) {
@@ -113,7 +143,6 @@ function postDetail(props) {
         config
       );
 
-      console.log({ resPostComments });
       setComments([
         {
           username: userData.username,
@@ -134,13 +163,24 @@ function postDetail(props) {
       <div className="w-[98%] h-[98%] flex z-[2] rounded-[1vh] overflow-hidden">
         <div id="bagian-kiri" className="flex flex-col">
           <img
-            onDoubleClick={onImageDoubleClick}
+            onDoubleClick={alterLikeTrigger}
             src={postDetail.postImage}
             className="rounded-[1vh] w-[45vw] h-[45vw] hover:cursor-pointer"
           />
           <div className="ml-[1vw]">
             <p className="font-[600] text-[1.5rem]">{poster.username}</p>
-            <p className="font-[200]">{likesCount} Likes</p>
+            <p className="font-[200]">
+              <FontAwesomeIcon
+                onClick={alterLikeTrigger}
+                icon="fa-solid fa-heart"
+                className={
+                  liked
+                    ? "mr-[1vw] text-red-500 hover:cursor-pointer"
+                    : "mr-[1vw] hover:cursor-pointer"
+                }
+              />
+              {likesCount} Likes
+            </p>
           </div>
         </div>
         <div id="bagian-kanan" className="flex flex-col w-[51vw] mx-[2vw]">
@@ -149,13 +189,73 @@ function postDetail(props) {
               className="w-[2.5vw] h-[2.5vw] rounded-[50%]"
               src={poster.user_avatar}
             />
-            <div className="flex flex-col pl-[1vw]">
+            <div className="flex flex-col pl-[1vw] grow">
               <div className="flex">
                 <p className="font-[600] mr-[0.3vw]">{poster.username}</p> -
                 <p className="mx-[0.3vw]">"{postDetail.caption}"</p>
               </div>
               <p>{postDetail.createdAt.slice(0, 10)}</p>
             </div>
+            {postOwner ? (
+              <FontAwesomeIcon
+                onClick={handleClick}
+                id="editPost"
+                icon="fa-solid fa-ellipsis"
+                className="text-[1.5vw] hover:cursor-pointer"
+              />
+            ) : (
+              ""
+            )}
+            <Popover
+              id={"editPost"}
+              open={open}
+              // sx={{ width: "10vw", height: "10vw" }}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Typography sx={{ p: 2 }}>
+                <p className="hover:cursor-pointer hover:text-cyan-400">
+                  Edit post
+                </p>
+                <p
+                  onClick={handleOpenModal}
+                  className="hover:cursor-pointer hover:text-cyan-400"
+                >
+                  Delete post
+                </p>
+              </Typography>
+            </Popover>
+            <Modal
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: 400,
+                  bgcolor: "background.paper",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Text in a modal
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  Duis mollis, est non commodo luctus, nisi erat porttitor
+                  ligula.
+                </Typography>
+              </Box>
+            </Modal>
           </div>
           <div className="w-[100%] flex">
             <TextField

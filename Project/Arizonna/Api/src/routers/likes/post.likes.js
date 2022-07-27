@@ -39,6 +39,6 @@ const newPostLike = async (req, res, next) => {
   }
 };
 
-router.post("/newlike", newPostLike);
+router.post("/alterLike", newPostLike);
 
 module.exports = router;
