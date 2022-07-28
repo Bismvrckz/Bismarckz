@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       post_id: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: "post",
           key: "post_id",

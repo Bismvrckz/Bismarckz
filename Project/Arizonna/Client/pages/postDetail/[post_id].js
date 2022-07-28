@@ -7,12 +7,14 @@ import { getSession } from "next-auth/react";
 import Popover from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import { useRouter } from "next/router";
 
 function postDetail(props) {
   const { poster } = props;
   const { userData } = props;
   const { postDetail } = props;
   const { accessToken } = props;
+  const { user_id, post_id } = props;
   const [liked, setLiked] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [commentInput, setCommentInput] = useState("");
@@ -21,6 +23,26 @@ function postDetail(props) {
   const [likesCount, setLikesCount] = useState(postDetail.postLikes.length);
   const [postOwner, setPostOwner] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+  const router = useRouter();
+  const open = Boolean(anchorEl);
+  const commentsMap = comments.map((comment) => {
+    return (
+      <div
+        key={comment.comment_id}
+        className="w-[90%] flex items-center my-[1vh]"
+      >
+        {/* <img
+          src={comment.user_avatar}
+          className="w-[2.5vw] h-[2.5vw] rounded-[50%] mr-[1vw]"
+        /> */}
+        <div>
+          <p className="font-[600]">{comment.username}</p>
+          <p className="text-[.9rem]">-{comment.commentPhrase}</p>
+        </div>
+      </div>
+    );
+  });
 
   useEffect(() => {
     const isLikedByCurrentUser = postDetail.postLikes.find((postLike) => {
@@ -36,25 +58,7 @@ function postDetail(props) {
     }
   }, []);
 
-  const handleCloseModal = () => setOpenModal(false);
-  const handleOpenModal = () => setOpenModal(true);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
-  const { user_id, post_id } = props;
-
-  console.log({ props });
-
-  const getMoreComments = async () => {
+  async function getMoreComments() {
     const { accessToken } = props;
 
     const config = {
@@ -81,22 +85,27 @@ function postDetail(props) {
     setComments([...comments, ...moreComment]);
 
     setCommentsOffset(commentsOffset + 1);
-  };
+  }
 
-  const commentsMap = comments.map((comment) => {
-    return (
-      <div className="w-[90%] flex items-center my-[1vh]">
-        {/* <img
-          src={comment.user_avatar}
-          className="w-[2.5vw] h-[2.5vw] rounded-[50%] mr-[1vw]"
-        /> */}
-        <div>
-          <p className="font-[600]">{comment.username}</p>
-          <p className="text-[.9rem]">-{comment.commentPhrase}</p>
-        </div>
-      </div>
-    );
-  });
+  async function onDeletePostClick() {
+    try {
+      // const resDeleteComments = await axiosInstance.delete(
+      //   `/comments/${post_id}`
+      // );
+
+      const resDeletePost = await axiosInstance.delete(
+        `/posts/${postDetail.post_id}`
+      );
+
+      console.log({ resDeletePost });
+
+      setTimeout(() => {
+        router.replace("/");
+      }, 2000);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
 
   async function alterLikeTrigger() {
     if (liked) {
@@ -121,10 +130,6 @@ function postDetail(props) {
       setLikesCount(likesCount + 1);
       setLiked(true);
     }
-  }
-
-  function onCommentInputChange(event) {
-    setCommentInput(event.target.value);
   }
 
   async function onClickAddComment() {
@@ -156,6 +161,26 @@ function postDetail(props) {
     } finally {
       setCommentInput("");
     }
+  }
+
+  function handleCloseModal() {
+    setOpenModal(false);
+  }
+
+  function handleOpenModal() {
+    setOpenModal(true);
+  }
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  function onCommentInputChange(event) {
+    setCommentInput(event.target.value);
   }
 
   return (
@@ -196,66 +221,95 @@ function postDetail(props) {
               </div>
               <p>{postDetail.createdAt.slice(0, 10)}</p>
             </div>
-            {postOwner ? (
-              <FontAwesomeIcon
-                onClick={handleClick}
-                id="editPost"
-                icon="fa-solid fa-ellipsis"
-                className="text-[1.5vw] hover:cursor-pointer"
-              />
-            ) : (
-              ""
-            )}
-            <Popover
-              id={"editPost"}
-              open={open}
-              // sx={{ width: "10vw", height: "10vw" }}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <Typography sx={{ p: 2 }}>
-                <p className="hover:cursor-pointer hover:text-cyan-400">
-                  Edit post
-                </p>
-                <p
-                  onClick={handleOpenModal}
-                  className="hover:cursor-pointer hover:text-cyan-400"
-                >
-                  Delete post
-                </p>
-              </Typography>
-            </Popover>
-            <Modal
-              open={openModal}
-              onClose={handleCloseModal}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  width: 400,
-                  bgcolor: "background.paper",
-                  boxShadow: 24,
-                  p: 4,
+            <div id="editPost">
+              {postOwner ? (
+                <FontAwesomeIcon
+                  onClick={handleClick}
+                  id="editPost"
+                  icon="fa-solid fa-ellipsis"
+                  className="text-[1.5vw] hover:cursor-pointer"
+                />
+              ) : (
+                ""
+              )}
+              <Popover
+                id={"editPost"}
+                open={open}
+                // sx={{  }}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
               >
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Text in a modal
+                <Typography
+                  sx={{
+                    p: 2,
+                    bgcolor: "#242424",
+                    color: "white",
+                    width: "10vw",
+                    height: "4vw",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "start",
+                  }}
+                >
+                  <a
+                    href={`../editPost/${post_id}`}
+                    className="hover:cursor-pointer hover:text-cyan-600"
+                  >
+                    Edit
+                  </a>
+                  <p
+                    onClick={handleOpenModal}
+                    className="hover:cursor-pointer hover:text-red-600"
+                  >
+                    Delete
+                  </p>
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-                </Typography>
-              </Box>
-            </Modal>
+              </Popover>
+              <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box
+                  sx={{
+                    transform: "translate(-50%, -50%)",
+                    position: "absolute",
+                    bgcolor: "#242424",
+                    color: "white",
+                    boxShadow: 24,
+                    border: "10px",
+                    left: "50%",
+                    top: "50%",
+                    width: 400,
+                    p: 4,
+                  }}
+                >
+                  <p className="font-[montserrat] font-[600]">Delete Post?</p>
+                  <div className="flex w-[5vw]">
+                    <p
+                      onClick={onDeletePostClick}
+                      className="font-[montserrat] hover:text-red-500 hover:cursor-pointer mr-[1vw]"
+                    >
+                      Yes
+                    </p>
+                    <p
+                      onClick={handleCloseModal}
+                      className="font-[montserrat] hover:text-gray-500 hover:cursor-pointer"
+                    >
+                      No
+                    </p>
+                  </div>
+                </Box>
+
+                {/* <div className="absolute bg-[#242424] top-[50%] left-[50%] w-[12vw] h-[7vh]"></div> */}
+              </Modal>
+            </div>
           </div>
           <div className="w-[100%] flex">
             <TextField
@@ -264,6 +318,7 @@ function postDetail(props) {
               sx={{ width: "75%" }}
               variant="outlined"
               label="Add a comment"
+              autoComplete="off"
             />
             <Button
               onClick={onClickAddComment}
@@ -279,9 +334,13 @@ function postDetail(props) {
             ) : (
               <p className="mt-[3vh]">"Nobody has commented yet."</p>
             )}
-            <Button onClick={getMoreComments} variant="text">
-              See more
-            </Button>
+            {comments.length == 5 ? (
+              <Button onClick={getMoreComments} variant="text">
+                See more
+              </Button>
+            ) : (
+              ""
+            )}
           </div>
           <a
             href="/"
@@ -296,8 +355,6 @@ function postDetail(props) {
     </div>
   );
 }
-
-export default postDetail;
 
 export async function getServerSideProps(context) {
   try {
@@ -350,3 +407,5 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+export default postDetail;

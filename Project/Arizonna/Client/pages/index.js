@@ -55,8 +55,11 @@ function Home(props) {
   function ExplorePage() {
     if (!props.user?.dataValues) {
       return (
-        <div className="w-[98%] h-[98%]">
-          <div>Tiyu lah</div>
+        <div className="w-[98%] flex flex-col items-center justify-center h-[98%]">
+          <p className="text-[2rem] mb-[3vh]">You are not Signed In</p>
+          <Button variant="outlined" className="w-[6vw] h-[2vw] ">
+            <a href="/signin">Sign In</a>
+          </Button>
         </div>
       );
     }
