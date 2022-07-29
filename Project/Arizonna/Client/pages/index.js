@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import axiosInstance from "../services/axiosinstance";
 import MenuIcon from "@mui/icons-material/Menu";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home(props) {
   const { allPost } = props;
@@ -36,7 +36,9 @@ function Home(props) {
         getLimit
       );
 
-      setPostContent([...postContent, resGetAllPostLimited.data.detail]);
+      console.log("fetch more post");
+
+      setPostContent([...postContent, ...resGetAllPostLimited.data.detail]);
     } catch (error) {
       console.log({ error });
     }
@@ -122,13 +124,6 @@ function Home(props) {
               </p>
 
               <div className="flex items-center">
-                {/* <FontAwesomeIcon
-                    onClick={() => {
-                      addOneLike(user_id, post.post_id);
-                    }}
-                    className="w-[1vw] h-[1vw] mr-[0.1vw]"
-                    icon="fa-solid fa-heart"
-                  /> */}
                 <p>Likes: {post.postLikes.length}</p>
               </div>
               <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
@@ -145,13 +140,22 @@ function Home(props) {
       );
     }
 
-    const getMorePost = async () => {
-      axiosInstance.get();
-    };
-
     return (
-      <div className="w-[100%] h-[100%] oveflow-auto scrollbar">
-        <div>{renderUserPosts()}</div>
+      <div className="w-[100%] h-[100%] oveflow-aut scrollba">
+        <InfiniteScroll
+          dataLength={postContent.length} //This is important field to render the next data
+          next={fetchMorePost}
+          hasMore={true}
+          loader={<h4>Bentar...</h4>}
+          className="overflow-auto scrollbar"
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+          {renderUserPosts()}
+        </InfiniteScroll>
       </div>
     );
   }
@@ -314,19 +318,22 @@ function Home(props) {
 
   function mainPageClass() {
     return collapsedState
-      ? "w-[94.3vw] z-[20] bg-gradient-to-r from-teal-900 to-cyan-900 flex justify-center items-center absolute top-0 right-0 h-[100vh] ease-in-out duration-300"
-      : "w-[78vw] z-[20] bg-gradient-to-r from-teal-900 to-cyan-900 flex justify-center items-center absolute top-0 right-0 h-[100vh] ease-in-out duration-300";
+      ? "w-[94.3vw]  flex justify-center items-center absolute top-0 right-0 h-[100vh] ease-in-out duration-300 overflow-aut fixed crollbar"
+      : "w-[78vw]  flex justify-center items-center absolute top-0 right-0 h-[100vh] ease-in-out duration-300 overflow-aut fixed crollbar";
   }
 
   return (
     <div className="flex text-white font-[montserrat]">
-      <Navbar
-        setcollapsedState={setcollapsedState}
-        collapsedState={collapsedState}
-        setmainPageContent={setmainPageContent}
-      />
+      <div className="fixed">
+        <Navbar
+          setcollapsedState={setcollapsedState}
+          collapsedState={collapsedState}
+          setmainPageContent={setmainPageContent}
+        />
+      </div>
       <div className={mainPageClass()}>
         {mainPageContent == "Explore" ? ExplorePage() : MyProfilePage(props)}
+        <div className="bg-gradient-to-r from-teal-900 to-cyan-900 w-[100%] h-[100%] -z-[1] fixed" />
       </div>
     </div>
   );
