@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import axiosInstance from "../../services/axiosinstance";
 
@@ -9,11 +10,27 @@ function editPost(props) {
   const { postDetail } = props;
   const { accessToken } = props;
   const { user_id, post_id } = props;
-  const [postCaption, setPostCaption] = useState(postDetail.caption);
-  console.log({ props });
+  const { caption } = postDetail;
+  const [postCaption, setPostCaption] = useState(caption);
+  const router = useRouter();
 
   function onChangeCaption(event) {
     setPostCaption(event.target.value);
+  }
+
+  async function onClickConfirmChange() {
+    try {
+      const resChangeCaption = await axiosInstance.patch(
+        `posts/editCaption/${post_id}`,
+        { postCaption }
+      );
+
+      router.push(`../postDetail/${post_id}`);
+
+      console.log(resChangeCaption.data);
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   return (
@@ -47,7 +64,11 @@ function editPost(props) {
             <Button className="mr-[2vw]" color="error" variant="contained">
               <a href={`../postDetail/${post_id}`}> Cancel change</a>
             </Button>
-            <Button color="success" variant="contained">
+            <Button
+              onClick={onClickConfirmChange}
+              color="success"
+              variant="contained"
+            >
               Confirm change
             </Button>
           </div>
