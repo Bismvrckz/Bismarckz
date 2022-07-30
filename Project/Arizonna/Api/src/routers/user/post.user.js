@@ -1,13 +1,14 @@
-const express = require("express");
-const { fieldIsEmpty } = require("../../helpers");
-const router = express.Router();
-const validator = require("email-validator");
-const { hash, compare } = require("../../lib/bcryptjs");
-const { createToken } = require("../../lib/token");
 const { sendVerificationMail } = require("../../lib/email-auth");
 const taiPasswordStrength = require("tai-password-strength");
+const { hash, compare } = require("../../lib/bcryptjs");
+const { createToken } = require("../../lib/token");
+const { fieldIsEmpty } = require("../../helpers");
+const validator = require("email-validator");
+const { Verification } = require("../../../models");
 const { user } = require("../../../models");
 const { Op } = require("sequelize");
+const express = require("express");
+const router = express.Router();
 
 const userRegister = async (req, res, next) => {
   try {
@@ -107,7 +108,17 @@ const userRegister = async (req, res, next) => {
 
     console.log(`Success create user ${username}`);
 
-    const token = createToken({ user_id: userIdMaker, username });
+    const verificationIdMaker = `${userIdMaker}-verification-${new Date().getTime()}`;
+    const resCreateVerification = await Verification.create({
+      user_id: userIdMaker,
+      verification_id: verificationIdMaker,
+    });
+
+    const token = createToken({
+      verification_id: verificationIdMaker,
+      user_id: userIdMaker,
+      username,
+    });
 
     sendVerificationMail({ email, token, username });
 
@@ -115,7 +126,7 @@ const userRegister = async (req, res, next) => {
       status: "Success",
       message: "Success resgister user",
       data: {
-        result: resCreateNewUser,
+        result: { resCreateNewUser, resCreateVerification },
       },
     });
   } catch (error) {
@@ -193,9 +204,32 @@ const userLogin = async (req, res, next) => {
 
 const userResendVerificationMail = async (req, res, next) => {
   try {
-    const { username, email } = req.body.user;
-    const token = req.body.accessToken;
-    sendVerificationMail({ username, token, email });
+    const { username, email } = req.body.user.dataValues;
+    const { user_id } = req.body;
+
+    console.log({ user_id, email, username });
+
+    const verificationIdMaker = `${user_id}-verification-${new Date().getTime()}`;
+    const resCreateVerification = await Verification.create({
+      user_id,
+      verification_id: verificationIdMaker,
+    });
+
+    const token = createToken({
+      verification_id: verificationIdMaker,
+      user_id: parseInt(user_id),
+      username,
+    });
+
+    sendVerificationMail({ email, token, username });
+
+    res.send({
+      status: "Success",
+      message: "Success create new token",
+      detail: {
+        resCreateVerification,
+      },
+    });
   } catch (error) {
     console.log({ error });
   }

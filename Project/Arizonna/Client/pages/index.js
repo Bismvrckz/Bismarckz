@@ -1,24 +1,24 @@
-import { Button } from "@mui/material";
+import InfiniteScroll from "react-infinite-scroll-component";
+import axiosInstance from "../services/axiosinstance";
+import MenuIcon from "@mui/icons-material/Menu";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import axiosInstance from "../services/axiosinstance";
-import MenuIcon from "@mui/icons-material/Menu";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { Button } from "@mui/material";
 
 function Home(props) {
   const { allPost } = props;
   const { allPostLength } = props;
-  const [collapsedState, setcollapsedState] = useState(true);
+  const [mainPageContent, setmainPageContent] = useState("Explore");
   const [editProfileMenu, seteditProfileMenu] = useState(false);
+  const [collapsedState, setcollapsedState] = useState(true);
   const [postContent, setPostContent] = useState(allPost);
   const imgSource = props.user?.dataValues.user_avatar;
-  const [mainPageContent, setmainPageContent] = useState("Explore");
   const [offset, setOffset] = useState(1);
 
-  const { userPosts } = props;
-
   const { accessToken } = props;
+
+  const { userPosts } = props;
 
   function editProfileOption() {
     seteditProfileMenu(!editProfileMenu);
@@ -364,6 +364,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         user: resGetUser.data,
+        user_id,
         accessToken,
         userPosts: resGetUserPersonalPost.data.data,
         allPost: resGetAllPostLimited.data.detail,

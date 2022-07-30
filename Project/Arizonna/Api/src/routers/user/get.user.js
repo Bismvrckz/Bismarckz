@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken } = require("../../lib/token");
+const { auth } = require("../../helpers/auth");
+const { Verification } = require("../../../models");
 const { user } = require("../../../models");
 const { Op } = require("sequelize");
-const { auth } = require("../../helpers/auth");
-// const defaultAvatar = require("../../../public/userAvatar");
 
 const getUser = async (req, res, next) => {
   try {
@@ -29,7 +29,37 @@ const userVerificationHandler = async (req, res, next) => {
 
     const verifiedToken = verifyToken(token);
 
-    const { username, user_id } = verifiedToken;
+    console.log({ verifiedToken });
+    const { username, user_id, verification_id } = verifiedToken;
+
+    const mostRecentToken = await Verification.findOne({
+      where: 1659203568168,
+      order: [["updatedAt", "desc"]],
+    });
+
+    const isValidToken =
+      mostRecentToken.dataValues.verification_id == verification_id;
+
+    if (!isValidToken) {
+      res.send(`<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <link
+            rel="icon"
+            type="image/png"
+            href="https://wac-cdn-2.atlassian.com/image/upload/f_auto,q_auto/assets/img/favicons/atlassian/favicon.png"
+            sizes="32x32"
+          />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Invalid Verification</title>
+        </head>
+        <body>
+          <p>Invalid Token</p>
+        </body>
+      </html>`);
+    }
 
     const updateVerifyUserSequelize = await user.update(
       { isVerified: true },
@@ -96,18 +126,7 @@ const userVerificationHandler = async (req, res, next) => {
   }
 };
 
-const userAvatar = async (req, res, next) => {
-  try {
-    res.send(
-      `<html> <img src="/userAvatar/defaultAvatar.png" alt="image" /> </html>`
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-router.get("/:user_id", auth, getUser);
 router.get("/verify/:token", userVerificationHandler);
-router.get("/avatar", userAvatar);
+router.get("/:user_id", auth, getUser);
 
 module.exports = router;

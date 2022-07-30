@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import MainLogo from "../../components/mainLogo";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import InputAdornment from "@mui/material/InputAdornment";
+import axiosInstance from "../../services/axiosinstance";
 import PasswordIcon from "@mui/icons-material/Password";
 import GppGoodIcon from "@mui/icons-material/GppGood";
-import Checkbox from "@mui/material/Checkbox";
-import { Button } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import SaveIcon from "@mui/icons-material/Save";
-import axiosInstance from "../../services/axiosinstance";
-import { useRouter } from "next/router";
-import Alert from "@mui/material/Alert";
+import React, { useEffect, useState } from "react";
 import AlertTitle from "@mui/material/AlertTitle";
+import MainLogo from "../../components/mainLogo";
+import SaveIcon from "@mui/icons-material/Save";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
 import { getSession } from "next-auth/react";
+import Alert from "@mui/material/Alert";
+import { useRouter } from "next/router";
+import { Button } from "@mui/material";
 const taiPasswordStrength = require("tai-password-strength");
 
 function SignUp() {
