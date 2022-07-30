@@ -8,16 +8,13 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home(props) {
   const { allPost } = props;
+  const { allPostLength } = props;
   const [collapsedState, setcollapsedState] = useState(true);
   const [editProfileMenu, seteditProfileMenu] = useState(false);
   const [postContent, setPostContent] = useState(allPost);
-  const [imgSource, setImgSource] = useState(
-    props.user?.dataValues.user_avatar
-  );
+  const imgSource = props.user?.dataValues.user_avatar;
   const [mainPageContent, setmainPageContent] = useState("Explore");
-  const [renderDummy, setRenderDummy] = useState(true);
-
-  console.log({ postContent });
+  const [offset, setOffset] = useState(1);
 
   const { userPosts } = props;
 
@@ -30,15 +27,16 @@ function Home(props) {
   async function fetchMorePost() {
     try {
       const getLimit = { limit: 12 };
+      const getOffset = { offset: offset * 12 };
 
       const resGetAllPostLimited = await axiosInstance.post(
         "/posts/getPostLimited",
+        getOffset,
         getLimit
       );
 
-      console.log("fetch more post");
-
       setPostContent([...postContent, ...resGetAllPostLimited.data.detail]);
+      setOffset(offset + 1);
     } catch (error) {
       console.log({ error });
     }
@@ -141,16 +139,26 @@ function Home(props) {
     }
 
     return (
-      <div className="w-[100%] h-[100%] oveflow-aut scrollba">
+      <div className="w-[100%] h-[100%]">
         <InfiniteScroll
-          dataLength={postContent.length} //This is important field to render the next data
-          next={fetchMorePost}
-          hasMore={true}
-          loader={<h4>Bentar...</h4>}
-          className="overflow-auto scrollbar"
+          dataLength={allPostLength}
+          next={() => {
+            setTimeout(() => {
+              fetchMorePost();
+            }, 2000);
+          }}
+          hasMore={postContent.length != allPostLength}
+          loader={
+            <h4 className="w-[100%] flex items-center justify-center ">
+              Bentar...
+            </h4>
+          }
+          // className="overflow-auto scrollbar"
           endMessage={
             <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
+              <p className="font-[montserrat] font-[700]">
+                Yay! You have seen it all
+              </p>
             </p>
           }
         >
@@ -183,20 +191,6 @@ function Home(props) {
       user_avatar,
     } = props.user?.dataValues;
 
-    async function addOneLike(user_id, post_id) {
-      try {
-        const detail = { user_id, post_id };
-        const resAddNewLike = await axiosInstance.post(
-          "/likes/newlike",
-          detail
-        );
-        console.log("add new like");
-        setRenderDummy(!renderDummy);
-      } catch (error) {
-        console.log({ error });
-      }
-    }
-
     function renderUserPosts() {
       if (!userPosts.length) {
         return (
@@ -227,13 +221,6 @@ function Home(props) {
               </p>
 
               <div className="flex items-center">
-                {/* <FontAwesomeIcon
-                  onClick={() => {
-                    addOneLike(user_id, post.post_id);
-                  }}
-                  className="w-[1vw] h-[1vw] mr-[0.1vw]"
-                  icon="fa-solid fa-heart"
-                /> */}
                 <p>Likes: {post.postLikes.length}</p>
               </div>
               <p className="text-[1.2rem] font-[600]"> {post.caption}</p>
@@ -380,6 +367,7 @@ export async function getServerSideProps(context) {
         accessToken,
         userPosts: resGetUserPersonalPost.data.data,
         allPost: resGetAllPostLimited.data.detail,
+        allPostLength: resGetAllPostLimited.data.allpostlength,
       },
     };
   } catch (error) {

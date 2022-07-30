@@ -75,10 +75,13 @@ const getPostLimited = async (req, res, next) => {
       offset,
     });
 
+    const getAllPostLength = await post.findAll();
+
     res.send({
       status: "Success",
       message: "Success get limited post",
       detail: resGetAllPostLimited,
+      allpostlength: getAllPostLength.length,
     });
   } catch (error) {
     next(error);
