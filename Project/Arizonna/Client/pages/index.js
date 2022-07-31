@@ -14,9 +14,10 @@ function Home(props) {
   const [collapsedState, setcollapsedState] = useState(true);
   const [postContent, setPostContent] = useState(allPost);
   const imgSource = props.user?.dataValues.user_avatar;
-  const [offset, setOffset] = useState(1);
+  const [offsetState, setOffsetState] = useState(1);
 
-  const { accessToken } = props;
+  console.log({ contentLength: postContent?.length });
+  console.log({ allPostLength });
 
   const { userPosts } = props;
 
@@ -27,7 +28,7 @@ function Home(props) {
   async function fetchMorePost() {
     try {
       const getLimit = { limit: 12 };
-      const getOffset = { offset: offset * 12 };
+      const getOffset = { offset: offsetState * 12 };
 
       const resGetAllPostLimited = await axiosInstance.post(
         "/posts/getPostLimited",
@@ -36,7 +37,7 @@ function Home(props) {
       );
 
       setPostContent([...postContent, ...resGetAllPostLimited.data.detail]);
-      setOffset(offset + 1);
+      setOffsetState(offsetState + 1);
     } catch (error) {
       console.log({ error });
     }
@@ -108,8 +109,12 @@ function Home(props) {
       }
 
       const postMap = postContent.map((post) => {
+        console.log(post.postImage);
         return (
-          <div className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden">
+          <div
+            key={post.post_id}
+            className="w-[19vw] h-[25vw] flex flex-col items-start rounded-[1vh] border-gray-500 border mb-[1vh] relative overflow-hidden"
+          >
             <a href={`/postDetail/${post.post_id}`} className="z-[2]">
               <img
                 className="w-[19vw] h-[19vw] rounded-[1vh] z-[2]"
@@ -147,13 +152,12 @@ function Home(props) {
               fetchMorePost();
             }, 2000);
           }}
-          hasMore={postContent.length != allPostLength}
+          hasMore={postContent.length < allPostLength}
           loader={
             <h4 className="w-[100%] flex items-center justify-center ">
               Bentar...
             </h4>
           }
-          // className="overflow-auto scrollbar"
           endMessage={
             <p style={{ textAlign: "center" }}>
               <p className="font-[montserrat] font-[700]">

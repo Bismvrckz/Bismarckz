@@ -7,13 +7,13 @@ const credentialInstance = CredentialsProvider({
     try {
       const { usernameOrEmail, password } = credentials;
 
-      const res = await axiosInstance.post("/users/login", {
+      const resUserLogin = await axiosInstance.post("/users/login", {
         usernameOrEmail,
         password,
       });
-      // console.log({ res });
+      // console.log({ resUserLogin });
 
-      const user = res.data.data.result;
+      const user = resUserLogin.data.data.result;
 
       return user;
     } catch (error) {

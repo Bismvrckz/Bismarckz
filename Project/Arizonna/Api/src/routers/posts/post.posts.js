@@ -9,7 +9,6 @@ const { uploadPosts } = require("../../lib/multer");
 const newUserPosts = async (req, res, next) => {
   try {
     const postCount = req.userPost.length;
-    // console.log(req);
     const { user_id } = req.params;
     const currentDate = new Date();
     const postId_maker = currentDate.getTime();
@@ -68,9 +67,16 @@ const getPostDetail = async (req, res, next) => {
 const getPostLimited = async (req, res, next) => {
   try {
     const { limit } = req.body;
-    const { offset } = req.body;
+
+    let { offset } = req.body;
+
+    if (!offset) {
+      offset = 0;
+    }
+
     const resGetAllPostLimited = await post.findAll({
       include: { model: like, as: "postLikes" },
+      order: [["post_id", "desc"]],
       limit,
       offset,
     });

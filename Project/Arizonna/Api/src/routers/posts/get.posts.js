@@ -18,8 +18,6 @@ const getUserPosts = async (req, res, next) => {
       ],
     });
 
-    console.log(resGetUserPosts);
-
     res.send({
       status: "Success",
       message: "Success get user posts",

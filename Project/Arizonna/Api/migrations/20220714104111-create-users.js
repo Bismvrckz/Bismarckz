@@ -32,7 +32,7 @@ module.exports = {
       },
       user_avatar: {
         type: DataTypes.STRING,
-        defaultValue: "http://localhost:2000/userAvatar/defaultAvatar.png",
+        defaultValue: "http://localhost:2000/images/defaultAvatar.png",
       },
       user_password: {
         type: DataTypes.STRING(100),

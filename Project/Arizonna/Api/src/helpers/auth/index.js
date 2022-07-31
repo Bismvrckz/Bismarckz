@@ -6,7 +6,7 @@ async function auth(req, res, next) {
   try {
     const token = req.token;
 
-    console.log({ token });
+    console.log({ authAtJWTHelper: typeof token, token });
 
     const verifiedToken = verifyToken(token);
 
@@ -22,7 +22,6 @@ async function auth(req, res, next) {
       throw { message: "User not found" };
     }
     const { dataValues } = resGetUser;
-    // console.log(resGetUser);
     req.user = { dataValues };
     req.userPost = resGetUserPost;
     next();

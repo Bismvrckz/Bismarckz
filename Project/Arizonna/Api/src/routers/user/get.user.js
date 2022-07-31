@@ -29,11 +29,10 @@ const userVerificationHandler = async (req, res, next) => {
 
     const verifiedToken = verifyToken(token);
 
-    console.log({ verifiedToken });
     const { username, user_id, verification_id } = verifiedToken;
 
     const mostRecentToken = await Verification.findOne({
-      where: 1659203568168,
+      where: user_id,
       order: [["updatedAt", "desc"]],
     });
 
