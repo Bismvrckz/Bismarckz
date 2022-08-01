@@ -22,6 +22,8 @@ async function auth(req, res, next) {
       throw { message: "User not found" };
     }
     const { dataValues } = resGetUser;
+    const idMaker = new Date().getTime();
+    req.custom_id = idMaker;
     req.user = { dataValues };
     req.userPost = resGetUserPost;
     next();

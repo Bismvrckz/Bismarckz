@@ -16,9 +16,6 @@ function Home(props) {
   const imgSource = props.user?.dataValues.user_avatar;
   const [offsetState, setOffsetState] = useState(1);
 
-  console.log({ contentLength: postContent?.length });
-  console.log({ allPostLength });
-
   const { userPosts } = props;
 
   function editProfileOption() {
@@ -93,21 +90,21 @@ function Home(props) {
         </div>
       );
 
-    function renderUserPosts() {
-      if (!postContent.length) {
-        return (
-          <div className="flex items-center justify-center w-[100%] h-[100%]">
-            <p>
-              {" "}
-              You havent post anything yet,{" "}
-              <a href="/postImage" className="text-blue-500 hover:underline">
-                Post your first image!
-              </a>
-            </p>
-          </div>
-        );
-      }
+    if (!postContent.length) {
+      return (
+        <div className="flex items-center justify-center w-[100%] h-[100%]">
+          <p>
+            {" "}
+            No one have even post a thing yet,{" "}
+            <a href="/postImage" className="text-blue-500 hover:underline">
+              Post the first image on Arizonna!
+            </a>
+          </p>
+        </div>
+      );
+    }
 
+    function renderUserPosts() {
       const postMap = postContent.map((post) => {
         console.log(post.postImage);
         return (
@@ -154,16 +151,16 @@ function Home(props) {
           }}
           hasMore={postContent.length < allPostLength}
           loader={
-            <h4 className="w-[100%] flex items-center justify-center ">
+            <div className="w-[100%] flex items-center justify-center ">
               Bentar...
-            </h4>
+            </div>
           }
           endMessage={
-            <p style={{ textAlign: "center" }}>
+            <div style={{ textAlign: "center" }}>
               <p className="font-[montserrat] font-[700]">
-                Yay! You have seen it all
+                Yay! You have seen all Arizonna's post
               </p>
-            </p>
+            </div>
           }
         >
           {renderUserPosts()}
@@ -266,7 +263,7 @@ function Home(props) {
 
         <div className="bg-gray-800 w-[20%] h-[100%] flex flex-col justify-end items-center rounded-[4vh] relative">
           <div className="absolute top-[3vh] w-[100%] flex flex-col items-center">
-            <p className="w-[15vw] text-[2rem]">{fullname}</p>
+            <p className="w-[15vw] text-[1rem]">{email}</p>
             <p className="w-[15vw] font-[300]">{bio}</p>
           </div>
 
@@ -291,11 +288,11 @@ function Home(props) {
             New Post
           </a>
           <div className="border-t-[0.1vh] h-[8vh] border-cyan-500 flex flex-col items-center justify-end rounded-[4vh] w-[100%] ease-in-out duration-100">
-            <div className="flex justify-between items-center w-[100%]">
+            <div className="flex justify-start items-center w-[100%]">
               <img src={imgSource} className="w-[4vw] h-[4vw] rounded-[50%]" />
-              <div>
-                <p className="font-[600] text-[0.7rem]">{username}</p>
-                <p className="font-[400] text-[0.7rem]">{email}</p>
+              <div className="ml-[0.2vw] w-[13vw] h-[7vh] flex flex-col justify-center">
+                <p className="font-[600] text-[1rem]">{username}</p>
+                <p className="font-[400] text-[.7rem]">{fullname}</p>
               </div>
               <button onClick={editProfileOption}>
                 <MenuIcon />

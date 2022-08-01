@@ -17,7 +17,7 @@ const newUserPosts = async (req, res, next) => {
     const resCreateUserPost = await post.create({
       user_id,
       post_id: `${username}-${postId_maker}`,
-      postImage: `http://localhost:2000/userPosts/${username}-post-${postCount}.png`,
+      postImage: `http://localhost:2000/userPosts/${username}-post-${req.custom_id}.png`,
       caption: req.body.caption,
     });
 
